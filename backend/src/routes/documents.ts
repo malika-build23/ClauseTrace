@@ -7,7 +7,7 @@ import { prisma } from "../db.js";
 import { AiServiceError, parsePdf } from "../lib/ai-client.js";
 import { writeAudit } from "../lib/audit.js";
 import { buildClauseRows } from "../lib/clause-tree.js";
-import { currentUserId } from "../lib/current-user.js";
+import { currentUser, requireRole } from "../lib/auth.js";
 import { ExtractionConflictError, startExtraction } from "../lib/extraction-runner.js";
 
 export const MAX_PDF_BYTES = 10 * 1024 * 1024;
@@ -77,7 +77,7 @@ const param = (req: Request, name: string) => String(req.params[name]);
 export const documentsRouter = Router();
 
 // Upload a new document, or a new version of an existing one (field `documentId`).
-documentsRouter.post("/", uploadLimiter, upload.single("file"), async (req: Request, res: Response) => {
+documentsRouter.post("/", requireRole("reviewer"), uploadLimiter, upload.single("file"), async (req: Request, res: Response) => {
   const file = req.file;
   if (!file) {
     res.status(400).json({ error: "A PDF file is required (form field 'file')" });
@@ -92,7 +92,7 @@ documentsRouter.post("/", uploadLimiter, upload.single("file"), async (req: Requ
   const fileData = new Uint8Array(file.buffer); // Prisma Bytes needs an ArrayBuffer-backed view
   const documentId = typeof req.body?.documentId === "string" && req.body.documentId ? req.body.documentId : null;
   const title = (typeof req.body?.title === "string" && req.body.title.trim()) || file.originalname.replace(/\.pdf$/i, "");
-  const actorId = await currentUserId();
+  const actorId = currentUser(req).id;
 
   const duplicate = await prisma.documentVersion.findFirst({
     where: { fileHash, ...(documentId ? { documentId } : {}) },
@@ -145,7 +145,7 @@ documentsRouter.post("/", uploadLimiter, upload.single("file"), async (req: Requ
 });
 
 // Retry parsing, e.g. after the AI service was asleep or failed.
-documentsRouter.post("/:id/versions/:versionNo/parse", uploadLimiter, async (req, res) => {
+documentsRouter.post("/:id/versions/:versionNo/parse", requireRole("reviewer"), uploadLimiter, async (req, res) => {
   const version = await prisma.documentVersion.findUnique({
     where: { documentId_versionNo: { documentId: param(req, "id"), versionNo: Number(param(req, "versionNo")) } },
     select: { id: true },
@@ -156,7 +156,7 @@ documentsRouter.post("/:id/versions/:versionNo/parse", uploadLimiter, async (req
   }
   const ids = { documentId: param(req, "id"), versionNo: Number(param(req, "versionNo")) };
   try {
-    res.json({ ...ids, ...(await parseVersion(version.id, await currentUserId())) });
+    res.json({ ...ids, ...(await parseVersion(version.id, currentUser(req).id)) });
   } catch (err) {
     sendParseError(res, err, ids);
   }
@@ -248,7 +248,7 @@ async function findVersion(documentId: string, versionNo: number | null) {
 const versionFrom = (value: unknown) => (value === undefined || value === null || value === "" ? null : Number(value));
 
 // Start AI extraction for a version (latest by default). Body: { versionNo? }
-documentsRouter.post("/:id/extract", extractLimiter, async (req, res) => {
+documentsRouter.post("/:id/extract", requireRole("reviewer"), extractLimiter, async (req, res) => {
   const version = await findVersion(param(req, "id"), versionFrom(req.body?.versionNo));
   if (!version) {
     res.status(404).json({ error: "Document or version not found" });
@@ -259,7 +259,7 @@ documentsRouter.post("/:id/extract", extractLimiter, async (req, res) => {
     return;
   }
   try {
-    const run = await startExtraction(version.id, await currentUserId());
+    const run = await startExtraction(version.id, currentUser(req).id);
     res.status(202).json({ runId: run.id, versionNo: version.versionNo, status: run.status });
   } catch (err) {
     if (err instanceof ExtractionConflictError) {

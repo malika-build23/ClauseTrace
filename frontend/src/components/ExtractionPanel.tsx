@@ -5,13 +5,14 @@ type Props = {
   documentId: string
   versionNo: number
   canExtract: boolean // version is parsed
+  allowed: boolean // user has the reviewer role
   /** Called when a run finishes so the page can reload obligations. */
   onFinished: () => void
 }
 
 const active = (run: ExtractionRun | null) => run?.status === 'queued' || run?.status === 'running'
 
-export function ExtractionPanel({ documentId, versionNo, canExtract, onFinished }: Props) {
+export function ExtractionPanel({ documentId, versionNo, canExtract, allowed, onFinished }: Props) {
   const [run, setRun] = useState<ExtractionRun | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [starting, setStarting] = useState(false)
@@ -47,10 +48,7 @@ export function ExtractionPanel({ documentId, versionNo, canExtract, onFinished 
     setError(null)
     setStarting(true)
     try {
-      await apiPost(`/api/documents/${documentId}/extract`, {
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ versionNo }),
-      })
+      await apiPost(`/api/documents/${documentId}/extract`, { versionNo })
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Could not start extraction')
     } finally {
@@ -73,6 +71,7 @@ export function ExtractionPanel({ documentId, versionNo, canExtract, onFinished 
             Nothing is final until a reviewer approves it.
           </p>
         </div>
+        {allowed && (
         <button
           type="button"
           onClick={start}
@@ -81,10 +80,12 @@ export function ExtractionPanel({ documentId, versionNo, canExtract, onFinished 
         >
           {busy ? 'Extracting…' : run ? 'Extract again' : 'Extract obligations'}
         </button>
+        )}
       </div>
 
       <div aria-live="polite" className="mt-4 space-y-2 text-sm">
         {!canExtract && <p className="text-muted">Parse the document before extracting obligations.</p>}
+        {!allowed && !run && <p className="text-muted">No extraction has been run yet. A reviewer can start one.</p>}
         {error && <p className="rounded-md bg-red-50 px-3 py-2 text-fail">{error}</p>}
 
         {run && active(run) && (

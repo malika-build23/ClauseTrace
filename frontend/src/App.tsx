@@ -1,7 +1,11 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router'
+import { AuthProvider } from './components/AuthProvider'
 import { Layout } from './components/Layout'
+import { RequireAuth } from './components/RequireAuth'
 import { DocumentPage } from './pages/DocumentPage'
 import { DocumentsPage } from './pages/DocumentsPage'
+import { LoginPage } from './pages/LoginPage'
+import { UsersPage } from './pages/UsersPage'
 
 function NotFound() {
   return (
@@ -16,14 +20,31 @@ function NotFound() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<DocumentsPage />} />
-          <Route path="documents/:id" element={<DocumentPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="login" element={<LoginPage />} />
+          <Route
+            element={
+              <RequireAuth>
+                <Layout />
+              </RequireAuth>
+            }
+          >
+            <Route index element={<DocumentsPage />} />
+            <Route path="documents/:id" element={<DocumentPage />} />
+            <Route
+              path="users"
+              element={
+                <RequireAuth role="admin">
+                  <UsersPage />
+                </RequireAuth>
+              }
+            />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   )
 }

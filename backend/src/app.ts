@@ -2,8 +2,11 @@ import cors from "cors";
 import express, { type NextFunction, type Request, type Response } from "express";
 import multer from "multer";
 import { prisma } from "./db.js";
+import { requireAuth, requireRole } from "./lib/auth.js";
+import { authRouter } from "./routes/auth.js";
 import { documentsRouter } from "./routes/documents.js";
 import { obligationsRouter } from "./routes/obligations.js";
+import { usersRouter } from "./routes/users.js";
 
 export const app = express();
 
@@ -50,8 +53,11 @@ app.get("/api/health/ai", async (_req, res) => {
   }
 });
 
-app.use("/api/documents", documentsRouter);
-app.use("/api/obligations", obligationsRouter);
+// Public: health checks above and sign-in. Everything below needs a valid token.
+app.use("/api/auth", authRouter);
+app.use("/api/documents", requireAuth, documentsRouter);
+app.use("/api/obligations", requireAuth, obligationsRouter);
+app.use("/api/users", requireAuth, requireRole("admin"), usersRouter);
 
 app.use("/api", (_req, res) => {
   res.status(404).json({ error: "Not found" });

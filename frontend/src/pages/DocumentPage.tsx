@@ -7,13 +7,14 @@ import { UploadForm } from '../components/UploadForm'
 import {
   apiGet,
   apiPost,
-  pdfUrl,
+  openPdf,
   type Clause,
   type ClauseList,
   type DocumentDetail,
   type Obligation,
   type ObligationList,
 } from '../lib/api'
+import { useAuth } from '../lib/auth'
 import { highlightQuotes } from '../lib/highlight'
 
 /** Depth of each clause in the parent/child tree (0 = top level). */
@@ -44,6 +45,8 @@ export function DocumentPage() {
   const [onlyWithObligations, setOnlyWithObligations] = useState(false)
 
   const versionParam = params.get('version')
+  const { can } = useAuth()
+  const canEdit = can('reviewer')
 
   const load = useCallback(() => {
     setError(null)
@@ -108,6 +111,10 @@ export function DocumentPage() {
   }
   if (!doc || !list) return <p className="text-sm text-muted">Loading…</p>
 
+  const showPdf = (page?: number) => {
+    openPdf(doc.id, list.versionNo, page).catch((err: Error) => setError(`Could not open the PDF: ${err.message}`))
+  }
+
   const current = doc.versions.find((v) => v.versionNo === list.versionNo)
 
   return (
@@ -139,27 +146,28 @@ export function DocumentPage() {
                 ))}
               </select>
             </label>
-            <a
-              href={pdfUrl(doc.id, list.versionNo)}
-              target="_blank"
-              rel="noreferrer"
+            <button
+              type="button"
+              onClick={() => showPdf()}
               className="rounded-md border border-line bg-panel px-3 py-1.5 text-sm hover:bg-surface"
             >
               View PDF
-            </a>
-            <button
-              type="button"
-              onClick={() => setShowNewVersion((s) => !s)}
-              className="rounded-md border border-line bg-panel px-3 py-1.5 text-sm hover:bg-surface"
-              aria-expanded={showNewVersion}
-            >
-              New version
             </button>
+            {canEdit && (
+              <button
+                type="button"
+                onClick={() => setShowNewVersion((s) => !s)}
+                className="rounded-md border border-line bg-panel px-3 py-1.5 text-sm hover:bg-surface"
+                aria-expanded={showNewVersion}
+              >
+                New version
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      {showNewVersion && (
+      {showNewVersion && canEdit && (
         <section className="rounded-xl border border-line bg-panel p-5 shadow-sm">
           <h2 className="mb-3 font-medium">Upload an amended version</h2>
           <UploadForm
@@ -176,7 +184,7 @@ export function DocumentPage() {
       <div className="flex flex-wrap items-center gap-3">
         <StatusBadge status={list.parsingStatus} />
         <span className="text-sm text-muted">{list.clauses.length} clauses</span>
-        {(list.parsingStatus === 'failed' || list.parsingStatus === 'pending') && (
+        {canEdit && (list.parsingStatus === 'failed' || list.parsingStatus === 'pending') && (
           <button
             type="button"
             onClick={retry}
@@ -200,6 +208,7 @@ export function DocumentPage() {
         documentId={doc.id}
         versionNo={list.versionNo}
         canExtract={list.parsingStatus === 'parsed' || list.parsingStatus === 'needs_manual_split'}
+        allowed={canEdit}
         onFinished={loadObligations}
       />
 
@@ -248,15 +257,14 @@ export function DocumentPage() {
                       <span className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs break-all">
                         {c.clauseNumber}
                       </span>
-                      <a
-                        href={`${pdfUrl(doc.id, list.versionNo)}#page=${c.page}`}
-                        target="_blank"
-                        rel="noreferrer"
+                      <button
+                        type="button"
+                        onClick={() => showPdf(c.page)}
                         className="text-xs text-muted hover:text-brand"
                         title="Open the PDF at this page"
                       >
                         p. {c.page}
-                      </a>
+                      </button>
                     </div>
                     <div className="min-w-0 flex-1 space-y-3">
                       <p className={`text-sm leading-relaxed ${c.text ? '' : 'text-muted italic'}`}>

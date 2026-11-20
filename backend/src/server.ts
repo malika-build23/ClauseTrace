@@ -1,6 +1,9 @@
 import { app } from "./app.js";
 import { prisma } from "./db.js";
+import { assertAuthConfigured } from "./lib/auth.js";
 import { failInterruptedRuns } from "./lib/extraction-runner.js";
+
+assertAuthConfigured(); // refuse to start without a strong JWT_SECRET
 
 // Runs are in-process; any left "running" by a previous process cannot finish.
 failInterruptedRuns()

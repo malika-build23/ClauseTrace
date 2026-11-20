@@ -7,7 +7,7 @@ ClauseTrace is an AI-assisted, human-verified regulatory compliance platform. It
 
 > **Live:** https://clausetrace-eight.vercel.app
 >
-> **Current stage:** Blocks A–D of the implementation plan. PDF upload, clause parsing, and AI obligation extraction (Gemini, with exact-quote and number checks) work. All extracted obligations are *proposed* only: human review (Block G), rules, dashboards and login (Block E) are not built yet, so actions are attributed to the demo admin. Parsing and extraction were checked by hand ([parsing notes](docs/parsing-notes.md), [extraction notes](docs/extraction-notes.md)); no accuracy figures are claimed. All entity data and thresholds are fictional and illustrative.
+> **Current stage:** Blocks A–E of the implementation plan. Sign-in with roles (viewer, reviewer, admin), PDF upload, clause parsing, and AI obligation extraction (Gemini, with exact-quote and number checks) work. Extracted obligations are *proposed* only: human review (Block G), rules and dashboards are not built yet. Parsing and extraction were checked by hand ([parsing notes](docs/parsing-notes.md), [extraction notes](docs/extraction-notes.md)); no accuracy figures are claimed. All entity data and thresholds are fictional and illustrative.
 
 ## Plans
 
@@ -38,6 +38,7 @@ neon env pull
 #      DATABASE_URL_UNPOOLED=<neon connection-string dev-local>
 #      AI_SERVICE_URL=http://localhost:8000
 #      AI_SERVICE_TOKEN=dev-token
+#      JWT_SECRET=<any random string of 32+ characters>
 neon branches create --name dev-local --no-secrets
 
 # 3. Seed passwords: create .env.seed.local (git-ignored) with
@@ -46,7 +47,7 @@ neon branches create --name dev-local --no-secrets
 # 4. Backend
 cd backend && npm install
 npm run db:migrate      # apply migrations to production (direct connection)
-npm run db:seed         # demo org, users, fictional profiles
+npm run db:seed         # demo org, admin/reviewer/viewer users, fictional profiles
 npm run db:verify       # check document -> clause -> obligation chain
 npm run db:audit        # show the latest audit log entries
 npm run dev             # http://localhost:4000, uses .env.dev.local
@@ -63,9 +64,15 @@ Environment variables are listed in [.env.example](.env.example).
 
 ## API (so far)
 
+Every endpoint except health and login needs `Authorization: Bearer <token>`. Reading needs any role; uploading, re-parsing and extraction need **reviewer**; user management needs **admin** (admin includes reviewer rights).
+
 | Method | Endpoint | Purpose |
 |---|---|---|
-| GET | `/api/health`, `/api/health/ai` | Database and AI-service checks |
+| GET | `/api/health`, `/api/health/ai` | Database and AI-service checks (public) |
+| POST | `/api/auth/login` | Sign in (`{ email, password }`), returns an 8-hour Bearer token (public) |
+| GET | `/api/auth/me` | The signed-in user |
+| GET/POST | `/api/users` | List or create users (admin) |
+| PATCH | `/api/users/:id` | Change role, deactivate or reset password (admin) |
 | POST | `/api/documents` | Upload a PDF (`file`, optional `title`), or a new version (`documentId`) |
 | GET | `/api/documents` | List documents with versions |
 | GET | `/api/documents/:id` | Document details |
@@ -83,6 +90,8 @@ Environment variables are listed in [.env.example](.env.example).
 cd backend && npm test                       # schema and clause-tree tests
 cd ai-service && uv run python ../scripts/parse_report.py ../data/raw-pdfs/*.pdf   # parser spot-check
 cd ai-service && uv run pytest && uv run ruff check .
+# API permissions for every role (creates and deactivates a temporary user; add --read-only for production)
+npx dotenv -e .env.seed.local -- node scripts/check-permissions.mjs http://localhost:4000 <document-id>
 ```
 
 CI runs lint, build and tests for all three parts on every push and pull request.
@@ -91,6 +100,7 @@ CI runs lint, build and tests for all three parts on every push and pull request
 
 - Free hosting sleeps when idle: the first request after a pause can take up to a minute.
 - Only fictional entity data is used. Thresholds are illustrative, not real IFSCA figures.
-- No login yet: anyone with the link can upload PDFs (rate-limited to 20 per hour per IP, 10 MB each). Block E adds roles.
+- Sign-in tokens are kept in the browser's localStorage and sent as a Bearer header, because the frontend and API are on different sites and third-party cookies are increasingly blocked. Tokens expire after 8 hours; role changes and deactivation apply immediately.
+- Login is rate-limited to 10 attempts per 15 minutes per IP. There is no self-service sign-up or password reset: an admin creates accounts and resets passwords.
 - Parser limits (headings, tables, annexures, scanned PDFs) are listed in [docs/parsing-notes.md](docs/parsing-notes.md).
 - Extraction uses the Gemini free tier: a document can take several minutes, and limits are listed in [docs/extraction-notes.md](docs/extraction-notes.md).

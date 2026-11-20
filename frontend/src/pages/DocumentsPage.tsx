@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router'
 import { StatusBadge } from '../components/StatusBadge'
 import { UploadForm } from '../components/UploadForm'
 import { apiGet, type DocumentSummary } from '../lib/api'
+import { useAuth } from '../lib/auth'
 
 const dateFmt = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' })
 
@@ -10,6 +11,8 @@ export function DocumentsPage() {
   const [docs, setDocs] = useState<DocumentSummary[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
+  const { can } = useAuth()
+  const canUpload = can('reviewer')
 
   const load = useCallback(() => {
     apiGet<DocumentSummary[]>('/api/documents')
@@ -23,8 +26,9 @@ export function DocumentsPage() {
   useEffect(load, [load])
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
-      <section aria-labelledby="upload-heading" className="h-fit rounded-xl border border-line bg-panel p-5 shadow-sm">
+    <div className={canUpload ? 'grid gap-8 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]' : ''}>
+      {canUpload && (
+        <section aria-labelledby="upload-heading" className="h-fit rounded-xl border border-line bg-panel p-5 shadow-sm">
         <h1 id="upload-heading" className="text-lg font-semibold">
           Upload a regulation
         </h1>
@@ -32,7 +36,8 @@ export function DocumentsPage() {
           The PDF is split into clauses with page numbers so every later result can point back to its source.
         </p>
         <UploadForm onDone={(r) => navigate(`/documents/${r.documentId}`)} />
-      </section>
+        </section>
+      )}
 
       <section aria-labelledby="docs-heading">
         <h2 id="docs-heading" className="mb-3 text-lg font-semibold">

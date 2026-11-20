@@ -113,13 +113,15 @@ model Organisation {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  orgId        String   @map("org_id")
+  id           String    @id @default(uuid())
+  orgId        String    @map("org_id")
   name         String
-  email        String   @unique
-  passwordHash String   @map("password_hash")
-  role         Role     @default(viewer)
-  createdAt    DateTime @default(now()) @map("created_at")
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  role         Role      @default(viewer)
+  isActive     Boolean   @default(true) @map("is_active") // deactivated users cannot log in or use existing tokens
+  lastLoginAt  DateTime? @map("last_login_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
 
   organisation Organisation @relation(fields: [orgId], references: [id])
 
