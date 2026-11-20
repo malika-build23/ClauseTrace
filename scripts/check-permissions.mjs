@@ -1,7 +1,7 @@
 /**
  * End-to-end permission check for the API (Block E).
  *
- *   npx dotenv -e .env.seed.local -- node scripts/check-permissions.mjs <api-base-url> <document-id> [--read-only]
+ *   node --env-file=.env.seed.local scripts/check-permissions.mjs <api-base-url> <document-id> [--read-only]
  *
  * Needs SEED_ADMIN_PASSWORD, SEED_REVIEWER_PASSWORD and SEED_VIEWER_PASSWORD in the
  * environment (never printed). --read-only skips creating and changing users,

@@ -91,7 +91,7 @@ cd backend && npm test                       # schema and clause-tree tests
 cd ai-service && uv run python ../scripts/parse_report.py ../data/raw-pdfs/*.pdf   # parser spot-check
 cd ai-service && uv run pytest && uv run ruff check .
 # API permissions for every role (creates and deactivates a temporary user; add --read-only for production)
-npx dotenv -e .env.seed.local -- node scripts/check-permissions.mjs http://localhost:4000 <document-id>
+node --env-file=.env.seed.local scripts/check-permissions.mjs http://localhost:4000 <document-id>
 ```
 
 CI runs lint, build and tests for all three parts on every push and pull request.
