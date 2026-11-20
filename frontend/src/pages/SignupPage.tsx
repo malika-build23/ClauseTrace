@@ -79,7 +79,7 @@ export function SignupPage() {
                 Start Validating IFSCA Compliance Today.
               </h1>
               <p className="text-sm font-medium leading-relaxed text-[#586b66]">
-                Create an account to explore the compliance workspace: parsed regulations, AI-proposed obligations with their exact source quotes, versioned rules and traceable results. New accounts are read-only; an admin can grant reviewer rights to upload, review and evaluate.
+                Create an account to explore the compliance workspace: parsed regulations, AI-proposed obligations with their exact source quotes, versioned rules and traceable results. New accounts get reviewer access to upload, review and evaluate; an admin can change roles at any time.
               </p>
             </div>
 
@@ -88,7 +88,7 @@ export function SignupPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2 pt-2">
-              <RegTechBadge label="Read-only Access" icon="check" />
+              <RegTechBadge label="Reviewer Access" icon="check" />
               <RegTechBadge label="FME Rulesets" icon="shield" />
               <RegTechBadge label="What-If Sandbox" icon="nodes" />
             </div>
@@ -98,7 +98,7 @@ export function SignupPage() {
           <div className="rounded-2xl border border-[#D1E8E2] bg-[#F5FAF8]/80 p-6 shadow-sm lg:col-span-6 lg:p-8">
             <div className="space-y-1">
               <h2 className="font-display text-xl font-bold text-[#2C3531]">Create Account</h2>
-              <p className="text-xs text-[#586b66]">Self-service registration with read-only access; an admin can grant reviewer rights</p>
+              <p className="text-xs text-[#586b66]">Self-service registration with reviewer access</p>
             </div>
 
             <form onSubmit={submit} className="mt-6 space-y-3.5">

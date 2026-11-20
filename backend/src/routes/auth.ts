@@ -86,7 +86,10 @@ authRouter.post("/register", loginLimiter, async (req, res) => {
       name,
       email,
       passwordHash,
-      role: "viewer", // Self-registered accounts are read-only; an admin promotes trusted people on the Users page
+      // SIGNUP_ROLE controls what self-registered accounts can do (default: reviewer, by
+      // team decision for the demo period). Set SIGNUP_ROLE=viewer to make new accounts
+      // read-only again; an admin can always change roles on the Users page.
+      role: process.env.SIGNUP_ROLE === "viewer" ? "viewer" : "reviewer",
       isActive: true,
     },
     select: { id: true, name: true, email: true, role: true },
