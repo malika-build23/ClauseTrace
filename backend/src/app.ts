@@ -6,9 +6,12 @@ import { requireAuth, requireRole } from "./lib/auth.js";
 import { authRouter } from "./routes/auth.js";
 import { documentsRouter } from "./routes/documents.js";
 import { obligationsRouter } from "./routes/obligations.js";
+import { auditRouter } from "./routes/audit.js";
 import { changesRouter } from "./routes/changes.js";
+import { conflictsRouter } from "./routes/conflicts.js";
 import { dashboardRouter } from "./routes/dashboard.js";
 import { evaluationsRouter } from "./routes/evaluations.js";
+import { insightsRouter } from "./routes/insights.js";
 import { profilesRouter } from "./routes/profiles.js";
 import { rulesRouter } from "./routes/rules.js";
 import { usersRouter } from "./routes/users.js";
@@ -67,6 +70,9 @@ app.use("/api/rules", requireAuth, rulesRouter);
 app.use("/api/evaluations", requireAuth, evaluationsRouter);
 app.use("/api/entity-profiles", requireAuth, profilesRouter);
 app.use("/api/dashboard", requireAuth, dashboardRouter);
+app.use("/api/conflicts", requireAuth, conflictsRouter);
+app.use("/api/audit", requireAuth, requireRole("reviewer"), auditRouter); // contains emails of failed sign-ins
+app.use("/api", requireAuth, insightsRouter); // /api/risk-config, /api/graph/...
 app.use("/api", requireAuth, changesRouter); // GET /api/changes, PATCH /api/changes/:id, PATCH /api/impact-items/:id
 
 app.use("/api", (_req, res) => {

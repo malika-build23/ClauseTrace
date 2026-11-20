@@ -9,6 +9,7 @@ import {
   type ObligationListItem,
   type Threshold,
 } from '../lib/api'
+import { ConnectionsGraph } from '../components/ConnectionsGraph'
 import { useAuth } from '../lib/auth'
 import { highlightQuotes } from '../lib/highlight'
 
@@ -367,6 +368,13 @@ export function ObligationReviewPage() {
           {!canReview && <p className="text-sm text-muted">Read-only: reviewing needs the reviewer role.</p>}
         </form>
       </div>
+
+      <section aria-labelledby="connections-heading" className="rounded-xl border border-line bg-panel p-5 shadow-sm">
+        <h2 id="connections-heading" className="mb-3 font-medium">
+          Connections
+        </h2>
+        <ConnectionsGraph obligationId={ob.id} highlight={ob.id} />
+      </section>
 
       <section aria-labelledby="history-heading" className="rounded-xl border border-line bg-panel p-5 shadow-sm">
         <h2 id="history-heading" className="font-medium">

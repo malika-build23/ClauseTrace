@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { ResultBadge } from '../components/ResultBadge'
+import { SimulationComparison } from '../components/SimulationComparison'
 import { apiGet, apiPost, apiSend, type EntityProfile, type EvaluationRow, type ProfileValue, type RuleRow } from '../lib/api'
 import { useAuth } from '../lib/auth'
 import { ruleFields, ruleSummary } from '../lib/rules'
@@ -35,6 +36,7 @@ export function ProfilesPage() {
   const [rules, setRules] = useState<RuleRow[]>([])
   const [rows, setRows] = useState<Row[]>([])
   const [results, setResults] = useState<EvaluationRow[] | null>(null)
+  const [baseline, setBaseline] = useState<EvaluationRow[] | null>(null)
   const [date, setDate] = useState(today())
   const [message, setMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -61,6 +63,12 @@ export function ProfilesPage() {
     apiGet<EvaluationRow[]>(`/api/evaluations?latest=true&includeSimulation=true&profileId=${selected.id}`)
       .then(setResults)
       .catch(() => setResults([]))
+    setBaseline(null)
+    if (selected.isSimulation && selected.baseProfileId) {
+      apiGet<EvaluationRow[]>(`/api/evaluations?latest=true&profileId=${selected.baseProfileId}`)
+        .then(setBaseline)
+        .catch(() => setBaseline([]))
+    }
   }, [selected])
 
   const neededFields = useMemo(() => {
@@ -98,6 +106,20 @@ export function ProfilesPage() {
       const run = await apiPost<{ evaluations: EvaluationRow[] }>('/api/evaluations', { profileId: selected.id, evaluationDate: date })
       setMessage(`Evaluated ${run.evaluations.length} rule(s) as of ${date}.`)
       setResults(await apiGet<EvaluationRow[]>(`/api/evaluations?latest=true&includeSimulation=true&profileId=${selected.id}`))
+    } catch (err) {
+      setError((err as Error).message)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function removeSimulation() {
+    if (!selected?.isSimulation) return
+    setBusy(true)
+    try {
+      await apiSend('DELETE', `/api/entity-profiles/${selected.id}`)
+      setParams({})
+      load()
     } catch (err) {
       setError((err as Error).message)
     } finally {
@@ -156,6 +178,11 @@ export function ProfilesPage() {
                 <h2 className="font-medium">
                   {selected.name} <span className="text-sm font-normal text-muted">· {selected.category.name}</span>
                 </h2>
+                {canEdit && selected.isSimulation && (
+                  <button type="button" onClick={removeSimulation} disabled={busy} className="text-sm text-fail underline disabled:opacity-50">
+                    Delete simulation
+                  </button>
+                )}
                 {canEdit && !selected.isSimulation && (
                   <button type="button" onClick={simulate} disabled={busy} className="text-sm text-simulation underline disabled:opacity-50">
                     Create what-if copy
@@ -253,6 +280,8 @@ export function ProfilesPage() {
                 </div>
               )}
             </section>
+
+            {selected.isSimulation && results && baseline && <SimulationComparison baseline={baseline} scenario={results} />}
 
             <section className="rounded-xl border border-line bg-panel p-5 shadow-sm">
               <div className="flex flex-wrap items-end gap-3">

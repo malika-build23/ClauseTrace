@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
+import { PriorityBadge } from '../components/PriorityBadge'
 import { apiGet, type ObligationListItem, type ObligationStatus } from '../lib/api'
 
 const STATUS_TABS: { value: ObligationStatus | 'all'; label: string }[] = [
@@ -40,7 +41,7 @@ export function ReviewQueuePage() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Review queue</h1>
         <p className="mt-1 text-sm text-muted">
-          Ambiguous and lowest-confidence obligations come first. Nothing becomes a rule until it is approved here.
+          Highest review priority first (reasons on each item), then ambiguous and lowest confidence. Priority says where to look first, not whether the AI is right. Nothing becomes a rule until it is approved here.
         </p>
       </div>
 
@@ -89,8 +90,10 @@ export function ReviewQueuePage() {
                     {o.clause.page} · <span className="font-mono">{o.obligationKey}</span>
                     {o.version > 1 && ` · version ${o.version}`}
                   </p>
+                  {o.priorityReasons?.length > 0 && o.reviewPriority !== 'low' && <p className="mt-0.5 text-[11px] text-muted">Why: {o.priorityReasons.join('; ')}</p>}
                 </div>
                 <div className="flex shrink-0 flex-wrap items-center gap-2 text-[11px]">
+                  {o.reviewPriority && <PriorityBadge level={o.reviewPriority} reasons={o.priorityReasons} />}
                   {o.ambiguityFlag && <span className="rounded bg-amber-50 px-1.5 py-0.5 text-upcoming">⚠ Ambiguous</span>}
                   {o.machineCheckable && <span className="rounded bg-green-50 px-1.5 py-0.5 text-pass">Machine-checkable</span>}
                   {o.referenceOnly && <span className="rounded bg-slate-100 px-1.5 py-0.5 text-insufficient">Reference only</span>}

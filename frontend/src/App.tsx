@@ -2,7 +2,9 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router'
 import { AuthProvider } from './components/AuthProvider'
 import { Layout } from './components/Layout'
 import { RequireAuth } from './components/RequireAuth'
+import { AuditPage } from './pages/AuditPage'
 import { ComparePage } from './pages/ComparePage'
+import { ConflictsPage } from './pages/ConflictsPage'
 import { DashboardPage } from './pages/DashboardPage'
 import { DocumentPage } from './pages/DocumentPage'
 import { DocumentsPage } from './pages/DocumentsPage'
@@ -43,8 +45,17 @@ export default function App() {
             <Route path="review" element={<ReviewQueuePage />} />
             <Route path="obligations/:id" element={<ObligationReviewPage />} />
             <Route path="rules" element={<RulesPage />} />
+            <Route path="conflicts" element={<ConflictsPage />} />
             <Route path="profiles" element={<ProfilesPage />} />
             <Route path="evaluations/:id" element={<EvaluationPage />} />
+            <Route
+              path="audit"
+              element={
+                <RequireAuth role="reviewer">
+                  <AuditPage />
+                </RequireAuth>
+              }
+            />
             <Route path="documents/:id" element={<DocumentPage />} />
             <Route path="documents/:id/compare" element={<ComparePage />} />
             <Route

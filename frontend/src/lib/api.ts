@@ -72,13 +72,13 @@ export async function apiGet<T>(path: string, init?: RequestInit): Promise<T> {
   return (await apiFetch(path, init)).json() as Promise<T>
 }
 
-export async function apiSend<T>(method: 'POST' | 'PATCH', path: string, body?: unknown): Promise<T> {
+export async function apiSend<T>(method: 'POST' | 'PATCH' | 'PUT' | 'DELETE', path: string, body?: unknown): Promise<T> {
   const res = await apiFetch(path, {
     method,
     headers: body === undefined ? undefined : { 'Content-Type': 'application/json' },
     body: body === undefined ? undefined : JSON.stringify(body),
   })
-  return res.json() as Promise<T>
+  return (res.status === 204 ? null : res.json()) as Promise<T>
 }
 
 export async function apiPost<T>(path: string, body?: unknown): Promise<T> {
@@ -245,6 +245,8 @@ export type ExtractionState = { versionNo: number; run: ExtractionRun | null }
 export type EvaluationResult = 'PASS' | 'UPCOMING_DEADLINE' | 'FAIL' | 'INSUFFICIENT_DATA'
 
 export type ObligationListItem = Obligation & {
+  reviewPriority: 'high' | 'medium' | 'low' | null
+  priorityReasons: string[]
   clause: {
     clauseNumber: string
     page: number
@@ -364,7 +366,9 @@ export type DashboardSummary = {
   rules: { active: number; byType: Record<string, number> }
   results: ResultCounts
   profiles: { id: string; name: string; counts: ResultCounts; lastEvaluatedAt: string | null }[]
+  riskWeights: RiskWeights
   attention: {
+    risk: Risk
     evaluationId: string
     result: EvaluationResult
     ruleKey: string
@@ -397,3 +401,46 @@ export type ChangeEvent = {
 }
 
 export type ChangesResponse = { fromNo: number | null; toNo: number | null; compared?: boolean; changes: ChangeEvent[] }
+
+export type Risk = { score: number; level: 'high' | 'medium' | 'low'; reasons: string[] }
+
+export type RiskWeights = {
+  fail: number
+  overdue: number
+  upcoming: number
+  upcomingPerDayInside: number
+  insufficient: number
+  pendingChange: number
+  highThreshold: number
+  mediumThreshold: number
+}
+
+export type GraphNode = {
+  id: string
+  kind: 'regulator' | 'document' | 'version' | 'clause' | 'obligation' | 'category' | 'rule' | 'result'
+  label: string
+  detail?: string
+  href?: string
+}
+export type GraphResponse = { nodes: GraphNode[]; edges: { from: string; to: string; label: string }[]; impact: { obligations: number; rules: number; entities: number } }
+
+type ConflictSide = {
+  id: string
+  obligationKey: string
+  version: number
+  status: ObligationStatus
+  subject: string
+  action: string
+  quote: string
+  thresholdJson: Threshold | null
+  clause: { clauseNumber: string; page: number; documentVersion: { versionNo: number; document: { id: string; title: string } } }
+}
+export type ConflictFlag = {
+  id: string
+  reason: string
+  status: 'flagged' | 'confirmed' | 'resolved' | 'not_a_conflict'
+  createdAt: string
+  reviewedBy: { name: string } | null
+  obligationA: ConflictSide
+  obligationB: ConflictSide
+}

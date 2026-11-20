@@ -26,12 +26,14 @@ const STATUS_TEXT: Record<Status, { text: string; dot: string }> = {
   down: { text: 'Backend unreachable', dot: 'bg-fail' },
 }
 
-const NAV: { to: string; label: string; role?: 'admin' }[] = [
+const NAV: { to: string; label: string; role?: 'admin' | 'reviewer' }[] = [
   { to: '/', label: 'Overview' },
   { to: '/documents', label: 'Documents' },
   { to: '/review', label: 'Review' },
   { to: '/rules', label: 'Rules' },
+  { to: '/conflicts', label: 'Conflicts' },
   { to: '/profiles', label: 'Entities' },
+  { to: '/audit', label: 'Audit', role: 'reviewer' },
   { to: '/users', label: 'Users', role: 'admin' },
 ]
 

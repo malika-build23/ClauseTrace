@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router'
+import { PriorityBadge } from '../components/PriorityBadge'
 import { ResultBadge } from '../components/ResultBadge'
 import { ResultBar, ResultLegend } from '../components/ResultBar'
+import { RiskSettings } from '../components/RiskSettings'
 import { apiGet, type DashboardSummary } from '../lib/api'
 import { RESULT_META, RESULT_ORDER } from '../lib/results'
 
@@ -26,11 +28,12 @@ export function DashboardPage() {
   const [data, setData] = useState<DashboardSummary | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
+  const load = useCallback(() => {
     apiGet<DashboardSummary>('/api/dashboard/summary')
       .then(setData)
       .catch((err: Error) => setError(err.message))
   }, [])
+  useEffect(load, [load])
 
   if (error) return <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-fail">{error}</p>
   if (!data) return <p className="text-sm text-muted">Loading…</p>
@@ -120,17 +123,18 @@ export function DashboardPage() {
 
       <section aria-labelledby="attention" className="rounded-xl border border-line bg-panel shadow-sm">
         <h2 id="attention" className="border-b border-line px-5 py-3 font-medium">
-          Needs attention
+          Needs attention <span className="text-sm font-normal text-muted">· highest risk first</span>
         </h2>
         {data.attention.length === 0 ? (
           <p className="px-5 py-6 text-sm text-muted">
-            {checks === 0 ? 'No evaluations yet. Compile rules and evaluate a profile.' : 'Every latest check passes.'}
+            {checks === 0 ? 'No evaluations yet. Compile rules and evaluate a profile.' : 'Every latest check passes and no source changes are waiting.'}
           </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[44rem] text-left text-sm">
               <thead className="text-xs text-muted uppercase">
                 <tr>
+                  <th className="px-5 py-2 font-medium">Risk</th>
                   <th className="px-5 py-2 font-medium">Result</th>
                   <th className="px-5 py-2 font-medium">Entity</th>
                   <th className="px-5 py-2 font-medium">Why</th>
@@ -140,6 +144,10 @@ export function DashboardPage() {
               <tbody className="divide-y divide-line">
                 {data.attention.map((a) => (
                   <tr key={a.evaluationId}>
+                    <td className="px-5 py-2 align-top">
+                      <PriorityBadge level={a.risk.level} reasons={a.risk.reasons} prefix="Risk" />
+                      <p className="mt-1 text-[11px] text-muted">{a.risk.reasons.join('; ')}</p>
+                    </td>
                     <td className="px-5 py-2 align-top">
                       <Link to={`/evaluations/${a.evaluationId}`} aria-label={`${RESULT_META[a.result].label}: open details`}>
                         <ResultBadge result={a.result} />
@@ -157,6 +165,8 @@ export function DashboardPage() {
           </div>
         )}
       </section>
+
+      <RiskSettings key={JSON.stringify(data.riskWeights)} weights={data.riskWeights} onSaved={load} />
     </div>
   )
 }

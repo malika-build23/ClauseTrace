@@ -2,6 +2,7 @@ import { app } from "./app.js";
 import { prisma } from "./db.js";
 import { assertAuthConfigured } from "./lib/auth.js";
 import { failInterruptedRuns } from "./lib/extraction-runner.js";
+import { backfillReviewPriority } from "./lib/priority-backfill.js";
 
 assertAuthConfigured(); // refuse to start without a strong JWT_SECRET
 
@@ -9,6 +10,10 @@ assertAuthConfigured(); // refuse to start without a strong JWT_SECRET
 failInterruptedRuns()
   .then((n) => n > 0 && console.log(`Marked ${n} interrupted extraction run(s) as failed`))
   .catch((err) => console.error("Could not clean up extraction runs", err));
+
+backfillReviewPriority()
+  .then((n) => n > 0 && console.log(`Set review priority on ${n} obligation(s)`))
+  .catch((err) => console.error("Could not backfill review priority", err));
 
 const port = Number(process.env.PORT ?? 4000);
 const server = app.listen(port, () => {

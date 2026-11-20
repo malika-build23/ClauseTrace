@@ -4,6 +4,7 @@ import { z } from "zod";
 import { prisma } from "../db.js";
 import { writeAudit } from "../lib/audit.js";
 import { currentUser } from "../lib/auth.js";
+import { reviewPriority } from "../lib/scoring.js";
 
 const Threshold = z.object({
   metric: z.string().trim().regex(/^[a-z][a-z0-9_]{0,59}$/, "metric: lowercase snake_case"),
@@ -168,7 +169,14 @@ export async function reviewObligation(req: Request, res: Response) {
           ambiguityReason: e.ambiguityReason === undefined ? ob.ambiguityReason : e.ambiguityReason,
           referenceOnly: review.referenceOnly ?? ob.referenceOnly,
           confidence: ob.confidence,
-          reviewPriority: ob.reviewPriority,
+          reviewPriority: reviewPriority({
+            ambiguityFlag: e.ambiguityFlag ?? ob.ambiguityFlag,
+            ambiguityReason: e.ambiguityReason === undefined ? ob.ambiguityReason : e.ambiguityReason,
+            machineCheckable: e.machineCheckable ?? ob.machineCheckable,
+            confidence: ob.confidence,
+            condition: e.condition === undefined ? ob.condition : e.condition,
+            deadline: e.deadline === undefined ? ob.deadline : e.deadline,
+          }).level,
           status: "edited",
           approvedById: reviewer.id,
           extractionRunId: ob.extractionRunId,

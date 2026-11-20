@@ -103,6 +103,11 @@ export function EvaluationPage() {
           </p>
         </li>
       </ol>
+      <p className="text-sm">
+        <Link to={`/audit?objectId=${ev.id}`} className="text-brand hover:underline">
+          Audit entries for this result
+        </Link>
+      </p>
     </div>
   )
 }

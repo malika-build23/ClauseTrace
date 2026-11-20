@@ -2,6 +2,7 @@ import type { ObligationStatus, Prisma } from "@prisma/client";
 import { Router } from "express";
 import { prisma } from "../db.js";
 import { requireRole } from "../lib/auth.js";
+import { reviewPriority } from "../lib/scoring.js";
 import { getObligation, reviewObligation } from "./obligation-review.js";
 
 const STATUSES: ObligationStatus[] = ["proposed", "approved", "edited", "rejected"];
@@ -9,8 +10,8 @@ const STATUSES: ObligationStatus[] = ["proposed", "approved", "edited", "rejecte
 export const obligationsRouter = Router();
 
 /**
- * List obligations with source references, lowest confidence and ambiguous
- * first (the review order from the plan). Filters:
+ * List obligations with source references, highest review priority first
+ * (then ambiguous, then lowest confidence). Filters:
  *   ?status=proposed  ?documentId=<id>  ?ambiguous=true  ?limit=100  ?allVersions=true
  */
 obligationsRouter.get("/", async (req, res) => {
@@ -32,7 +33,7 @@ obligationsRouter.get("/", async (req, res) => {
   const obligations = await prisma.obligation.findMany({
     where,
     take: limit,
-    orderBy: [{ ambiguityFlag: "desc" }, { confidence: { sort: "asc", nulls: "first" } }, { createdAt: "asc" }],
+    orderBy: [{ reviewPriority: { sort: "desc", nulls: "first" } }, { ambiguityFlag: "desc" }, { confidence: { sort: "asc", nulls: "first" } }, { createdAt: "asc" }],
     omit: { previousVersionId: true, approvedById: true },
     include: {
       clause: {
@@ -44,7 +45,7 @@ obligationsRouter.get("/", async (req, res) => {
       },
     },
   });
-  res.json(obligations);
+  res.json(obligations.map((o) => ({ ...o, priorityReasons: reviewPriority(o).reasons })));
 });
 
 obligationsRouter.get("/:id", getObligation);

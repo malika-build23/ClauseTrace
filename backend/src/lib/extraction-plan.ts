@@ -4,6 +4,7 @@
 import { createHash } from "node:crypto";
 import type { Prisma } from "@prisma/client";
 import type { ExtractedObligation } from "../schemas/obligation.js";
+import { reviewPriority } from "./scoring.js";
 
 /** Words that signal a clause may contain an obligation. Clauses without them are not sent to the LLM. */
 const OBLIGATION_WORDING =
@@ -83,6 +84,14 @@ export function toObligationRow(
     ambiguityFlag: ob.ambiguity_flag,
     ambiguityReason: ob.ambiguity_reason,
     confidence: ob.confidence,
+    reviewPriority: reviewPriority({
+      ambiguityFlag: ob.ambiguity_flag,
+      ambiguityReason: ob.ambiguity_reason,
+      machineCheckable: ob.machine_checkable,
+      confidence: ob.confidence,
+      condition: ob.condition,
+      deadline: ob.deadline,
+    }).level,
     status: "proposed",
     extractionRunId: ctx.runId,
   };

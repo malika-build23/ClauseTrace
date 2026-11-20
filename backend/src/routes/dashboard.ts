@@ -2,6 +2,8 @@ import type { EvaluationResult } from "@prisma/client";
 import { Router } from "express";
 import { prisma } from "../db.js";
 import { currentUser } from "../lib/auth.js";
+import { loadRiskWeights } from "../lib/risk-config.js";
+import { riskScore } from "../lib/scoring.js";
 
 export const dashboardRouter = Router();
 
@@ -32,7 +34,7 @@ dashboardRouter.get("/summary", async (req, res) => {
         evaluatedAt: true,
         evaluationDate: true,
         detailsJson: true,
-        rule: { select: { ruleKey: true, isActive: true, definitionJson: true } },
+        rule: { select: { ruleKey: true, isActive: true, definitionJson: true, type: true, obligationId: true } },
       },
     }),
     prisma.document.count(),
@@ -61,6 +63,21 @@ dashboardRouter.get("/summary", async (req, res) => {
     }
   }
 
+  // Unreviewed source changes touching a rule or its obligation raise the risk of every result that uses it.
+  const pending = await prisma.impactItem.findMany({ where: { reviewStatus: "pending", changeEvent: { status: "pending" } }, select: { ruleId: true, obligationId: true } });
+  const pendingRules = new Set(pending.flatMap((p) => (p.ruleId ? [p.ruleId] : [])));
+  const pendingObligations = new Set(pending.flatMap((p) => (p.obligationId ? [p.obligationId] : [])));
+  const weights = await loadRiskWeights(orgId);
+  const scored = latest.map((e) => {
+    const def = e.rule.definitionJson as { due_date?: string; upcoming_window_days?: number };
+    const daysToDue = def.due_date ? Math.round((Date.parse(`${def.due_date}T00:00:00Z`) - e.evaluationDate.getTime()) / 86_400_000) : null;
+    const risk = riskScore(
+      { result: e.result, ruleType: e.rule.type, daysToDue, upcomingWindowDays: def.upcoming_window_days ?? null, pendingChange: pendingRules.has(e.ruleId) || pendingObligations.has(e.rule.obligationId) },
+      weights,
+    );
+    return { e, risk };
+  });
+
   const obligations = { proposed: 0, approved: 0, edited: 0, rejected: 0 };
   for (const g of obligationGroups) obligations[g.status] = g._count._all;
 
@@ -70,11 +87,13 @@ dashboardRouter.get("/summary", async (req, res) => {
     rules: { active: activeRules.length, byType: countBy(activeRules.map((r) => r.type)) },
     results: totals,
     profiles: [...byProfile.values()],
-    attention: latest
-      .filter((e) => e.result !== "PASS")
-      .sort((a, b) => RESULTS.indexOf(a.result) - RESULTS.indexOf(b.result))
+    riskWeights: weights,
+    attention: scored
+      .filter(({ risk }) => risk.score > 0)
+      .sort((a, b) => b.risk.score - a.risk.score || RESULTS.indexOf(a.e.result) - RESULTS.indexOf(b.e.result))
       .slice(0, 50)
-      .map((e) => ({
+      .map(({ e, risk }) => ({
+        risk,
         evaluationId: e.id,
         result: e.result,
         ruleKey: e.rule.ruleKey,

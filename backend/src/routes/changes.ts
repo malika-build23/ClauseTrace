@@ -13,7 +13,7 @@ const ImpactStatus = z.object({
   comment: z.string().trim().max(1000).optional(),
 });
 
-changesRouter.get("/", async (req, res) => {
+changesRouter.get("/changes", async (req, res) => {
   const status = typeof req.query.status === "string" ? req.query.status : undefined;
   const events = await prisma.changeEvent.findMany({
     where: status ? { status: status as "pending" | "confirmed" | "dismissed" } : {},
