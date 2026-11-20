@@ -26,7 +26,7 @@ const LoginBody = z.object({
 const RegisterBody = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
   email: z.string().trim().toLowerCase().email("Valid email is required").max(200),
-  password: z.string().min(8, "Password must be at least 8 characters").max(200),
+  password: z.string().min(12, "Password must be at least 12 characters").max(200),
   organisationName: z.string().trim().min(2).max(100).optional(),
 });
 
@@ -86,7 +86,10 @@ authRouter.post("/register", loginLimiter, async (req, res) => {
       name,
       email,
       passwordHash,
-      role: "reviewer", // Reviewer role allows testing upload, review, rules, and evaluations
+      // SIGNUP_ROLE controls what self-registered accounts can do (default: reviewer, by
+      // team decision for the demo period). Set SIGNUP_ROLE=viewer to make new accounts
+      // read-only again; an admin can always change roles on the Users page.
+      role: process.env.SIGNUP_ROLE === "viewer" ? "viewer" : "reviewer",
       isActive: true,
     },
     select: { id: true, name: true, email: true, role: true },
@@ -177,7 +180,7 @@ authRouter.get("/me", requireAuth, async (req, res) => {
 const UpdateProfileBody = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(100).optional(),
   currentPassword: z.string().min(1, "Current password is required").optional(),
-  newPassword: z.string().min(8, "New password must be at least 8 characters").max(200).optional(),
+  newPassword: z.string().min(12, "New password must be at least 12 characters").max(200).optional(),
 });
 
 authRouter.patch("/profile", requireAuth, async (req, res) => {

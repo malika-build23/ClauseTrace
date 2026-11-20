@@ -27,8 +27,8 @@ export function SignupPage() {
       setError('Please enter your full name (at least 2 characters).')
       return
     }
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters.')
+    if (password.length < 12) {
+      setError('Password must be at least 12 characters.')
       return
     }
     if (password !== confirmPassword) {
@@ -79,7 +79,7 @@ export function SignupPage() {
                 Start Validating IFSCA Compliance Today.
               </h1>
               <p className="text-sm font-medium leading-relaxed text-[#586b66]">
-                Create your account to access the full compliance lifecycle: upload regulatory PDFs, review machine-checkable obligations, compile versioned rules, and audit evaluations with zero hallucinations.
+                Create an account to explore the compliance workspace: parsed regulations, AI-proposed obligations with their exact source quotes, versioned rules and traceable results. New accounts get reviewer access to upload, review and evaluate; an admin can change roles at any time.
               </p>
             </div>
 
@@ -88,7 +88,7 @@ export function SignupPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2 pt-2">
-              <RegTechBadge label="Instant Reviewer Access" icon="check" />
+              <RegTechBadge label="Reviewer Access" icon="check" />
               <RegTechBadge label="FME Rulesets" icon="shield" />
               <RegTechBadge label="What-If Sandbox" icon="nodes" />
             </div>
@@ -98,7 +98,7 @@ export function SignupPage() {
           <div className="rounded-2xl border border-[#D1E8E2] bg-[#F5FAF8]/80 p-6 shadow-sm lg:col-span-6 lg:p-8">
             <div className="space-y-1">
               <h2 className="font-display text-xl font-bold text-[#2C3531]">Create Account</h2>
-              <p className="text-xs text-[#586b66]">Self-service registration with reviewer permissions</p>
+              <p className="text-xs text-[#586b66]">Self-service registration with reviewer access</p>
             </div>
 
             <form onSubmit={submit} className="mt-6 space-y-3.5">
@@ -148,7 +148,7 @@ export function SignupPage() {
                     type="password"
                     required
                     autoComplete="new-password"
-                    placeholder="Min 8 chars"
+                    placeholder="Min 12 chars"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="mt-1 block w-full rounded-lg border border-[#D1E8E2] bg-white px-3 py-2 text-sm text-[#2C3531] placeholder-slate-400 focus:border-[#116466] focus:ring-1 focus:ring-[#116466] focus:outline-none"

@@ -65,8 +65,8 @@ export function UserProfilePage() {
     setPasswordNotice(null)
     setPasswordError(null)
 
-    if (newPassword.length < 8) {
-      setPasswordError('New password must be at least 8 characters.')
+    if (newPassword.length < 12) {
+      setPasswordError('New password must be at least 12 characters.')
       return
     }
     if (newPassword !== confirmPassword) {
@@ -197,7 +197,7 @@ export function UserProfilePage() {
         <div className="rounded-xl border border-line bg-panel p-6 shadow-sm space-y-4">
           <h2 className="text-base font-semibold">Change Password</h2>
           <p className="text-xs text-muted">
-            Ensure your account is protected with a strong password of at least 8 characters.
+            Ensure your account is protected with a strong password of at least 12 characters.
           </p>
 
           <form onSubmit={handleChangePassword} className="space-y-3">
@@ -295,7 +295,7 @@ export function UserProfilePage() {
         </div>
 
         <div className="rounded-lg bg-blue-50/50 border border-blue-100 p-3 text-xs text-muted">
-          <span className="font-semibold text-ink">Audit Guarantee:</span> In compliance with IFSCA supervisory standards, every decision you make in ClauseTrace is cryptographically associated with your user ID and recorded in an immutable, append-only PostgreSQL ledger.
+          <span className="font-semibold text-ink">Audit trail:</span> every decision you make in ClauseTrace is recorded with your user ID in an append-only audit log; the database rejects edits and deletions of audit entries.
         </div>
       </div>
     </div>
