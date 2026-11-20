@@ -6,6 +6,10 @@ import { requireAuth, requireRole } from "./lib/auth.js";
 import { authRouter } from "./routes/auth.js";
 import { documentsRouter } from "./routes/documents.js";
 import { obligationsRouter } from "./routes/obligations.js";
+import { dashboardRouter } from "./routes/dashboard.js";
+import { evaluationsRouter } from "./routes/evaluations.js";
+import { profilesRouter } from "./routes/profiles.js";
+import { rulesRouter } from "./routes/rules.js";
 import { usersRouter } from "./routes/users.js";
 
 export const app = express();
@@ -58,6 +62,10 @@ app.use("/api/auth", authRouter);
 app.use("/api/documents", requireAuth, documentsRouter);
 app.use("/api/obligations", requireAuth, obligationsRouter);
 app.use("/api/users", requireAuth, requireRole("admin"), usersRouter);
+app.use("/api/rules", requireAuth, rulesRouter);
+app.use("/api/evaluations", requireAuth, evaluationsRouter);
+app.use("/api/entity-profiles", requireAuth, profilesRouter);
+app.use("/api/dashboard", requireAuth, dashboardRouter);
 
 app.use("/api", (_req, res) => {
   res.status(404).json({ error: "Not found" });

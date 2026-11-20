@@ -30,23 +30,49 @@ const users: { name: string; email: string; role: Role; passwordEnv: string }[] 
 ];
 
 // Each profile is designed to produce one evaluation outcome once rules exist.
-// Metric names match the illustrative obligation schema example.
+// Field names match the metrics extracted from the public IFSCA Angel Funds
+// circular (corpus, angel_investors, ...). Every value is made up for the demo.
+// "*_completed_on: null" means "not done yet" for deadline rules.
+const angelScheme = {
+  corpus: 1_500_000,
+  corpus_unit: "USD",
+  angel_investors: 150,
+  angel_investors_unit: "investors",
+  commitment_amount: 50_000,
+  commitment_amount_unit: "USD",
+  investment_amount: 1_000_000,
+  investment_amount_unit: "USD",
+  lock_in_period: 2,
+  lock_in_period_unit: "years",
+  compliance_officer_appointed: true,
+};
+
 const profiles = [
   {
-    name: "Alpha Fund Managers (fictional) - expected PASS",
-    data: { example_metric: 1_500_000, example_metric_unit: "USD", reporting_date: "2026-03-31", compliance_officer_appointed: true },
+    name: "Alpha Angel Fund (fictional) - expected PASS",
+    data: { ...angelScheme },
   },
   {
-    name: "Beta Capital (fictional) - expected FAIL",
-    data: { example_metric: 400_000, example_metric_unit: "USD", reporting_date: "2026-03-31", compliance_officer_appointed: false },
+    name: "Beta Angel Fund (fictional) - expected FAIL",
+    data: {
+      ...angelScheme,
+      corpus: 800_000, // below USD 1,000,000
+      angel_investors: 240, // above 200
+      commitment_amount: 25_000, // below USD 40,000
+      investment_amount: 2_000_000, // above USD 1,500,000
+      lock_in_period: 0.5, // below 1 year
+      compliance_officer_appointed: false,
+    },
   },
   {
-    name: "Gamma Investments (fictional) - expected UPCOMING_DEADLINE",
-    data: { example_metric: 1_200_000, example_metric_unit: "USD", reporting_date: null, compliance_officer_appointed: true },
+    name: "Gamma Angel Fund (fictional) - expected UPCOMING_DEADLINE",
+    // Thresholds met; filings not done yet, so deadline rules within their window show as upcoming.
+    data: { ...angelScheme, ppm_filing_completed_on: null, annual_report_filed_on: null },
   },
   {
-    name: "Delta Advisors (fictional) - expected INSUFFICIENT_DATA",
-    data: { example_metric_unit: "USD" },
+    name: "Delta Angel Fund (fictional) - expected INSUFFICIENT_DATA",
+    // Corpus in another currency (no conversion is made) and most fields missing.
+    data: { corpus: 120_000_000, corpus_unit: "INR" },
   },
 ];
 
@@ -69,6 +95,21 @@ async function main() {
     update: {},
     create: { name: CATEGORY },
   });
+
+  // Profiles from an earlier seed version: rename them, or remove them if the new one already exists.
+  const legacy: Record<string, string> = {
+    "Alpha Fund Managers (fictional) - expected PASS": profiles[0].name,
+    "Beta Capital (fictional) - expected FAIL": profiles[1].name,
+    "Gamma Investments (fictional) - expected UPCOMING_DEADLINE": profiles[2].name,
+    "Delta Advisors (fictional) - expected INSUFFICIENT_DATA": profiles[3].name,
+  };
+  for (const [oldName, newName] of Object.entries(legacy)) {
+    const old = await prisma.entityProfile.findFirst({ where: { orgId: org.id, name: oldName }, include: { _count: { select: { evaluations: true } } } });
+    if (!old) continue;
+    const replacement = await prisma.entityProfile.findFirst({ where: { orgId: org.id, name: newName } });
+    if (!replacement) await prisma.entityProfile.update({ where: { id: old.id }, data: { name: newName } });
+    else if (old._count.evaluations === 0) await prisma.entityProfile.delete({ where: { id: old.id } });
+  }
 
   for (const p of profiles) {
     const existing = await prisma.entityProfile.findFirst({ where: { orgId: org.id, name: p.name } });

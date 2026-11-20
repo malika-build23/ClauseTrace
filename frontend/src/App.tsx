@@ -2,9 +2,15 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router'
 import { AuthProvider } from './components/AuthProvider'
 import { Layout } from './components/Layout'
 import { RequireAuth } from './components/RequireAuth'
+import { DashboardPage } from './pages/DashboardPage'
 import { DocumentPage } from './pages/DocumentPage'
 import { DocumentsPage } from './pages/DocumentsPage'
+import { EvaluationPage } from './pages/EvaluationPage'
 import { LoginPage } from './pages/LoginPage'
+import { ObligationReviewPage } from './pages/ObligationReviewPage'
+import { ProfilesPage } from './pages/ProfilesPage'
+import { ReviewQueuePage } from './pages/ReviewQueuePage'
+import { RulesPage } from './pages/RulesPage'
 import { UsersPage } from './pages/UsersPage'
 
 function NotFound() {
@@ -12,7 +18,7 @@ function NotFound() {
     <div className="space-y-2">
       <h1 className="text-xl font-semibold">Page not found</h1>
       <Link to="/" className="text-sm text-brand underline">
-        Back to documents
+        Back to the overview
       </Link>
     </div>
   )
@@ -31,7 +37,13 @@ export default function App() {
               </RequireAuth>
             }
           >
-            <Route index element={<DocumentsPage />} />
+            <Route index element={<DashboardPage />} />
+            <Route path="documents" element={<DocumentsPage />} />
+            <Route path="review" element={<ReviewQueuePage />} />
+            <Route path="obligations/:id" element={<ObligationReviewPage />} />
+            <Route path="rules" element={<RulesPage />} />
+            <Route path="profiles" element={<ProfilesPage />} />
+            <Route path="evaluations/:id" element={<EvaluationPage />} />
             <Route path="documents/:id" element={<DocumentPage />} />
             <Route
               path="users"

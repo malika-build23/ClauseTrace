@@ -16,6 +16,14 @@
   --color-upcoming: #b45309;
   --color-insufficient: #475569;
   --color-simulation: #7c3aed;
+
+  /* Chart fills for results (status palette). Validated for adjacent CVD
+     separation in stacked bars; always shown with an icon, label and count,
+     never colour alone. Text stays in the text tokens above. */
+  --color-chart-pass: #0ca30c;
+  --color-chart-upcoming: #fab219;
+  --color-chart-fail: #d03b3b;
+  --color-chart-unknown: #8b8b86;
 }
 
 body {

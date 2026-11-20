@@ -26,6 +26,15 @@ const STATUS_TEXT: Record<Status, { text: string; dot: string }> = {
   down: { text: 'Backend unreachable', dot: 'bg-fail' },
 }
 
+const NAV: { to: string; label: string; role?: 'admin' }[] = [
+  { to: '/', label: 'Overview' },
+  { to: '/documents', label: 'Documents' },
+  { to: '/review', label: 'Review' },
+  { to: '/rules', label: 'Rules' },
+  { to: '/profiles', label: 'Entities' },
+  { to: '/users', label: 'Users', role: 'admin' },
+]
+
 const ROLE_BADGE = {
   admin: 'bg-purple-50 text-simulation',
   reviewer: 'bg-blue-50 text-brand',
@@ -44,22 +53,17 @@ export function Layout() {
             <Link to="/" className="text-lg font-semibold tracking-tight">
               ClauseTrace
             </Link>
-            <nav className="flex gap-4 text-sm">
-              <NavLink
-                to="/"
-                end
-                className={({ isActive }) => (isActive ? 'font-medium text-brand' : 'text-muted hover:text-ink')}
-              >
-                Documents
-              </NavLink>
-              {can('admin') && (
+            <nav className="flex flex-wrap gap-x-4 gap-y-1 text-sm" aria-label="Main">
+              {NAV.filter((n) => !n.role || can(n.role)).map((n) => (
                 <NavLink
-                  to="/users"
+                  key={n.to}
+                  to={n.to}
+                  end={n.to === '/'}
                   className={({ isActive }) => (isActive ? 'font-medium text-brand' : 'text-muted hover:text-ink')}
                 >
-                  Users
+                  {n.label}
                 </NavLink>
-              )}
+              ))}
             </nav>
           </div>
           <div className="flex flex-wrap items-center gap-4">

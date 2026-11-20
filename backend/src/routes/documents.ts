@@ -293,7 +293,7 @@ documentsRouter.get("/:id/obligations", async (req, res) => {
     return;
   }
   const obligations = await prisma.obligation.findMany({
-    where: { clause: { documentVersionId: version.id } },
+    where: { clause: { documentVersionId: version.id }, nextVersion: null }, // latest version of each
     orderBy: [{ clause: { position: "asc" } }, { obligationKey: "asc" }, { version: "desc" }],
     omit: { previousVersionId: true, approvedById: true },
     include: { clause: { select: { clauseNumber: true, page: true } } },

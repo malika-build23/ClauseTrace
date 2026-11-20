@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import type { Modality, Obligation } from '../lib/api'
 
 const MODALITY: Record<Modality, { label: string; className: string }> = {
@@ -22,9 +23,11 @@ export function ObligationCard({ ob }: { ob: Obligation }) {
         <span className={`rounded px-1.5 py-0.5 text-[11px] font-semibold tracking-wide ${modality.className}`}>
           {modality.label}
         </span>
-        <span className="font-mono text-[11px] text-muted">{ob.obligationKey}</span>
+        <Link to={`/obligations/${ob.id}`} className="font-mono text-[11px] text-brand hover:underline">
+          {ob.obligationKey}
+        </Link>
         <span className="ml-auto rounded-full bg-slate-100 px-2 py-0.5 text-[11px] text-insufficient">
-          {ob.status === 'proposed' ? 'Proposed · not reviewed' : ob.status}
+          {ob.status === 'proposed' ? 'Proposed · not reviewed' : ob.status === 'edited' ? 'Approved with edits' : ob.status === 'approved' ? 'Approved' : 'Rejected'}
         </span>
       </div>
 

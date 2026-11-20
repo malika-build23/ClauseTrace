@@ -239,3 +239,140 @@ export type ExtractionRun = {
 }
 
 export type ExtractionState = { versionNo: number; run: ExtractionRun | null }
+
+// ─── Review, rules, profiles, evaluations, dashboard ──────────────────────
+
+export type EvaluationResult = 'PASS' | 'UPCOMING_DEADLINE' | 'FAIL' | 'INSUFFICIENT_DATA'
+
+export type ObligationListItem = Obligation & {
+  clause: {
+    clauseNumber: string
+    page: number
+    documentVersion: { versionNo: number; document: { id: string; title: string } }
+  }
+}
+
+export type ReviewHistoryEntry = {
+  id: string
+  version: number
+  status: ObligationStatus
+  createdAt: string
+  approvedBy: { name: string } | null
+  reviews: {
+    action: 'approve' | 'edit' | 'reject'
+    comment: string | null
+    createdAt: string
+    beforeJson: Record<string, unknown>
+    afterJson: Record<string, unknown> | null
+    reviewer: { name: string }
+  }[]
+}
+
+export type ObligationDetail = Omit<Obligation, 'clause'> & {
+  clause: {
+    id: string
+    clauseNumber: string
+    page: number
+    text: string
+    documentVersion: { versionNo: number; document: { id: string; title: string } }
+  }
+  approvedBy: { name: string } | null
+  entityCategories: { entityCategory: { name: string } }[]
+  nextVersion: { id: string } | null
+  rules: { id: string; ruleKey: string; ruleVersion: number; isActive: boolean }[]
+  history: ReviewHistoryEntry[]
+}
+
+export type RuleDefinitionJson = {
+  rule_id: string
+  rule_version: number
+  obligation_id: string
+  applies_to: string[]
+  type: 'threshold' | 'deadline' | 'required_field'
+  input_field: string
+  operator?: string
+  value?: number
+  unit?: string | null
+  due_date?: string
+  upcoming_window_days?: number
+}
+
+export type RuleRow = {
+  id: string
+  ruleKey: string
+  ruleVersion: number
+  type: RuleDefinitionJson['type']
+  definitionJson: RuleDefinitionJson
+  isActive: boolean
+  createdAt: string
+  createdBy: { name: string }
+  obligation: {
+    id: string
+    obligationKey: string
+    version: number
+    subject: string
+    action: string
+    quote: string
+    clause: { clauseNumber: string; page: number; documentVersion: { versionNo: number; document: { id: string; title: string } } }
+  }
+}
+
+export type CompileResponse = {
+  summary: { created: number; newVersion: number; unchanged: number; skipped: number }
+  outcomes: { obligationId: string; obligationKey: string; outcome: string; ruleKey?: string; ruleVersion?: number; reason?: string }[]
+}
+
+export type ProfileValue = number | string | boolean | null
+
+export type EntityProfile = {
+  id: string
+  name: string
+  dataJson: Record<string, ProfileValue>
+  isSimulation: boolean
+  baseProfileId: string | null
+  createdAt: string
+  category: { id: string; name: string }
+}
+
+export type EvaluationDetails = {
+  explanation: string
+  ruleKey: string
+  obligation: { key: string; version: number; quote: string; approvedBy: string | null }
+  source: { documentId: string; document: string; documentVersion: number; clause: string; page: number }
+}
+
+export type EvaluationRow = {
+  id: string
+  ruleId: string
+  ruleVersion: number
+  profileId: string
+  inputRef: Record<string, unknown>
+  evaluationDate: string
+  result: EvaluationResult
+  detailsJson: EvaluationDetails
+  evaluatedAt: string
+  isSimulation: boolean
+  rule: { ruleKey: string; ruleVersion: number; type: string; definitionJson: RuleDefinitionJson; isActive: boolean }
+  profile: { id: string; name: string; isSimulation: boolean }
+}
+
+export type ResultCounts = Record<EvaluationResult, number>
+
+export type DashboardSummary = {
+  documents: number
+  obligations: { proposed: number; approved: number; edited: number; rejected: number; ambiguousProposed: number }
+  rules: { active: number; byType: Record<string, number> }
+  results: ResultCounts
+  profiles: { id: string; name: string; counts: ResultCounts; lastEvaluatedAt: string | null }[]
+  attention: {
+    evaluationId: string
+    result: EvaluationResult
+    ruleKey: string
+    ruleVersion: number
+    profileId: string
+    profileName: string | null
+    evaluatedAt: string
+    details: EvaluationDetails
+  }[]
+  unresolvedChanges: number
+}
