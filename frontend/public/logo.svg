@@ -1,20 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
   <defs>
     <linearGradient id="ctGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#116466" />
-      <stop offset="100%" stop-color="#2C3531" />
+      <stop offset="0%" stop-color="#6281DC" />
+      <stop offset="100%" stop-color="#1B2D52" />
     </linearGradient>
     <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FFCB9A" />
-      <stop offset="100%" stop-color="#D9B08C" />
+      <stop offset="0%" stop-color="#E0BACF" />
+      <stop offset="100%" stop-color="#9FB0E8" />
     </linearGradient>
   </defs>
   <rect width="48" height="48" rx="12" fill="url(#ctGrad)" />
   <!-- Shield outline -->
-  <path d="M24 8 L37 14 V24 C37 32 24 39 24 39 C24 39 11 32 11 24 V14 Z" fill="none" stroke="#D1E8E2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M24 8 L37 14 V24 C37 32 24 39 24 39 C24 39 11 32 11 24 V14 Z" fill="none" stroke="#9FB0E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
   <!-- Inner legal document & trace lines -->
-  <path d="M19 18 H29 M19 23 H29 M19 28 H25" stroke="#FFCB9A" stroke-width="2" stroke-linecap="round" />
+  <path d="M19 18 H29 M19 23 H29 M19 28 H25" stroke="#E0BACF" stroke-width="2" stroke-linecap="round" />
   <!-- Verified compliance badge circle -->
   <circle cx="31" cy="28" r="4.5" fill="url(#accentGrad)" />
-  <path d="M29.5 28 L30.8 29.3 L32.8 26.8" fill="none" stroke="#2C3531" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M29.5 28 L30.8 29.3 L32.8 26.8" fill="none" stroke="#1B2D52" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 </svg>

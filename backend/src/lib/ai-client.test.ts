@@ -11,16 +11,27 @@ beforeEach(() => {
   resetAwakeState();
   calls = 0;
 });
+
 afterEach(() => {
-  globalThis.fetch = realFetch;
+  Object.defineProperty(globalThis, "fetch", {
+    value: realFetch,
+    writable: true,
+    configurable: true,
+  });
 });
 
 function fakeFetch(responses: (number | "network")[]) {
-  globalThis.fetch = (async () => {
+  const mocked = (async () => {
     const next = responses[Math.min(calls++, responses.length - 1)];
     if (next === "network") throw new TypeError("fetch failed");
     return new Response("{}", { status: next });
   }) as typeof fetch;
+
+  Object.defineProperty(globalThis, "fetch", {
+    value: mocked,
+    writable: true,
+    configurable: true,
+  });
 }
 
 test("waits through network errors and 503s until the service answers", async () => {

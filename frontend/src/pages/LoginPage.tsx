@@ -1,6 +1,18 @@
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router'
-import { BrandLogo, HeroImage, RegTechBadge } from '../components/ThemeGraphics'
+import {
+  BrandLogo,
+  FloatingAIPipelineElement,
+  FloatingClauseCardElement,
+  FloatingRegulatoryStamp,
+  FloatingRuleMetricElement,
+  FloatingSecuritySealElement,
+  FloatingShieldElement,
+  FloatingSparkle,
+  FloatingTraceGraph,
+  HeroImage,
+  RegTechBadge,
+} from '../components/ThemeGraphics'
 import { useAuth } from '../lib/auth'
 
 export function LoginPage() {
@@ -37,104 +49,195 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-surface px-4 py-8">
-      <div className="w-full max-w-5xl rounded-3xl border border-[#D1E8E2] bg-white p-6 shadow-xl lg:p-12">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
-          {/* Left Column: Visual Showcase & Brand Story */}
+    <div className="relative min-h-screen flex items-center justify-center bg-surface px-4 py-12 overflow-hidden selection:bg-brand-light selection:text-brand">
+      {/* Background Ambient Glows (No solid boxes, purely atmospheric radial gradients) */}
+      <div className="pointer-events-none absolute -top-40 -left-40 h-[550px] w-[550px] rounded-full bg-gradient-to-br from-brand/15 via-mist/10 to-transparent blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-40 -right-40 h-[550px] w-[550px] rounded-full bg-gradient-to-tl from-rose/20 via-brand/10 to-transparent blur-3xl" />
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[800px] rounded-full bg-gradient-to-tr from-brand/5 via-rose/5 to-transparent blur-3xl" />
+
+      {/* Floating Transparent Elements Scattered Across the Canvas */}
+      <div className="pointer-events-none absolute top-8 left-8 hidden xl:block opacity-70 animate-pulse">
+        <FloatingShieldElement className="h-16 w-16" />
+      </div>
+      <div className="pointer-events-none absolute top-10 right-12 hidden lg:block opacity-45 hover:opacity-80 transition-opacity">
+        <FloatingSecuritySealElement className="h-28 w-28" />
+      </div>
+      <div className="pointer-events-none absolute bottom-12 left-10 hidden lg:block opacity-65">
+        <FloatingTraceGraph className="w-32 h-20" />
+      </div>
+      <div className="pointer-events-none absolute top-28 left-1/3 hidden md:block opacity-80">
+        <FloatingSparkle className="h-5 w-5" color="#E0BACF" />
+      </div>
+      <div className="pointer-events-none absolute bottom-24 right-16 hidden md:block opacity-60">
+        <FloatingSparkle className="h-6 w-6" color="#9FB0E8" />
+      </div>
+      <div className="pointer-events-none absolute bottom-8 left-1/2 hidden md:block opacity-75">
+        <FloatingSparkle className="h-4 w-4" color="#6281DC" />
+      </div>
+
+      {/* Main Open Content Layout (Outer heavy container box removed) */}
+      <div className="relative z-10 w-full max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
+
+          {/* Left Column: Visual Showcase, Brand Story & Rich Image Elements */}
           <div className="space-y-6 lg:col-span-7">
+            {/* Brand Header */}
             <div className="flex items-center gap-3">
-              <BrandLogo className="h-10 w-10" />
-              <span className="font-display text-2xl font-bold tracking-tight text-[#2C3531]">ClauseTrace</span>
+              <div className="relative">
+                <BrandLogo className="h-11 w-11 shadow-md shadow-brand/20 rounded-xl" />
+                <FloatingSparkle className="absolute -top-1.5 -right-1.5 h-3.5 w-3.5" color="#E0BACF" />
+              </div>
+              <div>
+                <span className="font-display text-2xl font-extrabold tracking-tight text-ink">
+                  ClauseTrace
+                </span>
+                <span className="ml-2.5 inline-flex items-center rounded-full border border-mist/30 bg-mist/10 px-2 py-0.5 text-[10px] font-semibold text-brand">
+                  IFSCA FME RegTech
+                </span>
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <h1 className="font-display text-3xl font-extrabold tracking-tight text-[#2C3531] sm:text-4xl">
-                Turning Financial Regulations into Machine-Checkable Truth.
+            {/* Headline and Value Proposition */}
+            <div className="space-y-3">
+              <h1 className="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-[42px] leading-tight">
+                Turning Financial Regulations into{' '}
+                <span className="bg-gradient-to-r from-brand via-slate to-rose bg-clip-text text-transparent">
+                  Machine-Checkable Truth.
+                </span>
               </h1>
-              <p className="text-sm font-medium leading-relaxed text-[#586b66]">
-                Purpose-built for IFSCA circulars governing Fund Management Entities (FMEs) in GIFT City IFSC. AI extracts, compliance officers verify, and deterministic rules evaluate.
+              <p className="text-sm font-normal leading-relaxed text-muted max-w-xl">
+                Purpose-built for IFSCA circulars governing Fund Management Entities (FMEs) in GIFT City IFSC.
+                AI extracts, compliance officers verify, and deterministic rules evaluate with end-to-end audit traceability.
               </p>
             </div>
 
-            {/* Transparent RegTech Illustration with Ambient Glow */}
-            <div className="py-2">
-              <HeroImage className="mx-auto max-w-md drop-shadow-lg" />
-            </div>
-
-            {/* Badges in User Palette */}
-            <div className="flex flex-wrap items-center gap-2 pt-2">
-              <RegTechBadge label="IFSCA FME Framework" icon="shield" />
-              <RegTechBadge label="Deterministic Evaluation" icon="check" />
-              <RegTechBadge label="Immutable Audit Chain" icon="nodes" />
-            </div>
-          </div>
-
-          {/* Right Column: Sign In Form */}
-          <div className="rounded-2xl border border-[#D1E8E2] bg-[#F5FAF8]/80 p-6 shadow-sm lg:col-span-5 lg:p-8">
-            <div className="space-y-1">
-              <h2 className="font-display text-xl font-bold text-[#2C3531]">Welcome Back</h2>
-              <p className="text-xs text-[#586b66]">Sign in to your compliance workspace</p>
-            </div>
-
-            <form onSubmit={submit} className="mt-6 space-y-4">
-              {navNotice && !error && (
-                <p className="rounded-lg border border-[#D1E8E2] bg-[#EBF5F2] px-3 py-2 text-xs font-semibold text-[#116466]">
-                  {navNotice}
-                </p>
-              )}
-              {notice && !navNotice && !error && (
-                <p className="rounded-lg border border-[#FFCB9A] bg-[#FFF5EC] px-3 py-2 text-xs font-semibold text-[#8C5828]">
-                  {notice}
-                </p>
-              )}
-
-              <label className="block">
-                <span className="text-xs font-semibold text-[#2C3531]">Work Email</span>
-                <input
-                  type="email"
-                  autoComplete="username"
-                  required
-                  placeholder="reviewer@clausetrace.demo"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1 block w-full rounded-lg border border-[#D1E8E2] bg-white px-3 py-2 text-sm text-[#2C3531] placeholder-slate-400 focus:border-[#116466] focus:ring-1 focus:ring-[#116466] focus:outline-none"
-                />
-              </label>
-
-              <label className="block">
-                <span className="text-xs font-semibold text-[#2C3531]">Password</span>
-                <input
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  placeholder="••••••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="mt-1 block w-full rounded-lg border border-[#D1E8E2] bg-white px-3 py-2 text-sm text-[#2C3531] placeholder-slate-400 focus:border-[#116466] focus:ring-1 focus:ring-[#116466] focus:outline-none"
-                />
-              </label>
-
-              <div aria-live="polite">
-                {error && <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-medium text-red-700">{error}</p>}
-                {slow && <p className="text-xs text-[#be7534]">Waking up the server… this can take up to a minute.</p>}
+            {/* Completely Transparent RegTech Illustration with Overlaid Micro-Elements */}
+            <div className="relative py-2">
+              {/* Floating Clause Snippet element hovering near top-left of hero */}
+              <div className="absolute -top-3 left-4 z-20 hidden sm:block">
+                <FloatingClauseCardElement />
               </div>
 
-              <button
-                type="submit"
-                disabled={busy}
-                className="w-full rounded-lg bg-[#116466] py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#0c4d4f] disabled:opacity-50"
-              >
-                {busy ? 'Signing in…' : 'Sign in to Console'}
-              </button>
-            </form>
+              {/* Central Transparent Vector Artwork */}
+              <HeroImage className="mx-auto max-w-lg" />
 
-            <div className="mt-6 border-t border-[#D1E8E2] pt-4 text-center text-xs text-[#586b66]">
-              Don't have an account?{' '}
-              <Link to="/signup" className="font-semibold text-[#116466] hover:underline">
-                Create an account
-              </Link>
+              {/* Floating Rule Metric element hovering near bottom-right of hero */}
+              <div className="absolute -bottom-2 right-4 z-20 hidden sm:block">
+                <FloatingRuleMetricElement />
+              </div>
+            </div>
+
+            {/* 3-Step AI-to-Deterministic Pipeline Diagram (Transparent image element) */}
+            <div className="pt-1">
+              <FloatingAIPipelineElement className="w-full justify-between" />
+            </div>
+
+            {/* Transparent Floating Badges & Dual-Coded Features */}
+            <div className="flex flex-wrap items-center gap-2.5 pt-1">
+              <RegTechBadge label="GIFT IFSC Framework" icon="shield" />
+              <RegTechBadge label="Deterministic Evaluation" icon="check" />
+              <RegTechBadge label="Immutable Audit Chain" icon="nodes" />
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-rose/30 bg-rose/10 px-3 py-1 text-xs font-semibold text-[#6B3254] dark:text-rose">
+                <span>✦ Zero Hallucination Rules</span>
+              </div>
             </div>
           </div>
+
+          {/* Right Column: Sleek Floating Sign-In Card (Only the form is boxed, outer box removed) */}
+          <div className="relative lg:col-span-5">
+            {/* Angled Regulatory Clearance Stamp floating at the card's top-right */}
+            <div className="pointer-events-none absolute -top-8 -right-4 z-20 hidden sm:block">
+              <FloatingRegulatoryStamp className="h-16 w-36 drop-shadow-sm" />
+            </div>
+
+            <div className="relative rounded-3xl border border-line bg-panel/90 p-7 shadow-xl shadow-brand/5 backdrop-blur-xl sm:p-9 transition-all">
+              {/* Subtle top highlight gradient line */}
+              <div className="absolute inset-x-8 top-0 h-[2px] bg-gradient-to-r from-transparent via-brand/40 to-transparent" />
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <h2 className="font-display text-2xl font-bold tracking-tight text-ink">
+                    Sign In
+                  </h2>
+                  <p className="text-xs text-muted">
+                    Access your deterministic compliance console
+                  </p>
+                </div>
+                <div className="hidden sm:block">
+                  <FloatingShieldElement className="h-10 w-10 opacity-70" />
+                </div>
+              </div>
+
+              <form onSubmit={submit} className="mt-7 space-y-4">
+                {navNotice && !error && (
+                  <p className="rounded-xl border border-line bg-brand-light px-3.5 py-2.5 text-xs font-semibold text-brand">
+                    {navNotice}
+                  </p>
+                )}
+                {notice && !navNotice && !error && (
+                  <p className="rounded-xl border border-rose/40 bg-rose/15 px-3.5 py-2.5 text-xs font-semibold text-[#6B3254] dark:text-rose">
+                    {notice}
+                  </p>
+                )}
+
+                <label className="block">
+                  <span className="text-xs font-semibold text-ink">Work Email</span>
+                  <input
+                    type="email"
+                    autoComplete="username"
+                    required
+                    placeholder="reviewer@clausetrace.demo"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="mt-1.5 block w-full rounded-xl border border-line bg-panel px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/60 transition-colors focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none"
+                  />
+                </label>
+
+                <label className="block">
+                  <span className="text-xs font-semibold text-ink">Password</span>
+                  <input
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    placeholder="••••••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="mt-1.5 block w-full rounded-xl border border-line bg-panel px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/60 transition-colors focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none"
+                  />
+                </label>
+
+                <div aria-live="polite">
+                  {error && (
+                    <p className="rounded-xl border border-fail-border bg-fail-bg px-3.5 py-2.5 text-xs font-medium text-fail">
+                      {error}
+                    </p>
+                  )}
+                  {slow && (
+                    <p className="text-xs text-upcoming flex items-center gap-1.5 pt-1">
+                      <span className="h-2 w-2 rounded-full bg-upcoming animate-ping" />
+                      Waking up the server… this can take up to a minute.
+                    </p>
+                  )}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="w-full mt-2 rounded-xl bg-brand py-3 text-sm font-semibold text-white shadow-md shadow-brand/25 transition-all hover:bg-brand-hover hover:shadow-lg hover:shadow-brand/35 disabled:opacity-50 active:scale-[0.99]"
+                >
+                  {busy ? 'Signing in…' : 'Sign in to Console'}
+                </button>
+              </form>
+
+              <div className="mt-6 border-t border-line/80 pt-5 text-center text-xs text-muted">
+                Don't have an account?{' '}
+                <Link to="/signup" className="font-semibold text-brand hover:underline">
+                  Create account with Reviewer access
+                </Link>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

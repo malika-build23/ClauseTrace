@@ -1,85 +1,217 @@
 @import "tailwindcss";
 
-/* ClauseTrace custom design tokens based on the 5-color theme:
-   #2C3531 (Deep Pine Charcoal)
-   #116466 (Deep Sea Teal)
-   #D9B08C (Warm Golden Sand)
-   #FFCB9A (Soft Apricot Peach)
-   #D1E8E2 (Pale Sage Mint)
-*/
+/* ─── Semantic Theme Tokens & Color Palette ───────────────────────────────────
+   Base Palette (from brand swatch):
+   #1B2D52 (Deep Navy Midnight)
+   #6281DC (Royal Periwinkle Blue)
+   #9FB0E8 (Soft Lavender Mist)
+   #4D608E (Steel Slate Indigo)
+   #E0BACF (Soft Rose Lilac)
+───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --color-pine: #1B2D52;
+  --color-teal: #6281DC;
+  --color-sand: #4D608E;
+  --color-peach: #E0BACF;
+  --color-mint: #9FB0E8;
+
+  --color-navy: #1B2D52;
+  --color-periwinkle: #6281DC;
+  --color-mist: #9FB0E8;
+  --color-slate: #4D608E;
+  --color-rose: #E0BACF;
+
+  --color-ink: #1B2D52;
+  --color-muted: #4D608E;
+  --color-surface: #F8FAFD;
+  --color-panel: #ffffff;
+  --color-panel-header: #F4F7FD;
+  --color-line: #E1E8F5;
+  --color-brand: #6281DC;
+  --color-brand-hover: #4F6FC9;
+  --color-brand-light: #EEF3FD;
+  --color-card-border: #E1E8F5;
+
+  /* Deterministic Status Colors (High contrast, colour-blind friendly) */
+  --color-pass: #0d5f57;
+  --color-pass-bg: #e6f6f2;
+  --color-pass-border: #9adbc9;
+
+  --color-fail: #c53030;
+  --color-fail-bg: #fdf2f2;
+  --color-fail-border: #f8b4b4;
+
+  --color-upcoming: #9e5b20;
+  --color-upcoming-bg: #fff8f0;
+  --color-upcoming-border: #fed7aa;
+
+  --color-insufficient: #4b5563;
+  --color-insufficient-bg: #f3f4f6;
+  --color-insufficient-border: #d1d5db;
+
+  --color-simulation: #6281DC;
+  --color-simulation-bg: #f0f4ff;
+  --color-simulation-border: #9FB0E8;
+
+  /* Modality Colors */
+  --color-mod-must: #6281DC;
+  --color-mod-must-bg: #eef3fd;
+  --color-mod-must-not: #c53030;
+  --color-mod-must-not-bg: #fee2e2;
+  --color-mod-should: #b45309;
+  --color-mod-should-bg: #fef3c7;
+  --color-mod-may: #4D608E;
+  --color-mod-may-bg: #eef2f9;
+}
+
+.dark {
+  --color-ink: #F0F4FD;
+  --color-muted: #9FB0E8;
+  --color-surface: #0D1627;
+  --color-panel: #15223C;
+  --color-panel-header: #1B2D52;
+  --color-line: #253961;
+  --color-brand: #6281DC;
+  --color-brand-hover: #7895E7;
+  --color-brand-light: #1E2D4E;
+  --color-card-border: #253961;
+
+  /* Status Colors in Dark Mode */
+  --color-pass: #34d399;
+  --color-pass-bg: #072a22;
+  --color-pass-border: #0f513f;
+
+  --color-fail: #f87171;
+  --color-fail-bg: #351414;
+  --color-fail-border: #682323;
+
+  --color-upcoming: #fbbf24;
+  --color-upcoming-bg: #321e06;
+  --color-upcoming-border: #6d420f;
+
+  --color-insufficient: #9ca3af;
+  --color-insufficient-bg: #1f2937;
+  --color-insufficient-border: #374151;
+
+  --color-simulation: #9FB0E8;
+  --color-simulation-bg: #1e2942;
+  --color-simulation-border: #6281DC;
+
+  /* Modality in Dark Mode */
+  --color-mod-must: #6281DC;
+  --color-mod-must-bg: #192744;
+  --color-mod-must-not: #f87171;
+  --color-mod-must-not-bg: #3c1212;
+  --color-mod-should: #fcd34d;
+  --color-mod-should-bg: #382405;
+  --color-mod-may: #9FB0E8;
+  --color-mod-may-bg: #17243c;
+}
+
 @theme {
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
 
-  /* Raw Theme Colors */
-  --color-pine: #2C3531;
-  --color-teal: #116466;
-  --color-sand: #D9B08C;
-  --color-peach: #FFCB9A;
-  --color-mint: #D1E8E2;
+  --color-pine: var(--color-pine);
+  --color-teal: var(--color-teal);
+  --color-sand: var(--color-sand);
+  --color-peach: var(--color-peach);
+  --color-mint: var(--color-mint);
 
-  /* Semantic UI Tokens */
-  --color-ink: #2C3531;
-  --color-muted: #586b66;
-  --color-surface: #F5FAF8;
-  --color-panel: #ffffff;
-  --color-line: #D1E8E2;
-  --color-brand: #116466;
-  --color-brand-hover: #0c4d4f;
-  --color-brand-light: #E6F3F0;
+  --color-navy: var(--color-navy);
+  --color-periwinkle: var(--color-periwinkle);
+  --color-mist: var(--color-mist);
+  --color-slate: var(--color-slate);
+  --color-rose: var(--color-rose);
 
-  --color-accent-sand: #D9B08C;
-  --color-accent-peach: #FFCB9A;
-  --color-accent-mint: #D1E8E2;
+  --color-ink: var(--color-ink);
+  --color-muted: var(--color-muted);
+  --color-surface: var(--color-surface);
+  --color-panel: var(--color-panel);
+  --color-panel-header: var(--color-panel-header);
+  --color-line: var(--color-line);
+  --color-brand: var(--color-brand);
+  --color-brand-hover: var(--color-brand-hover);
+  --color-brand-light: var(--color-brand-light);
 
-  /* Status Colors */
-  --color-pass: #116466;
-  --color-fail: #c53030;
-  --color-upcoming: #be7534;
-  --color-insufficient: #556662;
-  --color-simulation: #6d44b8;
+  --color-pass: var(--color-pass);
+  --color-pass-bg: var(--color-pass-bg);
+  --color-pass-border: var(--color-pass-border);
 
-  /* Chart fills */
-  --color-chart-pass: #116466;
-  --color-chart-upcoming: #D9B08C;
-  --color-chart-fail: #c53030;
-  --color-chart-unknown: #9ab4ae;
+  --color-fail: var(--color-fail);
+  --color-fail-bg: var(--color-fail-bg);
+  --color-fail-border: var(--color-fail-border);
+
+  --color-upcoming: var(--color-upcoming);
+  --color-upcoming-bg: var(--color-upcoming-bg);
+  --color-upcoming-border: var(--color-upcoming-border);
+
+  --color-insufficient: var(--color-insufficient);
+  --color-insufficient-bg: var(--color-insufficient-bg);
+  --color-insufficient-border: var(--color-insufficient-border);
+
+  --color-simulation: var(--color-simulation);
+  --color-simulation-bg: var(--color-simulation-bg);
+  --color-simulation-border: var(--color-simulation-border);
+
+  --color-mod-must: var(--color-mod-must);
+  --color-mod-must-bg: var(--color-mod-must-bg);
+  --color-mod-must-not: var(--color-mod-must-not);
+  --color-mod-must-not-bg: var(--color-mod-must-not-bg);
+  --color-mod-should: var(--color-mod-should);
+  --color-mod-should-bg: var(--color-mod-should-bg);
+  --color-mod-may: var(--color-mod-may);
+  --color-mod-may-bg: var(--color-mod-may-bg);
 }
 
 body {
-  @apply bg-surface text-ink antialiased font-sans;
+  @apply bg-surface text-ink antialiased font-sans transition-colors duration-200;
 }
 
-/* Custom visual accents using the palette */
-.badge-sand {
-  background-color: #F8EFE6;
-  color: #8C5828;
-  border: 1px solid #D9B08C;
+/* Modality Distinct Visual Patterns (distinguishable without colour) */
+.modality-badge-must {
+  border: 1.5px solid var(--color-mod-must);
+  background-color: var(--color-mod-must-bg);
+  color: var(--color-mod-must);
 }
 
-.badge-peach {
-  background-color: #FFF5EC;
-  color: #9E5B20;
-  border: 1px solid #FFCB9A;
+.modality-badge-must_not {
+  border: 1.5px dashed var(--color-mod-must-not);
+  background-color: var(--color-mod-must-not-bg);
+  color: var(--color-mod-must-not);
 }
 
-.badge-mint {
-  background-color: #EBF5F2;
-  color: #116466;
-  border: 1px solid #D1E8E2;
+.modality-badge-should {
+  border: 1.5px dashed var(--color-mod-should);
+  background-color: var(--color-mod-should-bg);
+  color: var(--color-mod-should);
 }
 
-.badge-pine {
-  background-color: #2C3531;
-  color: #D1E8E2;
+.modality-badge-may {
+  border: 1.5px dotted var(--color-mod-may);
+  background-color: var(--color-mod-may-bg);
+  color: var(--color-mod-may);
 }
 
+/* Card Styling */
 .card-luxury {
-  background-color: #ffffff;
-  border: 1px solid #D1E8E2;
-  box-shadow: 0 1px 3px rgba(44, 53, 49, 0.05), 0 1px 2px rgba(44, 53, 49, 0.03);
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-line);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
 }
 
 .card-luxury:hover {
-  border-color: #116466;
+  border-color: var(--color-brand);
+}
+
+/* Animation utilities */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.8s infinite;
 }

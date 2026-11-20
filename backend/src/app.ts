@@ -71,6 +71,7 @@ app.use("/api/users", requireAuth, requireRole("admin"), usersRouter);
 app.use("/api/rules", requireAuth, rulesRouter);
 app.use("/api/evaluations", requireAuth, evaluationsRouter);
 app.use("/api/entity-profiles", requireAuth, profilesRouter);
+app.use("/api/profiles", requireAuth, profilesRouter);
 app.use("/api/dashboard", requireAuth, dashboardRouter);
 app.use("/api/conflicts", requireAuth, conflictsRouter);
 app.use("/api/audit", requireAuth, requireRole("reviewer"), auditRouter); // contains emails of failed sign-ins

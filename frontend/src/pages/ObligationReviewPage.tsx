@@ -1,15 +1,20 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
+import { SplitSquareVertical, FileText } from 'lucide-react'
 import {
   apiGet,
   apiSend,
-  openPdf,
   type Modality,
   type ObligationDetail,
   type ObligationListItem,
   type Threshold,
 } from '../lib/api'
 import { ConnectionsGraph } from '../components/ConnectionsGraph'
+import { PdfViewer } from '../components/pdf/PdfViewer'
+import { StatusBadge } from '../components/StatusBadge'
+import { ModalityBadge } from '../components/ui/ModalityBadge'
+import { ErrorState } from '../components/ui/ErrorState'
+import { Skeleton } from '../components/ui/Skeleton'
 import { useAuth } from '../lib/auth'
 import { highlightQuotes } from '../lib/highlight'
 
@@ -31,7 +36,7 @@ type Form = {
 
 const OPERATORS = ['>=', '>', '<=', '<', '==', '!=']
 const field =
-  'mt-1 block w-full rounded-md border border-line bg-panel px-3 py-2 text-sm focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none disabled:bg-surface'
+  'mt-1 block w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none disabled:opacity-60'
 
 function toForm(o: ObligationDetail): Form {
   return {
@@ -82,6 +87,7 @@ export function ObligationReviewPage() {
   const [comment, setComment] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  const [showLivePdf, setShowLivePdf] = useState(true)
 
   const load = useCallback(() => {
     setError(null)
@@ -94,6 +100,7 @@ export function ObligationReviewPage() {
       .catch((err: Error) => setError(err.message))
   }, [id])
   useEffect(load, [load])
+
   useEffect(() => {
     apiGet<{ name: string }[]>('/api/entity-profiles/categories')
       .then((c) => setAllCategories(c.map((x) => x.name)))
@@ -105,8 +112,18 @@ export function ObligationReviewPage() {
   const dirty = Object.keys(edits).length > 0 || (original && form && JSON.stringify(original.referenceOnly) !== JSON.stringify(form.referenceOnly))
   const categoriesChanged = original && form && JSON.stringify(original.categories) !== JSON.stringify([...form.categories].sort())
 
-  if (error && !ob) return <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-fail">{error}</p>
-  if (!ob || !form || !original) return <p className="text-sm text-muted">Loading…</p>
+  if (error && !ob) return <ErrorState title="Could not load obligation" message={error} onRetry={load} />
+  if (!ob || !form || !original) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-6 w-48" />
+        <div className="grid gap-6 lg:grid-cols-2">
+          <Skeleton className="h-96 rounded-2xl" />
+          <Skeleton className="h-96 rounded-2xl" />
+        </div>
+      </div>
+    )
+  }
 
   const latest = !ob.nextVersion
   const editable = canReview && latest && ob.status !== 'rejected'
@@ -148,106 +165,145 @@ export function ObligationReviewPage() {
   const approveAction = dirty || categoriesChanged || ob.status !== 'proposed' ? 'edit' : 'approve'
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <Link to="/review" className="text-sm text-muted hover:text-ink">
-            ← Review queue
+          <Link to="/review" className="text-xs font-medium text-muted hover:text-ink transition-colors">
+            ← Review Queue
           </Link>
-          <h1 className="mt-1 text-xl font-semibold tracking-tight">
-            Obligation <span className="font-mono text-base">{ob.obligationKey}</span>
-            <span className="ml-2 text-sm font-normal text-muted">version {ob.version}</span>
-          </h1>
+          <div className="mt-1 flex flex-wrap items-center gap-3">
+            <h1 className="text-2xl font-bold tracking-tight text-ink font-display">
+              Obligation <span className="font-mono text-xl">{ob.obligationKey}</span>
+            </h1>
+            <span className="rounded-md bg-surface border border-line px-2 py-0.5 text-xs font-semibold text-muted">
+              v{ob.version}
+            </span>
+            <StatusBadge status={ob.status} />
+          </div>
         </div>
-        <span className="rounded-full bg-slate-100 px-3 py-1 text-sm capitalize">{ob.status === 'edited' ? 'edited & approved' : ob.status}</span>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowLivePdf(!showLivePdf)}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-panel px-3 py-1.5 text-xs font-semibold text-ink hover:border-brand transition-colors"
+          >
+            {showLivePdf ? <FileText className="h-3.5 w-3.5" /> : <SplitSquareVertical className="h-3.5 w-3.5" />}
+            <span>{showLivePdf ? 'Snippet Mode' : 'Live PDF Source'}</span>
+          </button>
+        </div>
       </div>
 
       {!latest && ob.nextVersion && (
-        <p className="rounded-md bg-amber-50 px-3 py-2 text-sm text-upcoming">
+        <div className="rounded-xl border border-upcoming-border bg-upcoming-bg px-4 py-2.5 text-xs text-upcoming">
           This is an older version.{' '}
-          <Link className="underline" to={`/obligations/${ob.nextVersion.id}`}>
-            Open the latest version
+          <Link className="font-semibold underline hover:text-ink" to={`/obligations/${ob.nextVersion.id}`}>
+            Open the latest version (v{ob.version + 1})
           </Link>
-        </p>
+        </div>
       )}
-      <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-upcoming">
-        Proposed by AI. Confidence is a review aid, not proof of correctness. Check every field against the source text.
-      </p>
 
-      <div className="grid gap-5 lg:grid-cols-2">
-        {/* Left: source */}
-        <section aria-labelledby="source-heading" className="h-fit rounded-xl border border-line bg-panel p-5 shadow-sm lg:sticky lg:top-4">
-          <h2 id="source-heading" className="text-sm font-medium tracking-wide text-muted uppercase">
-            Source
-          </h2>
-          <p className="mt-2 text-sm">
-            <Link to={`/documents/${doc.document.id}?version=${doc.versionNo}`} className="font-medium text-brand hover:underline">
-              {doc.document.title}
-            </Link>
-            <span className="text-muted">
-              {' '}
-              · v{doc.versionNo} · clause <span className="font-mono">{ob.clause.clauseNumber}</span> ·{' '}
-            </span>
-            <button
-              type="button"
-              className="text-brand underline"
-              onClick={() => openPdf(doc.document.id, doc.versionNo, ob.clause.page).catch((err: Error) => setError(err.message))}
-            >
-              page {ob.clause.page}
-            </button>
-          </p>
-          <p className="mt-4 text-sm leading-relaxed">
-            {highlightQuotes(ob.clause.text, [ob.quote]).map((seg, i) =>
-              seg.marked ? (
-                <mark key={i} className="rounded-sm bg-yellow-100 px-0.5 text-ink">
-                  {seg.text}
-                </mark>
-              ) : (
-                <span key={i}>{seg.text}</span>
-              ),
+      <div className="rounded-xl border border-upcoming-border bg-upcoming-bg px-4 py-2.5 text-xs text-upcoming flex items-center justify-between">
+        <span>
+          <b>Proposed by AI with code guardrails.</b> Confidence is a review aid, not proof of correctness. Check every field against the source text.
+        </span>
+        <span className="font-semibold text-ink">Exact Quote Verified</span>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Left Side: Live PDF Viewer or Source Snippet */}
+        {showLivePdf ? (
+          <div className="space-y-4">
+            <PdfViewer
+              documentId={doc.document.id}
+              versionNo={doc.versionNo}
+              initialPage={ob.clause.page}
+              obligations={[ob as unknown as ObligationDetail]}
+              activeObligationId={ob.id}
+            />
+          </div>
+        ) : (
+          <section aria-labelledby="source-heading" className="h-fit rounded-2xl border border-line bg-panel p-6 shadow-sm space-y-4 lg:sticky lg:top-20">
+            <h2 id="source-heading" className="text-xs font-bold tracking-wider text-muted uppercase">
+              Source Clause & Document
+            </h2>
+            <p className="text-sm">
+              <Link to={`/documents/${doc.document.id}?version=${doc.versionNo}`} className="font-semibold text-brand hover:underline">
+                {doc.document.title}
+              </Link>
+              <span className="text-muted">
+                {' '}· v{doc.versionNo} · clause <span className="font-mono font-semibold text-ink">{ob.clause.clauseNumber}</span> ·{' '}
+              </span>
+              <span className="font-medium text-brand">page {ob.clause.page}</span>
+            </p>
+            <blockquote className="rounded-xl border border-line bg-surface p-4 text-sm leading-relaxed text-ink font-serif">
+              {highlightQuotes(ob.clause.text, [ob.quote]).map((seg, i) =>
+                seg.marked ? (
+                  <mark key={i} className="rounded-xs bg-amber-200 dark:bg-amber-900/60 px-1 font-sans font-bold text-ink">
+                    {seg.text}
+                  </mark>
+                ) : (
+                  <span key={i}>{seg.text}</span>
+                ),
+              )}
+            </blockquote>
+            <p className="text-xs text-muted">
+              Highlighted: the exact quote extracted from the source document. The quote cannot be edited.
+            </p>
+            {ob.confidence !== null && (
+              <p className="text-xs text-muted font-medium">Model confidence: {Math.round(ob.confidence * 100)}%</p>
             )}
-          </p>
-          <p className="mt-3 text-xs text-muted">Highlighted: the exact quote the AI used. The quote cannot be edited.</p>
-          {ob.confidence !== null && <p className="mt-2 text-xs text-muted">Model confidence {Math.round(ob.confidence * 100)}%</p>}
-        </section>
+          </section>
+        )}
 
-        {/* Right: fields */}
-        <form onSubmit={(e) => submit(approveAction, e)} className="space-y-4 rounded-xl border border-line bg-panel p-5 shadow-sm">
-          <h2 className="text-sm font-medium tracking-wide text-muted uppercase">Extracted fields</h2>
+        {/* Right Side: Verification Form */}
+        <form onSubmit={(e) => submit(approveAction, e)} className="space-y-5 rounded-2xl border border-line bg-panel p-6 shadow-sm">
+          <div className="flex items-center justify-between border-b border-line pb-3">
+            <h2 className="text-sm font-bold tracking-wider text-muted uppercase">Extracted Obligation Fields</h2>
+            <ModalityBadge modality={form.modality} />
+          </div>
+
           <fieldset disabled={!editable || busy} className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-[1fr_10rem]">
-              <label className="block text-sm font-medium">
+              <label className="block text-xs font-semibold text-ink">
                 Subject
                 <input className={field} value={form.subject} onChange={(e) => set({ subject: e.target.value })} required />
               </label>
-              <label className="block text-sm font-medium">
+              <label className="block text-xs font-semibold text-ink">
                 Modality
                 <select className={field} value={form.modality} onChange={(e) => set({ modality: e.target.value as Modality })}>
-                  <option value="must">must</option>
-                  <option value="must_not">must not</option>
-                  <option value="should">should</option>
-                  <option value="may">may</option>
+                  <option value="must">MUST</option>
+                  <option value="must_not">MUST NOT</option>
+                  <option value="should">SHOULD</option>
+                  <option value="may">MAY</option>
                 </select>
               </label>
             </div>
-            <label className="block text-sm font-medium">
+
+            <label className="block text-xs font-semibold text-ink">
               Action
               <textarea className={field} rows={2} value={form.action} onChange={(e) => set({ action: e.target.value })} required />
             </label>
-            <label className="block text-sm font-medium">
+
+            <label className="block text-xs font-semibold text-ink">
               Condition
               <textarea className={field} rows={2} value={form.condition} onChange={(e) => set({ condition: e.target.value })} />
             </label>
 
-            <div className="rounded-lg border border-line p-3">
-              <label className="flex items-center gap-2 text-sm font-medium">
-                <input type="checkbox" checked={form.hasThreshold} onChange={(e) => set({ hasThreshold: e.target.checked })} />
-                Numeric threshold
+            <div className="rounded-xl border border-line bg-surface/50 p-4 space-y-3">
+              <label className="flex items-center gap-2 text-xs font-bold text-ink cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="rounded border-line text-brand focus:ring-brand"
+                  checked={form.hasThreshold}
+                  onChange={(e) => set({ hasThreshold: e.target.checked })}
+                />
+                <span>Numeric threshold constraint</span>
               </label>
               {form.hasThreshold && (
-                <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_5rem_8rem_6rem]">
-                  <label className="block text-xs">
-                    Metric (data field)
+                <div className="grid gap-3 sm:grid-cols-[1fr_5rem_7rem_6rem]">
+                  <label className="block text-xs font-semibold text-muted">
+                    Metric
                     <input
                       className={`${field} font-mono`}
                       value={form.threshold.metric}
@@ -256,7 +312,7 @@ export function ObligationReviewPage() {
                       onChange={(e) => set({ threshold: { ...form.threshold, metric: e.target.value } })}
                     />
                   </label>
-                  <label className="block text-xs">
+                  <label className="block text-xs font-semibold text-muted">
                     Operator
                     <select className={field} value={form.threshold.operator} onChange={(e) => set({ threshold: { ...form.threshold, operator: e.target.value } })}>
                       {OPERATORS.map((op) => (
@@ -264,7 +320,7 @@ export function ObligationReviewPage() {
                       ))}
                     </select>
                   </label>
-                  <label className="block text-xs">
+                  <label className="block text-xs font-semibold text-muted">
                     Value
                     <input
                       className={field}
@@ -274,143 +330,126 @@ export function ObligationReviewPage() {
                       onChange={(e) => set({ threshold: { ...form.threshold, value: Number(e.target.value) } })}
                     />
                   </label>
-                  <label className="block text-xs">
+                  <label className="block text-xs font-semibold text-muted">
                     Unit
                     <input className={field} value={form.threshold.unit ?? ''} onChange={(e) => set({ threshold: { ...form.threshold, unit: e.target.value || null } })} />
                   </label>
-                  <p className="text-xs text-muted sm:col-span-4">
-                    The threshold describes a compliant value, whatever the modality (e.g. “shall not exceed 200” → ≤ 200).
-                  </p>
                 </div>
               )}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <label className="block text-sm font-medium">
-                Deadline (explicit date only)
+              <label className="block text-xs font-semibold text-ink">
+                Deadline (explicit cutoff)
                 <input className={field} type="date" value={form.deadline} onChange={(e) => set({ deadline: e.target.value })} />
               </label>
-              <label className="block text-sm font-medium">
-                Evidence
+              <label className="block text-xs font-semibold text-ink">
+                Required Evidence
                 <input className={field} value={form.evidence} onChange={(e) => set({ evidence: e.target.value })} />
               </label>
             </div>
 
-            <div className="space-y-2 text-sm">
-              <label className="flex items-center gap-2">
-                <input type="checkbox" checked={form.machineCheckable} onChange={(e) => set({ machineCheckable: e.target.checked })} />
-                Machine-checkable (becomes a rule when approved)
+            <div className="space-y-2 text-xs font-medium text-ink">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="rounded border-line text-brand focus:ring-brand"
+                  checked={form.machineCheckable}
+                  onChange={(e) => set({ machineCheckable: e.target.checked })}
+                />
+                <span>Machine-checkable (compiles into an automated rule upon approval)</span>
               </label>
-              <label className="flex items-center gap-2">
-                <input type="checkbox" checked={form.ambiguityFlag} onChange={(e) => set({ ambiguityFlag: e.target.checked })} />
-                Ambiguous
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="rounded border-line text-upcoming focus:ring-upcoming"
+                  checked={form.ambiguityFlag}
+                  onChange={(e) => set({ ambiguityFlag: e.target.checked })}
+                />
+                <span>Flag as ambiguous / subjective</span>
               </label>
               {form.ambiguityFlag && (
                 <input className={field} placeholder="Why is it ambiguous?" value={form.ambiguityReason} onChange={(e) => set({ ambiguityReason: e.target.value })} />
               )}
-              <label className="flex items-center gap-2">
-                <input type="checkbox" checked={form.referenceOnly} onChange={(e) => set({ referenceOnly: e.target.checked })} />
-                Reference only (approved for the register, never evaluated)
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="rounded border-line text-muted focus:ring-muted"
+                  checked={form.referenceOnly}
+                  onChange={(e) => set({ referenceOnly: e.target.checked })}
+                />
+                <span>Reference only (approved for regulatory register, not evaluated)</span>
               </label>
             </div>
 
             {allCategories.length > 0 && (
-              <div className="text-sm">
-                <p className="font-medium">Applies to</p>
-                <div className="mt-1 flex flex-wrap gap-3">
+              <div className="text-xs space-y-1.5">
+                <p className="font-semibold text-ink">Applies to Entity Categories:</p>
+                <div className="flex flex-wrap gap-3">
                   {allCategories.map((c) => (
-                    <label key={c} className="flex items-center gap-2">
+                    <label key={c} className="flex items-center gap-1.5 text-muted hover:text-ink cursor-pointer">
                       <input
                         type="checkbox"
+                        className="rounded border-line text-brand focus:ring-brand"
                         checked={form.categories.includes(c)}
-                        onChange={(e) => set({ categories: e.target.checked ? [...form.categories, c] : form.categories.filter((x) => x !== c) })}
+                        onChange={(e) =>
+                          set({
+                            categories: e.target.checked
+                              ? [...form.categories, c]
+                              : form.categories.filter((x) => x !== c),
+                          })
+                        }
                       />
-                      {c}
+                      <span>{c}</span>
                     </label>
                   ))}
                 </div>
-                {form.categories.length === 0 && <p className="text-xs text-muted">None selected: defaults to Fund Management Entity.</p>}
               </div>
             )}
 
-            <label className="block text-sm font-medium">
-              Comment {ob.status === 'proposed' ? '(required to reject)' : ''}
+            <label className="block text-xs font-semibold text-ink">
+              Reviewer Notes / Feedback {ob.status === 'proposed' ? '(required to reject)' : ''}
               <textarea className={field} rows={2} value={comment} onChange={(e) => setComment(e.target.value)} />
             </label>
           </fieldset>
 
-          {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-fail">{error}</p>}
+          {error && <ErrorState message={error} />}
 
           {editable && (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-line">
               <button
                 type="submit"
                 disabled={busy || (ob.status !== 'proposed' && !dirty && !categoriesChanged)}
-                className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-blue-900 disabled:opacity-50">
-                {approveAction === 'approve' ? 'Approve' : ob.status === 'proposed' ? 'Approve with edits' : 'Save as new version'}
-              </button>
-              <button
-                type="button"
-                disabled={busy || comment.trim().length < 3}
-                onClick={() => submit('reject')}
-                className="rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-fail hover:bg-red-50 disabled:opacity-50"
-                title={comment.trim().length < 3 ? 'Write a comment to reject' : undefined}
+                className="rounded-lg bg-brand px-5 py-2 text-xs font-semibold text-white hover:bg-brand-hover shadow-xs transition-colors disabled:opacity-50"
               >
-                Reject
+                {approveAction === 'approve' ? 'Approve Obligation' : ob.status === 'proposed' ? 'Approve with Edits (v2)' : 'Save as New Version'}
               </button>
-              {dirty && (
-                <button type="button" onClick={() => setForm(original)} className="px-2 text-sm text-muted underline">
-                  Undo changes
+              {ob.status === 'proposed' && (
+                <button
+                  type="button"
+                  disabled={busy || !comment.trim()}
+                  onClick={() => submit('reject')}
+                  className="rounded-lg border border-fail-border bg-fail-bg px-4 py-2 text-xs font-semibold text-fail hover:bg-fail-bg/80 transition-colors disabled:opacity-50"
+                >
+                  Reject Proposal
                 </button>
               )}
+              <button
+                type="button"
+                onClick={goNext}
+                className="ml-auto text-xs font-semibold text-muted hover:text-ink"
+              >
+                Skip to next
+              </button>
             </div>
           )}
-          {!canReview && <p className="text-sm text-muted">Read-only: reviewing needs the reviewer role.</p>}
         </form>
       </div>
 
-      <section aria-labelledby="connections-heading" className="rounded-xl border border-line bg-panel p-5 shadow-sm">
-        <h2 id="connections-heading" className="mb-3 font-medium">
-          Connections
-        </h2>
+      <div className="pt-4 border-t border-line space-y-4">
+        <h3 className="text-base font-semibold text-ink font-display">Regulatory Lineage & Graph Neighbourhood</h3>
         <ConnectionsGraph obligationId={ob.id} highlight={ob.id} />
-      </section>
-
-      <section aria-labelledby="history-heading" className="rounded-xl border border-line bg-panel p-5 shadow-sm">
-        <h2 id="history-heading" className="font-medium">
-          History
-        </h2>
-        <ol className="mt-3 space-y-3 text-sm">
-          {ob.history.map((h) => (
-            <li key={h.id}>
-              <Link to={`/obligations/${h.id}`} className={h.id === ob.id ? 'font-medium' : 'text-brand hover:underline'}>
-                Version {h.version}
-              </Link>{' '}
-              <span className="text-muted">
-                · {h.status} · {new Date(h.createdAt).toLocaleString()}
-                {h.approvedBy && ` · approved by ${h.approvedBy.name}`}
-              </span>
-              {h.reviews.map((r, i) => (
-                <p key={i} className="ml-4 text-xs text-muted">
-                  {r.reviewer.name} chose <b>{r.action}</b> on {new Date(r.createdAt).toLocaleString()}
-                  {r.comment && <> — “{r.comment}”</>}
-                </p>
-              ))}
-            </li>
-          ))}
-        </ol>
-        {ob.rules.length > 0 && (
-          <p className="mt-3 text-sm">
-            Rules from this version:{' '}
-            {ob.rules.map((r) => (
-              <Link key={r.id} to={`/rules?key=${encodeURIComponent(r.ruleKey)}`} className="mr-2 font-mono text-xs text-brand hover:underline">
-                {r.ruleKey} v{r.ruleVersion}
-                {r.isActive ? '' : ' (inactive)'}
-              </Link>
-            ))}
-          </p>
-        )}
-      </section>
+      </div>
     </div>
   )
 }

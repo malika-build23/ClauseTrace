@@ -61,15 +61,53 @@ async function toError(res: Response): Promise<ApiError> {
   return new ApiError(message, res.status, body)
 }
 
+// ─── Wake-up detection (Render free tier) ──────────────────────────────────
+let activeSlowRequests = 0
+let wakeUpListeners: Array<(isSlow: boolean) => void> = []
+
+export function subscribeWakeUp(listener: (isSlow: boolean) => void): () => void {
+  wakeUpListeners.push(listener)
+  return () => {
+    wakeUpListeners = wakeUpListeners.filter((l) => l !== listener)
+  }
+}
+
+function notifyWakeUp(isSlow: boolean) {
+  wakeUpListeners.forEach((fn) => fn(isSlow))
+}
+
 async function apiFetch(path: string, init?: RequestInit): Promise<Response> {
-  const res = await fetch(`${API_URL}${path}`, { ...init, headers: authHeaders(init?.headers) })
-  if (res.status === 401 && token && !path.startsWith('/api/auth/login')) onUnauthorized?.()
-  if (!res.ok) throw await toError(res)
-  return res
+  let timer: ReturnType<typeof setTimeout> | null = null
+  let markedSlow = false
+
+  if (typeof window !== 'undefined') {
+    timer = setTimeout(() => {
+      markedSlow = true
+      activeSlowRequests++
+      notifyWakeUp(true)
+    }, 3500)
+  }
+
+  try {
+    const res = await fetch(`${API_URL}${path}`, { ...init, headers: authHeaders(init?.headers) })
+    if (res.status === 401 && token && !path.startsWith('/api/auth/login')) onUnauthorized?.()
+    if (!res.ok) throw await toError(res)
+    return res
+  } finally {
+    if (timer) clearTimeout(timer)
+    if (markedSlow) {
+      activeSlowRequests = Math.max(0, activeSlowRequests - 1)
+      if (activeSlowRequests === 0) notifyWakeUp(false)
+    }
+  }
 }
 
 export async function apiGet<T>(path: string, init?: RequestInit): Promise<T> {
   return (await apiFetch(path, init)).json() as Promise<T>
+}
+
+export async function apiGetBlob(path: string, init?: RequestInit): Promise<Blob> {
+  return (await apiFetch(path, init)).blob()
 }
 
 export async function apiSend<T>(method: 'POST' | 'PATCH' | 'PUT' | 'DELETE', path: string, body?: unknown): Promise<T> {

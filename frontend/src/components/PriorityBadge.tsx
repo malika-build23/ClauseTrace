@@ -1,7 +1,7 @@
 const STYLE = {
-  high: 'bg-red-50 text-fail border border-red-200',
-  medium: 'bg-[#FFF5EC] text-[#8C5828] border border-[#FFCB9A]',
-  low: 'bg-[#EBF5F2] text-[#116466] border border-[#D1E8E2]',
+  high: 'bg-red-50 text-fail border border-red-200 dark:bg-red-950/40 dark:border-red-900',
+  medium: 'bg-[#F9EEF4] text-[#6B3254] border border-[#E0BACF] dark:bg-[#2B1B25] dark:text-[#E0BACF] dark:border-[#523347]',
+  low: 'bg-[#EEF3FD] text-[#4D608E] border border-[#9FB0E8] dark:bg-[#15223C] dark:text-[#9FB0E8] dark:border-[#253961]',
 } as const
 
 /** Review priority or risk level, always with its label (and reasons on hover/focus). */

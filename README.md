@@ -72,14 +72,15 @@ ClauseTrace replaces manual guesswork and risky "black box" AI with a transparen
 
 ## 🚀 Key Platform Features
 
-* 📊 **Executive Compliance Dashboard:** Real-time visibility into organizational compliance health, pass/fail ratios, upcoming deadlines, and pending AI review items.
-* 📑 **Hierarchical Document Explorer:** Interactive PDF reader synchronized directly with extracted clause trees (`Clause 1` $\rightarrow$ `Sub-clause 1.1` $\rightarrow$ `Item (a)`).
-* ⚖️ **Human-in-the-Loop Review Queue:** Compliance console to inspect highlighted source quotes, adjust parameters, and approve obligations before they become enforceable rules.
-* ⚙️ **Compiled Rule Manager:** Central registry of all active and historical compliance rules with complete versioning and metadata.
-* 🏢 **Entity Profiler & Evaluator:** Real-time compliance runner against FME financial metrics (Net Worth, AUM, Leverage Ratio, Liquid Capital).
-* 🧪 **What-If Simulation Sandbox:** Isolated testing environment allowing risk officers to test hypothetical balance sheet allocations without touching production audit trails.
-* 🔄 **Amendment Diffing & Downstream Impact:** Compares two circular versions clause-by-clause, detecting amendments, additions, and deletions, and highlighting all downstream rules impacted by the change.
-* 🛡️ **Role-Based Governance (RBAC):** Granular access tiers for Viewers, Reviewers, and Administrators with self-service registration and secure profile management.
+* 📊 **Executive Overview & Compliance Heatmap Matrix:** Real-time visibility into organizational compliance health. The interactive Compliance Heatmap displays an Entity × Rule matrix with dual-coded status cells (icon + text), risk-weighted sorting, density toggles (`compact`, `normal`, `comfortable`), slide-over explanation drawers, and PNG/CSV audit exports.
+* 📑 **PDF Viewer with Synchronized Live Highlights:** High-performance canvas reader (`pdfjs-dist`) that maps extracted obligations directly onto source PDF pages. Uses color-coded modality fills (`MUST`, `MUST NOT`, `SHOULD`, `MAY`), status outlines (`approved`, `proposed`, `rejected`), synchronized clause scrolling, and hover cards without guessing coordinates.
+* 🔗 **Animated Traceability Chain (React Flow Lineage):** An interactive provenance flow tracking every compliance result backward across 7 verified stages: Result $\rightarrow$ Rule Version $\rightarrow$ Approved Obligation $\rightarrow$ Human Reviewer $\rightarrow$ Verbatim Quote $\rightarrow$ Document Version $\rightarrow$ Clause & PDF Page. Missing links are explicitly flagged, and the final node opens the live PDF viewer at the exact quote.
+* 🔄 **Amendment Diffing & Cascading Blast Radius:** Word-level side-by-side clause comparison between circular versions. Distinguishes substantive modifications from renumbered/moved clauses (`MOVED` badge), enforces strict governance (*"Approved rules do not change automatically. Review required."*), and displays the cascading blast radius (Clause $\rightarrow$ Obligations $\rightarrow$ Rules $\rightarrow$ Evaluations) with direct links to the review queue.
+* ⌨️ **Global Command Palette (`Ctrl/Cmd+K`):** Fast keyboard-driven command center powered by `cmdk` indexing regulatory circulars, clauses, obligations, compiled rules, and entities. Enforces strict RBAC: viewer accounts cannot view or navigate to audit trails or user management.
+* 🌓 **Accessible Design System & Dark Mode:** Built with a specialized FinTech palette (`#2C3531`, `#116466`, `#D9B08C`, `#FFCB9A`, `#D1E8E2`), high-contrast colour-blind accessible status badges, persistent light/dark theme toggle, a 5-step guided onboarding tour, and Render free-tier cold-start resilience banners.
+* ⚖️ **Human-in-the-Loop Review Queue:** Compliance console to inspect extracted obligation candidates, verify supporting source quotes, adjust parameters, and approve obligations before they become enforceable rules.
+* ⚙️ **Compiled Rule Manager:** Central registry of versioned, deterministic compliance logic ASTs (`threshold`, `deadline`, `required_field`) executing with 100% mathematical consistency.
+* 🏢 **Entity Profiler & What-If Simulation Sandbox:** Real-time compliance runner against fund balance sheets, with isolated simulation sandboxes allowing risk officers to test hypothetical balance sheet allocations without touching production audit trails.
 
 ---
 
