@@ -49,7 +49,7 @@ export function RulesPage() {
             type="button"
             onClick={runCompile}
             disabled={busy}
-            className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-blue-900 disabled:opacity-50"
+            className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-[#0c4d4f] transition-colors disabled:opacity-50"
           >
             {busy ? 'Compiling…' : 'Compile approved obligations'}
           </button>

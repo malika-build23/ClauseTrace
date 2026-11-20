@@ -47,9 +47,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(result.user)
   }, [])
 
+  const refreshUser = useCallback(async () => {
+    try {
+      const updated = await apiGet<SessionUser>('/api/auth/me')
+      setUser(updated)
+    } catch {
+      // ignore refresh failures
+    }
+  }, [])
+
   const value = useMemo<AuthState>(
-    () => ({ user, checking, notice, login, logout, can: (role) => hasRole(user?.role, role) }),
-    [user, checking, notice, login, logout],
+    () => ({ user, checking, notice, login, logout, refreshUser, can: (role) => hasRole(user?.role, role) }),
+    [user, checking, notice, login, logout, refreshUser],
   )
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

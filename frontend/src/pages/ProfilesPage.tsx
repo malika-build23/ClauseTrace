@@ -273,7 +273,7 @@ export function ProfilesPage() {
                     type="button"
                     onClick={save}
                     disabled={!dirty || busy}
-                    className="ml-auto rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-blue-900 disabled:opacity-50"
+                    className="ml-auto rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-[#0c4d4f] transition-colors disabled:opacity-50"
                   >
                     Save data
                   </button>
@@ -297,7 +297,7 @@ export function ProfilesPage() {
                       onClick={evaluate}
                       disabled={busy || dirty || rules.length === 0}
                       title={dirty ? 'Save the data first' : undefined}
-                      className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-blue-900 disabled:opacity-50"
+                      className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-[#0c4d4f] transition-colors disabled:opacity-50"
                     >
                       Evaluate rules
                     </button>

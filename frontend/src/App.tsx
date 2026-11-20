@@ -14,6 +14,8 @@ import { ObligationReviewPage } from './pages/ObligationReviewPage'
 import { ProfilesPage } from './pages/ProfilesPage'
 import { ReviewQueuePage } from './pages/ReviewQueuePage'
 import { RulesPage } from './pages/RulesPage'
+import { SignupPage } from './pages/SignupPage'
+import { UserProfilePage } from './pages/UserProfilePage'
 import { UsersPage } from './pages/UsersPage'
 
 function NotFound() {
@@ -33,6 +35,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<SignupPage />} />
           <Route
             element={
               <RequireAuth>
@@ -47,6 +50,7 @@ export default function App() {
             <Route path="rules" element={<RulesPage />} />
             <Route path="conflicts" element={<ConflictsPage />} />
             <Route path="profiles" element={<ProfilesPage />} />
+            <Route path="profile" element={<UserProfilePage />} />
             <Route path="evaluations/:id" element={<EvaluationPage />} />
             <Route
               path="audit"

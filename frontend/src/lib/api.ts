@@ -175,7 +175,16 @@ export type UploadResult = {
 
 export type Role = 'admin' | 'reviewer' | 'viewer'
 
-export type SessionUser = { id: string; name: string; email: string; role: Role }
+export type SessionUser = {
+  id: string
+  name: string
+  email: string
+  role: Role
+  orgId?: string
+  createdAt?: string
+  lastLoginAt?: string | null
+  organisation?: { id: string; name: string }
+}
 
 export type LoginResult = { token: string; expiresIn: number; user: SessionUser }
 

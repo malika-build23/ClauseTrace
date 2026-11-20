@@ -46,14 +46,18 @@ export function ReviewQueuePage() {
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        <div role="tablist" aria-label="Status" className="flex flex-wrap gap-1 rounded-lg bg-slate-100 p-1">
+        <div role="tablist" aria-label="Status" className="flex flex-wrap gap-1 rounded-lg bg-[#EBF5F2] border border-[#D1E8E2] p-1">
           {STATUS_TABS.map((t) => (
             <button
               key={t.value}
               role="tab"
               aria-selected={status === t.value}
               onClick={() => set({ status: t.value })}
-              className={`rounded-md px-3 py-1.5 text-sm ${status === t.value ? 'bg-panel font-medium shadow-sm' : 'text-muted hover:text-ink'}`}
+              className={`rounded-md px-3 py-1.5 text-sm transition-all ${
+                status === t.value
+                  ? 'bg-white font-semibold text-[#116466] shadow-2xs'
+                  : 'text-[#586b66] hover:text-[#2C3531]'
+              }`}
             >
               {t.label}
             </button>

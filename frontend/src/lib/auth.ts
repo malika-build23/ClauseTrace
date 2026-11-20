@@ -9,6 +9,7 @@ export type AuthState = {
   notice: string | null
   login: (email: string, password: string) => Promise<void>
   logout: () => void
+  refreshUser: () => Promise<void>
   can: (role: Role) => boolean
 }
 

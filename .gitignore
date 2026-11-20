@@ -3,18 +3,23 @@ node_modules/
 .venv/
 venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
 
 # Builds
 dist/
 build/
 .next/
 .vercel/
+*.tsbuildinfo
+.eslintcache
 
 # Env and secrets
 .env
 .env.*
 !.env.example
+envs/
+*.download
 
 # Editor / tool state
 .qodo/
@@ -22,7 +27,30 @@ build/
 .idea/
 .DS_Store
 Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+*.swp
+*.swo
+*~
 
-# Logs
+# Testing & coverage
+.pytest_cache/
+.ruff_cache/
+coverage/
+.nyc_output/
+.coverage
+htmlcov/
+
+# Logs & temp
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 .neon
+tmp/
+temp/
+
+# Documents & PDFs (only data fixtures are tracked)
+*.pdf
+!data/raw-pdfs/*.pdf
+!data/test-amendments/*.pdf

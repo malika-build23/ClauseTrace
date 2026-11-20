@@ -2,10 +2,10 @@ import { Link } from 'react-router'
 import type { Modality, Obligation } from '../lib/api'
 
 const MODALITY: Record<Modality, { label: string; className: string }> = {
-  must: { label: 'MUST', className: 'bg-blue-50 text-brand' },
-  must_not: { label: 'MUST NOT', className: 'bg-red-50 text-fail' },
-  should: { label: 'SHOULD', className: 'bg-amber-50 text-upcoming' },
-  may: { label: 'MAY', className: 'bg-slate-100 text-insufficient' },
+  must: { label: 'MUST', className: 'bg-[#EBF5F2] text-[#116466] border border-[#D1E8E2]' },
+  must_not: { label: 'MUST NOT', className: 'bg-red-50 text-fail border border-red-200' },
+  should: { label: 'SHOULD', className: 'bg-[#FFF5EC] text-[#8C5828] border border-[#FFCB9A]' },
+  may: { label: 'MAY', className: 'bg-slate-100 text-insufficient border border-slate-200' },
 }
 
 const OPERATOR_TEXT: Record<string, string> = { '>=': '≥', '<=': '≤', '==': '=', '!=': '≠', '>': '>', '<': '<' }

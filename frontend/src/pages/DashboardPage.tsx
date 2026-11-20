@@ -10,17 +10,17 @@ import { RESULT_META, RESULT_ORDER } from '../lib/results'
 function Stat({ label, value, to, hint }: { label: string; value: number | string; to?: string; hint?: string }) {
   const body = (
     <>
-      <p className="text-xs text-muted">{label}</p>
-      <p className="mt-1 text-2xl font-semibold tabular-nums">{value}</p>
-      {hint && <p className="mt-0.5 text-xs text-muted">{hint}</p>}
+      <p className="text-xs font-semibold uppercase tracking-wider text-[#586b66]">{label}</p>
+      <p className="mt-1 font-display text-2xl font-bold tabular-nums text-[#2C3531]">{value}</p>
+      {hint && <p className="mt-0.5 text-xs text-[#be7534]">{hint}</p>}
     </>
   )
   return to ? (
-    <Link to={to} className="block rounded-xl border border-line bg-panel p-4 shadow-sm hover:ring-1 hover:ring-brand">
+    <Link to={to} className="block rounded-xl border border-[#D1E8E2] bg-white p-4 shadow-2xs transition-all hover:border-[#116466] hover:shadow-sm">
       {body}
     </Link>
   ) : (
-    <div className="rounded-xl border border-line bg-panel p-4 shadow-sm">{body}</div>
+    <div className="rounded-xl border border-[#D1E8E2] bg-white p-4 shadow-2xs">{body}</div>
   )
 }
 
@@ -45,11 +45,33 @@ export function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Compliance overview</h1>
-        <p className="mt-1 text-sm text-muted">
-          Latest result per rule and entity. Simulations are excluded. All entity data is fictional.
-        </p>
+      {/* Top Branded Banner with Illustration */}
+      <div className="relative overflow-hidden rounded-2xl border border-[#D1E8E2] bg-gradient-to-r from-white via-[#F5FAF8] to-[#E6F3F0] p-6 shadow-sm">
+        <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
+          <div className="space-y-2 md:max-w-xl">
+            <div className="flex items-center gap-2">
+              <span className="rounded-full border border-[#D9B08C] bg-[#F8EFE6] px-2.5 py-0.5 text-xs font-semibold text-[#8C5828]">
+                GIFT IFSC Framework
+              </span>
+              <span className="rounded-full border border-[#D1E8E2] bg-white px-2.5 py-0.5 text-xs font-semibold text-[#116466]">
+                FME Obligations
+              </span>
+            </div>
+            <h1 className="font-display text-2xl font-bold tracking-tight text-[#2C3531] sm:text-3xl">
+              Compliance Intelligence Overview
+            </h1>
+            <p className="text-sm font-medium leading-relaxed text-[#586b66]">
+              Real-time monitoring of approved IFSCA obligations, versioned deterministic rules, and entity compliance results with end-to-end audit traceability.
+            </p>
+          </div>
+          <div className="flex justify-center md:justify-end">
+            <img
+              src="/images/hero-regtech.png"
+              alt="Compliance Automation"
+              className="h-28 w-auto object-contain drop-shadow-md sm:h-36"
+            />
+          </div>
+        </div>
       </div>
 
       <section aria-label="Summary" className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6">

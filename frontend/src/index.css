@@ -1,31 +1,85 @@
 @import "tailwindcss";
 
-/* ClauseTrace design tokens. Status colours are shared by every screen. */
+/* ClauseTrace custom design tokens based on the 5-color theme:
+   #2C3531 (Deep Pine Charcoal)
+   #116466 (Deep Sea Teal)
+   #D9B08C (Warm Golden Sand)
+   #FFCB9A (Soft Apricot Peach)
+   #D1E8E2 (Pale Sage Mint)
+*/
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
 
-  --color-ink: #0f172a;
-  --color-muted: #64748b;
-  --color-surface: #f8fafc;
+  /* Raw Theme Colors */
+  --color-pine: #2C3531;
+  --color-teal: #116466;
+  --color-sand: #D9B08C;
+  --color-peach: #FFCB9A;
+  --color-mint: #D1E8E2;
+
+  /* Semantic UI Tokens */
+  --color-ink: #2C3531;
+  --color-muted: #586b66;
+  --color-surface: #F5FAF8;
   --color-panel: #ffffff;
-  --color-line: #e2e8f0;
-  --color-brand: #1e40af;
+  --color-line: #D1E8E2;
+  --color-brand: #116466;
+  --color-brand-hover: #0c4d4f;
+  --color-brand-light: #E6F3F0;
 
-  --color-pass: #15803d;
-  --color-fail: #b91c1c;
-  --color-upcoming: #b45309;
-  --color-insufficient: #475569;
-  --color-simulation: #7c3aed;
+  --color-accent-sand: #D9B08C;
+  --color-accent-peach: #FFCB9A;
+  --color-accent-mint: #D1E8E2;
 
-  /* Chart fills for results (status palette). Validated for adjacent CVD
-     separation in stacked bars; always shown with an icon, label and count,
-     never colour alone. Text stays in the text tokens above. */
-  --color-chart-pass: #0ca30c;
-  --color-chart-upcoming: #fab219;
-  --color-chart-fail: #d03b3b;
-  --color-chart-unknown: #8b8b86;
+  /* Status Colors */
+  --color-pass: #116466;
+  --color-fail: #c53030;
+  --color-upcoming: #be7534;
+  --color-insufficient: #556662;
+  --color-simulation: #6d44b8;
+
+  /* Chart fills */
+  --color-chart-pass: #116466;
+  --color-chart-upcoming: #D9B08C;
+  --color-chart-fail: #c53030;
+  --color-chart-unknown: #9ab4ae;
 }
 
 body {
-  @apply bg-surface text-ink antialiased;
+  @apply bg-surface text-ink antialiased font-sans;
+}
+
+/* Custom visual accents using the palette */
+.badge-sand {
+  background-color: #F8EFE6;
+  color: #8C5828;
+  border: 1px solid #D9B08C;
+}
+
+.badge-peach {
+  background-color: #FFF5EC;
+  color: #9E5B20;
+  border: 1px solid #FFCB9A;
+}
+
+.badge-mint {
+  background-color: #EBF5F2;
+  color: #116466;
+  border: 1px solid #D1E8E2;
+}
+
+.badge-pine {
+  background-color: #2C3531;
+  color: #D1E8E2;
+}
+
+.card-luxury {
+  background-color: #ffffff;
+  border: 1px solid #D1E8E2;
+  box-shadow: 0 1px 3px rgba(44, 53, 49, 0.05), 0 1px 2px rgba(44, 53, 49, 0.03);
+}
+
+.card-luxury:hover {
+  border-color: #116466;
 }

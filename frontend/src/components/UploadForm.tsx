@@ -168,7 +168,7 @@ export function UploadForm({ documentId, onDone, compact = false }: Props) {
       <button
         type="submit"
         disabled={!file || busy}
-        className="inline-flex items-center rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50"
+        className="inline-flex items-center rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-[#0c4d4f] transition-colors disabled:cursor-not-allowed disabled:opacity-50"
       >
         {busy ? 'Working…' : documentId ? 'Upload new version' : 'Upload and parse'}
       </button>
