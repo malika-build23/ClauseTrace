@@ -1,0 +1,3001 @@
+[
+ {
+  "key": "036b16180c7685d9a739f7913ada67f7ca5ab4ab3378d455d0a406299b214c54",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "pay a fee",
+     "source": {
+      "date": null,
+      "page": 6,
+      "quote": "The FME shall pay a fee of USD 500 at the time of filing an intimation with the Authority under clauses 11 and 12 of this circular.",
+      "clause": "24",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "fee payment receipt",
+     "modality": "must",
+     "condition": "at the time of filing an intimation with the Authority under clauses 11 and 12 of this circular",
+     "threshold": {
+      "unit": "USD",
+      "value": 500,
+      "metric": "fee",
+      "operator": "=="
+     },
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "24-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": true
+    }
+   ],
+   "clause_number": "24"
+  }
+ },
+ {
+  "key": "061c250f4706dd73f375ded06be58e957908cacbd462dd88faf11ff25f5ccee4",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "publicly disclose the above at a suitable place on their website or by other appropriate means",
+     "source": {
+      "date": null,
+      "page": 6,
+      "quote": "FMEs managing ESG schemes which are in the nature of retail schemes or ETFs shall publicly disclose the above at a suitable place on their website or by other appropriate means.",
+      "clause": "4",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FMEs",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": "managing ESG schemes which are in the nature of retail schemes or ETFs",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "4-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "uses vague terms 'suitable place', 'appropriate means', and 'suitable'",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "4"
+  }
+ },
+ {
+  "key": "09343c02e81d26629f4e2610407dbb1b805b27da9e12ccad237f4c4a8660d555",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "have a corpus of at least the specified amount",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "An angel scheme shall have a corpus of at least USD 1,000,000, reckoned collectively under all the segregated portfolios created thereunder by the FME.",
+      "clause": "18",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "angel scheme",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": null,
+     "threshold": {
+      "unit": "USD",
+      "value": 1000000,
+      "metric": "corpus",
+      "operator": ">="
+     },
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "18-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": true
+    }
+   ],
+   "clause_number": "18"
+  }
+ },
+ {
+  "key": "0b358627ce50c887fc96c5895d80e61b9ad03181b43cb1a4771cfa76b1e8e07a",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "have a corpus",
+     "source": {
+      "date": null,
+      "page": 2,
+      "quote": "An angel scheme shall have a corpus of at least USD 1,500,000, reckoned collectively under all the segregated portfolios created thereunder by the FME.",
+      "clause": "18",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 2
+     },
+     "status": "proposed",
+     "subject": "angel scheme",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": "reckoned collectively under all the segregated portfolios created thereunder by the FME",
+     "threshold": {
+      "unit": "USD",
+      "value": 1500000,
+      "metric": "corpus",
+      "operator": ">="
+     },
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "18-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": true
+    }
+   ],
+   "clause_number": "18"
+  }
+ },
+ {
+  "key": "0b3a7425ccea346b9fa56a236853f9262b7ffe495fae68ee6471121ef28b648f",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "comply with the requirements under this Circular to the extent applicable and provide complete details of the chosen Index, including its methodology and composition, along with the rationale for choosing the Index",
+     "source": {
+      "date": null,
+      "page": 7,
+      "quote": "ETFs or Schemes tracking an ESG Index shall comply with the requirements under this Circular to the extent applicable and provide complete details of the chosen Index, including its methodology and composition, along with the rationale for choosing the Index.",
+      "clause": "5",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "ETFs or Schemes tracking an ESG Index",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": "tracking an ESG Index",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "5-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "uses vague term 'to the extent applicable'",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "5"
+  }
+ },
+ {
+  "key": "0ee9fcac05356b43ffc96638573fbdcb579b27063dacf287b3dd24067176b32b",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "promptly inform IFSCA of any material change in the information provided to IFSCA",
+     "source": {
+      "date": null,
+      "page": 13,
+      "quote": "2. I, on behalf of the FME, undertake to promptly inform IFSCA of any material change in the information provided to IFSCA.",
+      "clause": "12(k)(iii)",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "12(k)(iii)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Terms 'promptly' and 'material change' are vague.",
+     "machine_checkable": false
+    },
+    {
+     "action": "attach the stated checklist with the application",
+     "source": {
+      "date": null,
+      "page": 13,
+      "quote": "b. Kindly attach the stated checklist with the application at the time of submission to IFSCA.",
+      "clause": "12(k)(iii)",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "checklist attached with the application",
+     "modality": "should",
+     "condition": "at the time of submission to IFSCA",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "12(k)(iii)-02",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    },
+    {
+     "action": "make requisite contribution in the scheme/fund in accordance with the IFSCA (Fund Management) Regulations, 2022",
+     "source": {
+      "date": null,
+      "page": 13,
+      "quote": "2. In case the said waiver is not secured from the investors, then the FME shall make requisite contribution in the scheme/fund in accordance with the IFSCA (Fund Management) Regulations, 2022.",
+      "clause": "12(k)(iii)",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": "In case the said waiver is not secured from the investors",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "12(k)(iii)-03",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "12(k)(iii)"
+  }
+ },
+ {
+  "key": "0f9f69f766fb022dc52ea01f7af3b03d6e5b382d8be0468fe8ff87df6aed02a3",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "preamble"
+  }
+ },
+ {
+  "key": "119d32b9cb3ae9c63870939e606b9aa930863c6565a4c1f0a2321f47de0dbbae",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "provide explanation as to how the benchmark is relevant to the scheme and provide a link to the benchmark methodology in the offer document or placement memorandum of the scheme",
+     "source": {
+      "date": null,
+      "page": 6,
+      "quote": "Where such a benchmark is designated, the FME should provide explanation as to how it is relevant to the scheme and also provide a link to the benchmark methodology in the offer document or placement memorandum of the scheme.",
+      "clause": "2(F)(II)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "offer document or placement memorandum of the scheme",
+     "modality": "should",
+     "condition": "Where such a benchmark is designated",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "2(F)(II)-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(F)(II)"
+  }
+ },
+ {
+  "key": "13654525a5ff413627492b990b11f652cf14b8d7ed6dc704ebfe2c6c181a50ed",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "use qualitative information and quantitative metrics, where available",
+     "source": {
+      "date": null,
+      "page": 7,
+      "quote": "As part of disclosure of compliance with the ESG-related investment objectives, as per clause 3(A), FME may use qualitative information and quantitative metrics, where available;",
+      "clause": "4(a)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "may",
+     "condition": "As part of disclosure of compliance with the ESG-related investment objectives, as per clause 3(A), where available",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "4(a)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "uses condition 'where available'",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "4(a)"
+  }
+ },
+ {
+  "key": "15f7111d4f3550c2a11f32c230dc7fa870112c50b08a003074aa6d2c9d1f5b81",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "ensure that the assets and liabilities of each segregated portfolio are ring-fenced from other segregated portfolios under an angel scheme",
+     "source": {
+      "date": null,
+      "page": 3,
+      "quote": "The FME shall ensure that the assets and liabilities of each segregated portfolio are ring-fenced from other segregated portfolios under an angel scheme.",
+      "clause": "9",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "The FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "9-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "9"
+  }
+ },
+ {
+  "key": "1802c094769b1287c27603c1890639bd79c30270a4e31a6f14a2447f602c01d8",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "publicly disclose the processes on their website or by other appropriate means",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "the FME shall ensure that these processes are also publicly disclosed on their website or by other appropriate means.",
+      "clause": "2(D)(II)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "website or other appropriate means",
+     "modality": "must",
+     "condition": "in case of ESG schemes which are retail schemes or ETFs",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "2(D)(II)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "The phrase 'other appropriate means' is vague.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(D)(II)"
+  }
+ },
+ {
+  "key": "191cebb1ec2cbd517bb3a75e07292144d9d79a2e7dfe15e7c5114bd597fdf49c",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "come into force with immediate effect",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "This circular is issued in the exercise of the powers conferred by Sections 12 and 13 of the International Financial Services Centres Authority Act, 2019, read with regulation 146 of the FM Regulations and shall come into force with immediate effect.",
+      "clause": "11",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "This circular",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "11-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "11"
+  }
+ },
+ {
+  "key": "1962adcbed23827b9f1561a1483187f749a4d360f04f3e677663dae0b2a1eb15",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "disclose the exact proportion of such investments",
+     "source": {
+      "date": null,
+      "page": 7,
+      "quote": "For compliance with clause 3(C), the FME shall disclose the exact proportion of such investments.",
+      "clause": "4(c)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": "For compliance with clause 3(C)",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "4(c)-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    },
+    {
+     "action": "disclose the details of full portfolio as per the Regulations",
+     "source": {
+      "date": null,
+      "page": 7,
+      "quote": "Further, the FME should disclose the details of full portfolio as per the Regulations;",
+      "clause": "4(c)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "4(c)-02",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "4(c)"
+  }
+ },
+ {
+  "key": "1dd9772e71a4aa81ed1087e01e0e267cc89b4fb468edc1e0b46c30c78c27bd70",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "provide a clear declaration / statement of the ESG-related investment objectives",
+     "source": {
+      "date": null,
+      "page": 2,
+      "quote": "The FME should provide a clear declaration / statement of the ESG-related investment objectives, in addition to other objectives, if any, that the scheme intends to achieve through its investments.",
+      "clause": "2(B)(I)(a)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "2(B)(I)(a)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "The term 'clear' is subjective.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(B)(I)(a)"
+  }
+ },
+ {
+  "key": "1ec99f065001e235e73e2ff69a1989c450522a278b7d98a6c11f6a55a20cfb19",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "ensure contribution in each segregated portfolio",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "The FME managing an angel scheme shall ensure a contribution of at least 2.5% of the investment size or USD 20,000, whichever is less, in each segregated portfolio.",
+      "clause": "19",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME managing an angel scheme",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": "except in cases where the FME is exempted under Regulation 28(4) of the Fund Management Regulations",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "19-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "19"
+  }
+ },
+ {
+  "key": "1f5451f082ee635e82171cf1b44cd0c2883f4412e4319d626821eec138aa281d",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "make investments in early-stage venture capital undertakings or other regulated angel schemes or angel funds set up in IFSC, India or foreign jurisdiction",
+     "source": {
+      "date": null,
+      "page": 2,
+      "quote": "Angel schemes shall make investments in early-stage venture capital undertakings or other regulated angel schemes or angel funds set up in IFSC, India or foreign jurisdiction.",
+      "clause": "6",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "Angel schemes",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "6-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "6"
+  }
+ },
+ {
+  "key": "2af1726649fd2373f7bebdd47a6bca71a25c87849f900cbfe4ed165beaccd0c3",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "4"
+  }
+ },
+ {
+  "key": "2d3a5ad084083b74e2cd86ca12898fc9bbe88bf674605fc3b8044ff77a945073",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "ensure that the PPM of each Scheme or Fund contains the minimum disclosures",
+     "source": {
+      "date": null,
+      "page": 1,
+      "quote": "The FME shall ensure that the PPM of each Scheme or Fund, inter-alia, contains the following minimum disclosures:",
+      "clause": "4",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "The FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "PPM of each Scheme or Fund",
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "4-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "4"
+  }
+ },
+ {
+  "key": "2dfa7ba27cd2478fbaf5b21501817aac1d00ad26fff39abc2fec0ea62c05ac27",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "extend the validity of the placement memorandum beyond 6 months by refiling the documents with the Authority and paying the applicable fee",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "The FME may extend the validity of the placement memorandum beyond 6 months as provided under 19(3) and 31 (2) of the FM Regulations by refiling the documents with the Authority and paying the applicable fee as per circular no. F. No.865/IFSCA/Banking/Fee Revision/2022-23 dated May 17, 2023. on “Fee structure for the entities undertaking or intending to undertake permissible activities in IFSC”.",
+      "clause": "6",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "The FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "Refiled documents and fee payment receipt",
+     "modality": "may",
+     "condition": "as provided under 19(3) and 31 (2) of the FM Regulations",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "6-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "6"
+  }
+ },
+ {
+  "key": "3199974d589119e4959193c39b124ab5a3568336b0ff963d8b1b3d8b4afe1f43",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "limit contribution in the subsequent round to maintain the same post-issue beneficial interest as pre-issue beneficial interest",
+     "source": {
+      "date": null,
+      "page": 5,
+      "quote": "The contribution by an angel investor in the subsequent round should be limited to the extent that the post-issue beneficial interest in the given early-stage venture capital undertaking remains the same as his pre-issue beneficial interest therein;",
+      "clause": "22(iii)",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "angel investor",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "22(iii)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Relies on relative beneficial interest matching without exact algorithmic specification in this clause.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "22(iii)"
+  }
+ },
+ {
+  "key": "31ed0ec31023db817d3ae4c0d6d2bd8e8344cfd90516796dd010e523dfbe5ccb",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "1"
+  }
+ },
+ {
+  "key": "355a24937ee7e0bba50fab828e404cacfced2e76988bd8e53d9be184b529a584",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "2(B)(I)(b)"
+  }
+ },
+ {
+  "key": "3653221f9a23fb17a9e379072a7a6004fe706bd4dff3b3236ac27361e00f9bff",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "submit the duly filled out application form along with all supporting documents to IFSCA",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "2. The duly filled out application form along with all supporting documents, as specified by IFSCA, shall be submitted by FME to IFSCA before the launch of any scheme or fund.",
+      "clause": "12",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "application form along with all supporting documents",
+     "modality": "must",
+     "condition": "before the launch of any scheme or fund",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "12-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    },
+    {
+     "action": "provide information that needs to be supplied in more detail in separate sheets annexed with the application form and appropriately numbered, labelled, and sequenced",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "4. Information that needs to be supplied in more detail, should be given in separate sheets annexed with the application form and appropriately numbered, labelled, and sequenced.",
+      "clause": "12",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "separate sheets annexed with the application form",
+     "modality": "should",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "12-02",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Terms 'in more detail' and 'appropriately' are subjective.",
+     "machine_checkable": false
+    },
+    {
+     "action": "duly sign the application form and all supporting documents",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "5. The application form and all supporting documents must be duly signed by the authorised signatory of the FME.",
+      "clause": "12",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "authorised signatory of the FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "signed application form and supporting documents",
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "12-03",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "12"
+  }
+ },
+ {
+  "key": "36fd7092f6002e92b15ce8da8b9cf37cd088224c3bff372170ace54ba5f68584",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "undertake the following on a half-yearly basis for a retail scheme and on an annual basis for other types of schemes",
+     "source": {
+      "date": null,
+      "page": 7,
+      "quote": "Considering the unique nature of ESG schemes, the FME should undertake, on a halfyearly basis for a retail scheme and on annual basis for other types of schemes, the following:",
+      "clause": "6",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": "Considering the unique nature of ESG schemes",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "6-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "6"
+  }
+ },
+ {
+  "key": "38fdc629fb2711cb99c2311fd26b1b3d3e84e80ed42eea836a95d40954a8d7da",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "submit the Private Placement Memorandum (PPM) along with other documents ensuring minimum disclosures and other requirements to the Authority",
+     "source": {
+      "date": null,
+      "page": 1,
+      "quote": "the Fund Management Entity (FME) shall submit the Private Placement Memorandum (PPM) along with other documents ensuring minimum disclosures and other requirements as outlined in this circular, to the Authority.",
+      "clause": "2",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "Fund Management Entity (FME)",
+     "version": 1,
+     "deadline": null,
+     "evidence": "Private Placement Memorandum (PPM) and other documents submitted to the Authority",
+     "modality": "must",
+     "condition": "for all schemes or funds to be launched under Chapter III (except Part C: Retail Schemes), of the FM Regulations",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "2-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    },
+    {
+     "action": "launch the respective schemes",
+     "source": {
+      "date": null,
+      "page": 1,
+      "quote": "After filing these documents along with the disclosures and complying with other requirements stipulated in this circular FMEs may launch the respective schemes.",
+      "clause": "2",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FMEs",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "may",
+     "condition": "After filing these documents along with the disclosures and complying with other requirements stipulated in this circular",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "2-02",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2"
+  }
+ },
+ {
+  "key": "3cfd40b41b7b7f26a0f0ecff56861503936258addac73f1d7c93e19b9ce8b6dc",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "disclose the efforts, including voting activities, undertaken in engagement with investee companies",
+     "source": {
+      "date": null,
+      "page": 6,
+      "quote": "If an ESG scheme relies on engagement with investee companies as a significant means to implement its investment objectives/strategy, it shall disclose the efforts, including voting activities, undertaken in engagement with investee companies;",
+      "clause": "3(D)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": "If an ESG scheme relies on engagement with investee companies as a significant means to implement its investment objectives/strategy",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "3(D)-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "3(D)"
+  }
+ },
+ {
+  "key": "47ead36a4174b7978c0c7e6c8e4bcf223b0c0d7c988882ee22c94b4e12ec1be0",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "be submitted with the Authority in the Application Form specified in Annex-A hereto",
+     "source": {
+      "date": null,
+      "page": 1,
+      "quote": "The Scheme or Fund documents shall be submitted with the Authority in the Application Form specified in Annex- A hereto.",
+      "clause": "3",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "Scheme or Fund documents",
+     "version": 1,
+     "deadline": null,
+     "evidence": "Application Form specified in Annex-A",
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "3-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "3"
+  }
+ },
+ {
+  "key": "4804377e03f3dc439a8778bb82fc8ede138f121e8e2dcd05347937cb4e76d9bf",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "ensure that material changes, if any, in the information provided to the Authority earlier is immediately informed to the Authority",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "FME shall ensure that material changes, if any, in the information provided to the Authority earlier is immediately informed to the Authority.",
+      "clause": "13",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "13-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "The term 'material changes' and 'immediately' are subjective or imprecise.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "13"
+  }
+ },
+ {
+  "key": "49575dfaf5e873e15da894083e9a6c7f28338a536424f65c48fec4e7293425b9",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "include assessment of investment performance against the stated ESG-related investment objectives of the scheme during periodic reviews",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "Regarding periodic review of the investments which should, among others, include assessment of their performance against the stated ESG-related investment objectives of the scheme;",
+      "clause": "2(D)(II)(c)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": "Regarding periodic review of the investments",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "2(D)(II)(c)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Use of 'among others' makes the review criteria open-ended.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(D)(II)(c)"
+  }
+ },
+ {
+  "key": "4c985554b615c562bc641ccd7c4e5781cf636e3d8d66cde9781dc4d6d0e8e5a3",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "disclose the nature and extent of the scheme’s ESG-related investment objectives including details of primary components of sustainability",
+     "source": {
+      "date": null,
+      "page": 2,
+      "quote": "FME should transparently disclose the nature and extent of the scheme’s ESGrelated investment objectives, including details of the primary components of sustainability addressed by the scheme.",
+      "clause": "2(B)(I)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "2(B)(I)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "The term 'transparently' is vague.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(B)(I)"
+  }
+ },
+ {
+  "key": "52067acf86c9ece80d9218ea901332187086cdeb8d1417bc5bf3fe465857f74d",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "lock in each investment for at least the specified period",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "Each investment by an angel fund shall be locked in for a period of at least 1 (one) year from the date of investment.",
+      "clause": "17",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "angel fund",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": null,
+     "threshold": {
+      "unit": "year",
+      "value": 1,
+      "metric": "lock_in_period",
+      "operator": ">="
+     },
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "17-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": true
+    }
+   ],
+   "clause_number": "17"
+  }
+ },
+ {
+  "key": "5992566ddbfe16ac298d5a477025a230be0eaa6529c553747e7b5b0fc1a9429b",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "bring material deviations or adverse observations to the notice of Authority",
+     "source": {
+      "date": null,
+      "page": 8,
+      "quote": "In case of any material deviations or adverse observations, the fiduciaries shall bring the same to the notice of Authority.",
+      "clause": "6(D)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "fiduciaries",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": "In case of any material deviations or adverse observations",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "6(D)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "uses vague term 'material deviations'",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "6(D)"
+  }
+ },
+ {
+  "key": "59c6439d1871f55b61bd600c388f1c2cf3a8c488d4fa9e29fcfdac36a53260eb",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "comply with the FM Regulations and subsidiary direction issued thereunder",
+     "source": {
+      "date": null,
+      "page": 13,
+      "quote": "the FME shall at all times comply with the FM Regulations and subsidiary direction issued thereunder;",
+      "clause": "12(k)(i)",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": "at all times",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "12(k)(i)-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "12(k)(i)"
+  }
+ },
+ {
+  "key": "5ec7f707bdf5bc47a0b298e5b7b16b48b92b7b44ff23ef8a2bcec1581a10bc37",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "include exercise of voting rights in engagement with investee companies in accordance with the ESG-related investment objectives of the scheme",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "Regarding FME’s engagement with investee companies, which should, among others, include exercise of voting rights, in accordance with the ESG-related investment objectives of the scheme;",
+      "clause": "2(D)(II)(b)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": "Regarding FME’s engagement with investee companies",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "2(D)(II)(b)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Use of 'among others' makes the requirements open-ended.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(D)(II)(b)"
+  }
+ },
+ {
+  "key": "673fd26df4171b66fafac499279b5eb530501aa0b9fb08a06be0ea65a79ad9cd",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "involve consideration of ESG scores/ ratings/ criteria/ profiles/ index when exiting investments",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "Regarding exiting the investments, which should, among others, involve consideration of ESG scores/ ratings/ criteria/ profiles/ index.",
+      "clause": "2(D)(II)(d)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": "Regarding exiting the investments",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "2(D)(II)(d)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Use of 'among others' makes the considerations open-ended.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(D)(II)(d)"
+  }
+ },
+ {
+  "key": "685115abd7186966dc0743d74ccda0f71abf6408660be2babe8ae4f3126db16a",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "12(d)"
+  }
+ },
+ {
+  "key": "76c0514304f89d45cc0d2e970e2029b70870ce3ed81b84faf509d9a686f15840",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "make investment decisions consistently and govern them by a standard policy",
+     "source": {
+      "date": null,
+      "page": 3,
+      "quote": "Such investment decisions should be consistent and governed by a standard policy.",
+      "clause": "2(C)(I)(b)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "standard policy",
+     "modality": "should",
+     "condition": "for best-in-class and positive screening investment strategy",
+     "threshold": null,
+     "confidence": 0.85,
+     "approved_by": null,
+     "obligation_id": "2(C)(I)(b)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "The term 'consistent' and 'standard policy' are not explicitly defined here.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(C)(I)(b)"
+  }
+ },
+ {
+  "key": "7946931ab75170394d33965ad71053b1aa7d49da300d23d4e0f18cf8141db6a7",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "4(d)(xxvi)"
+  }
+ },
+ {
+  "key": "7c886318cdf2b8a4efdfe49b4f2407cdc7954e1586a4d152d54b67f4ed794662",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "2(D)(III)(e)"
+  }
+ },
+ {
+  "key": "7e986e440b023eed2a822d18853c925e0ab7db60f5a0ebdda2a2cd57b4726184",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "involve consideration of ESG scores/ ratings/ criteria/ profiles/ index in investment decisions",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "Regarding investment decisions, which should, among others, involve consideration of ESG scores/ ratings/ criteria/ profiles/ index.",
+      "clause": "2(D)(II)(a)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": "Regarding investment decisions",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "2(D)(II)(a)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Use of 'among others' makes the list of considerations open-ended.",
+     "machine_checkable": false
+    },
+    {
+     "action": "design investments to align with the ESG-related investment objectives",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "The investments should be designed to align with the ESG-related investment objectives;",
+      "clause": "2(D)(II)(a)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "2(D)(II)(a)-02",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(D)(II)(a)"
+  }
+ },
+ {
+  "key": "7ef73fcb0dec0d6c8b38067ca69d8a954ca54438bc8d040d6ab78ea9c5dc0dd6",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "2(C)(I)"
+  }
+ },
+ {
+  "key": "80b3bcb230db4764e74e2d9c843e8b117c5f422bb26396c5b1c5988601da8aec",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "5"
+  }
+ },
+ {
+  "key": "813fa3b5ad73ce99ac7953a62adc789312a0b3cb2858acd421eb351656f0b10f",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "periodically disclose any changes carried out with respect to these service providers or any other service provider deemed relevant by the FME",
+     "source": {
+      "date": null,
+      "page": 7,
+      "quote": "any changes carried out with respect to these service providers or any other service provider deemed relevant by the FME should be periodically disclosed to achieve compliance with clause 3(G);",
+      "clause": "4(d)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": "to achieve compliance with clause 3(G)",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "4(d)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "uses vague terms 'periodically', 'deemed relevant'",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "4(d)"
+  }
+ },
+ {
+  "key": "82c83d79929936df6d69fa9fbe0e9a6675455af1e7da6fc3d3cf5dbf26eb51e5",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "intimate the same to the Authority in the format as specified in Annexure I of this Circular",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "For investments made in early-stage venture capital undertaking, the FME shall intimate the same to the Authority in the format as specified in Annexure I of this Circular, within 10 (ten) working days from the date of each investment.",
+      "clause": "11",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "the FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "intimation in the format as specified in Annexure I",
+     "modality": "must",
+     "condition": "For investments made in early-stage venture capital undertaking, within 10 (ten) working days from the date of each investment",
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "11-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "11"
+  }
+ },
+ {
+  "key": "836c0eb32b3ddf687afd34214825e7acfda4ef4dcbecbbb995b5225ce7b2d8e4",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "categorically distinguish different classes of units and their minimum capital commitment/contribution",
+     "source": {
+      "date": null,
+      "page": 2,
+      "quote": "Capital Structure of the scheme which shall categorically distinguish different classes of units and their minimum capital commitment/contribution;",
+      "clause": "4(d)(iv)",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "Capital Structure of the scheme",
+     "version": 1,
+     "deadline": null,
+     "evidence": "PPM",
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "4(d)(iv)-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "4(d)(iv)"
+  }
+ },
+ {
+  "key": "83f6885b37ec8f671126a4132240954c3db83ed53308fee7676931cb89ffae18",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "preamble"
+  }
+ },
+ {
+  "key": "862c6338e1b9e917313c65797d955dc9eb4b4f186f400346ab9048b796f4f035",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "give opportunity to participate in subsequent rounds to only those angel investors who have participated in previous investment rounds",
+     "source": {
+      "date": null,
+      "page": 5,
+      "quote": "The Angel fund shall give the opportunity to participate in subsequent rounds to only those angel investors who have participated in previous investment rounds for the said undertaking;",
+      "clause": "22(ii)",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "Angel fund",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "22(ii)-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "22(ii)"
+  }
+ },
+ {
+  "key": "8771d6cb3cf0d90c1fe68e26d5fa5d9cb85f37b87f4c4bc7fd20ec4f4e9ba67c",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "launch angel schemes by filing a placement memorandum with the Authority along with the fees as specified in this Circular",
+     "source": {
+      "date": null,
+      "page": 3,
+      "quote": "The FME shall launch angel schemes by filing a placement memorandum with the Authority along with the fees as specified in this Circular.",
+      "clause": "10",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "The FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "placement memorandum",
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "10-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "10"
+  }
+ },
+ {
+  "key": "885417aeb9a22f13f1079e413454ab9bb9f59adab4dd75a10107c236025b67e3",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "be remitted in US Dollars",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "The scheme filling fees shall be remitted in US Dollars at the time of filing the scheme documents with the Authority.",
+      "clause": "7",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "The scheme filling fees",
+     "version": 1,
+     "deadline": null,
+     "evidence": "Fee remittance receipt",
+     "modality": "must",
+     "condition": "at the time of filing the scheme documents with the Authority",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "7-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "7"
+  }
+ },
+ {
+  "key": "886dae13dfab521a0f27975aff1b79501a92cea5ade0ec26147deaa4b3b86945",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "ensure that the Cover Page of the PPM, for each Scheme or Fund, prominently displays the specified text",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "The FME shall ensure that the Cover Page of the PPM, for each Scheme or Fund, prominently displays the following: \"This PPM has been prepared in accordance with the IFSCA (Fund Management) Regulations, 2022, and subsidiary directions issued thereunder. The PPM has been submitted to the Authority only for the purpose of record.\"",
+      "clause": "5",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "The FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "Cover Page of the PPM",
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "5-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "5"
+  }
+ },
+ {
+  "key": "8d693cc01ab4c43b63fe1e2be1a22cf8f5fc5ee04f8c3e806d125228d274bf99",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "disclose all specific risks that arise on account of the scheme's pursuit of ESG-related investment objectives, related investment strategies and processes, in addition to all other material risks faced by the scheme",
+     "source": {
+      "date": null,
+      "page": 5,
+      "quote": "Consistent with the need to achieve high levels of transparency, the FME managing an ESG scheme should disclose all the specific risks that arise on account of the scheme’s pursuit of ESG-related investment objectives, related investment strategies and processes, in addition to all the other material risks faced by the scheme.",
+      "clause": "2(E)(I)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME managing an ESG scheme",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": "Consistent with the need to achieve high levels of transparency",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "2(E)(I)-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(E)(I)"
+  }
+ },
+ {
+  "key": "907c3b206d2af272b41756c256b1218c9463aeec34f042c5bbdef21d6616a1af",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "submit all the necessary documents as specified in Annex-B hereto along with the scheme application",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "The FMEs shall also submit all the necessary documents as specified in Annex-B hereto along with the scheme application.",
+      "clause": "8",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "The FMEs",
+     "version": 1,
+     "deadline": null,
+     "evidence": "Documents specified in Annex-B",
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "8-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "8"
+  }
+ },
+ {
+  "key": "9623e70812be0641d58dba057bd893193467f13638da275a5032ba1fd19abb13",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "name the ESG scheme to be reflective of its ESG focus and consistent with its ESG-related investment objectives and investment strategy",
+     "source": {
+      "date": null,
+      "page": 2,
+      "quote": "the name of an ESG scheme should be reflective of its ESG focus and consistent with its ESG-related investment objectives and investment strategy.",
+      "clause": "2(A)(I)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "Offer Document / Placement Memorandum",
+     "modality": "should",
+     "condition": "for an ESG scheme",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "2(A)(I)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Terms like 'reflective of' and 'consistent with' are open to interpretation.",
+     "machine_checkable": false
+    },
+    {
+     "action": "name the ESG schemes without misleading investors and in consonance with the ESG focus of the scheme",
+     "source": {
+      "date": null,
+      "page": 2,
+      "quote": "the FME shall name the ESG schemes in such a fashion that it does not mislead the investors and is in consonance with the ESG focus of the scheme.",
+      "clause": "2(A)(I)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "2(A)(I)-02",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Terms like 'mislead' and 'consonance with' are subjective.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(A)(I)"
+  }
+ },
+ {
+  "key": "97b09a81bbd0078fc369a7e609cae2d95e137aaca1f481da0d7b157eefd996f0",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "submit an annual compliance report",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "The FME managing an angel scheme shall submit an annual compliance report for the financial year 2026-27 to the Authority on or before March 31, 2027.",
+      "clause": "24",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 2
+     },
+     "status": "proposed",
+     "subject": "The FME managing an angel scheme",
+     "version": 1,
+     "deadline": "2027-03-31",
+     "evidence": "annual compliance report",
+     "modality": "must",
+     "condition": "for the financial year 2026-27",
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "24-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": true
+    }
+   ],
+   "clause_number": "24"
+  }
+ },
+ {
+  "key": "998b16248cc5e89425880c4c7d5a9e216295db70c203add6aaa171fc325bf4c8",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "undertake measurement of real-world impact in a consistent manner based on a standard policy to quantify and disclose the impact",
+     "source": {
+      "date": null,
+      "page": 3,
+      "quote": "The measurement of the real-world impact for such investments should be undertaken in a consistent manner and based on a standard policy to quantify and disclose the impact to the extent possible.",
+      "clause": "2(C)(I)(c)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "standard policy",
+     "modality": "should",
+     "condition": "under impact investing strategy",
+     "threshold": null,
+     "confidence": 0.85,
+     "approved_by": null,
+     "obligation_id": "2(C)(I)(c)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Phrases like 'to the extent possible' and 'consistent manner' introduce ambiguity.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(C)(I)(c)"
+  }
+ },
+ {
+  "key": "9fd247a0a356c346bf98d7ee3024259baba5f594facf8a5cdd57fc8169a97b7e",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "make and maintain the contribution on ongoing basis",
+     "source": {
+      "date": null,
+      "page": 5,
+      "quote": "The said contribution shall be made by the FME or its associate and maintained on ongoing basis.",
+      "clause": "20",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME or its associate",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "20-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "20"
+  }
+ },
+ {
+  "key": "a4eaee16f47af0a3f9cfa98945676fbfb2cd63308ba73dc96d4760d9a3567d9d",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "exceed the maximum number of angel investors in each segregated portfolio",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "The number of angel investors in each segregated portfolio under an angel scheme shall not exceed 200 (two hundred).",
+      "clause": "14",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "angel scheme",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must_not",
+     "condition": null,
+     "threshold": {
+      "unit": "investors",
+      "value": 200,
+      "metric": "angel_investors",
+      "operator": "<="
+     },
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "14-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": true
+    }
+   ],
+   "clause_number": "14"
+  }
+ },
+ {
+  "key": "a9d4be2d27b598c5da51966397a2c2cedfdc5b065652ac04d430a85dcb7ebf28",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [
+    "4(o): ambiguity flagged by vague-term check (adequate)"
+   ],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "include the specified IFSCA disclaimer on the cover page of the placement memorandum",
+     "source": {
+      "date": null,
+      "page": 3,
+      "quote": "An IFSCA disclaimer on the cover page of the placement memorandum, as follows: “It is to be distinctly understood that filing of the placement memorandum with the Authority is for the purpose of record and should not in any way be deemed or construed that the same has been cleared or approved by the Authority. The Authority does not take any responsibility either for the financial soundness of any scheme or for the correctness of the statements made or opinions expressed in the placement memorandum. The Fund Management Entity, has certified that the disclosures made in the placement memorandum are adequate and are in conformity with the IFSCA (Fund Management) Regulations, 2022. This requirement is to facilitate investors to take an informed decision for making investment. The Fund Management Entity issuer is responsible for the correctness, adequacy and disclosure of all relevant information in the placement memorandum.”",
+      "clause": "4(o)",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "Fund Management Entity",
+     "version": 1,
+     "deadline": null,
+     "evidence": "Cover page of the placement memorandum",
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "4(o)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Vague term(s) in source: adequate",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "4(o)"
+  }
+ },
+ {
+  "key": "aa3c65973751663e44d67309dcf0f9f443434f514c643598f546ae16a9525e99",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "make any investment in the associates of FME or in any early-stage venture capital undertaking which is connected to angel investors who are investing in such undertaking",
+     "source": {
+      "date": null,
+      "page": 2,
+      "quote": "Angel schemes shall not make any investment in the associates of FME or in any early-stage venture capital undertaking which is connected to angel investors who are investing in such undertaking.",
+      "clause": "7",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "Angel schemes",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must_not",
+     "condition": null,
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "7-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "The term 'connected' is defined through explanation, but application depends on specific interpretations.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "7"
+  }
+ },
+ {
+  "key": "b067d8f10ecb23f03c95af917a9759218e58241506e9041cda4c74f018d72f72",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "be well-defined with reasonable explanation for the investment strategy including fund of fund structures",
+     "source": {
+      "date": null,
+      "page": 3,
+      "quote": "Investment Objectives, Strategy and Guidelines should be well-defined with reasonable explanation for the investment strategy including fund of fund structures.",
+      "clause": "4(e)",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "Investment Objectives, Strategy and Guidelines",
+     "version": 1,
+     "deadline": null,
+     "evidence": "PPM",
+     "modality": "should",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "4(e)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Terms such as 'well-defined' and 'reasonable explanation' are subjective.",
+     "machine_checkable": false
+    },
+    {
+     "action": "be included",
+     "source": {
+      "date": null,
+      "page": 3,
+      "quote": "The principal strategy of the Master Fund, where applicable, should be included.",
+      "clause": "4(e)",
+      "document": "Filing of Schemes or Funds under the FM Regulations (IFSCA Circular, 5 Apr 2024)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "The principal strategy of the Master Fund",
+     "version": 1,
+     "deadline": null,
+     "evidence": "PPM",
+     "modality": "should",
+     "condition": "where applicable",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "4(e)-02",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "4(e)"
+  }
+ },
+ {
+  "key": "b190503f144c46b0226e6f8fccf2c6913a0f7008f158f1ead7de4833871c2176",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "disclose the methodology for processes deemed relevant for ESG investments and include a description in the Offer Document / Placement Memorandum",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "FME shall disclose the methodology for processes deemed relevant for ESG investments and include a description of the same in the Offer Document / Placement Memorandum of the ESG scheme, as may be applicable.",
+      "clause": "2(D)(I)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "Offer Document / Placement Memorandum",
+     "modality": "must",
+     "condition": "as may be applicable",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "2(D)(I)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "The phrase 'processes deemed relevant' is ambiguous.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(D)(I)"
+  }
+ },
+ {
+  "key": "b5133a5a08a38ea1b3b6f7a8796eacae614ab40c3f1185a0dabe97ccc5d46f86",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "undertake leverage in any of the segregated portfolio",
+     "source": {
+      "date": null,
+      "page": 5,
+      "quote": "Angel schemes shall not undertake leverage in any of the segregated portfolio created thereunder.",
+      "clause": "21",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "Angel schemes",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must_not",
+     "condition": null,
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "21-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "21"
+  }
+ },
+ {
+  "key": "bfef2023747418fb7579f1e81c2466e8134cc7dc244c31df4dbb4c2f61d0e36b",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "exceed the number of angel investors in each segregated portfolio",
+     "source": {
+      "date": null,
+      "page": 2,
+      "quote": "The number of angel investors in each segregated portfolio under an angel scheme shall not exceed 250 (two hundred and fifty).",
+      "clause": "14",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 2
+     },
+     "status": "proposed",
+     "subject": "angel scheme",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must_not",
+     "condition": null,
+     "threshold": {
+      "unit": null,
+      "value": 250,
+      "metric": "angel_investors",
+      "operator": "<="
+     },
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "14-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": true
+    }
+   ],
+   "clause_number": "14"
+  }
+ },
+ {
+  "key": "c600e49ae7c81073e308542eb76ebfc0d0ced3461b4f2876b7297504c995cb9d",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "12(f)"
+  }
+ },
+ {
+  "key": "c67cf354405cda94d1f52072bedd66c1b961748338b0453c5f7df7635b07eb71",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "disclose risk management practices",
+     "source": {
+      "date": null,
+      "page": 5,
+      "quote": "Further, wherever feasible, the risk management practices should also be disclosed by the FME.",
+      "clause": "2(E)(II)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "should",
+     "condition": "wherever feasible",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "2(E)(II)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Condition depends on vague term 'wherever feasible'.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(E)(II)"
+  }
+ },
+ {
+  "key": "cbd5df608491f9206f62818d18f94a76da0a223f5b5f94fb1f8ae1095abc540c",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "3(iv)"
+  }
+ },
+ {
+  "key": "cc8d9e314e108f21c58d554e7f3cb11b7b3b5083193dc3dbe4869f2ab78bdd21",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "disclose to the Authority and investors the specified items",
+     "source": {
+      "date": null,
+      "page": 6,
+      "quote": "For every ESG scheme launched by a FME, it shall disclose to the Authority and investors, on a half-yearly basis for a retail scheme and on annual basis for other types of schemes, the following:",
+      "clause": "3",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": "For every ESG scheme launched by a FME, on a half-yearly basis for a retail scheme and on annual basis for other types of schemes",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "3-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "3"
+  }
+ },
+ {
+  "key": "d389a1fbf72df45f0a456eb55bdfcc9b5799d3849e56d975d4caa7b132ed3943",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "exceed maximum investment made in an early-stage venture capital undertaking",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "Each investment made in an early-stage venture capital undertaking by an angel scheme shall not exceed USD 1,500,000.",
+      "clause": "16",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "angel scheme",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must_not",
+     "condition": null,
+     "threshold": {
+      "unit": "USD",
+      "value": 1500000,
+      "metric": "investment_amount",
+      "operator": "<="
+     },
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "16-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": true
+    }
+   ],
+   "clause_number": "16"
+  }
+ },
+ {
+  "key": "d5b167775b9b84670307304114562521e8b7da43817b2543ec2e34bc89db2315",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "invest in excess of USD 1,500,000 during subsequent rounds of fund raising",
+     "source": {
+      "date": null,
+      "page": 5,
+      "quote": "An angel fund that has invested in an early-stage venture capital undertaking may invest in excess of USD 1,500,000 during the subsequent rounds of fund raising by the said undertaking, subject to the following:",
+      "clause": "22",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "angel fund",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "may",
+     "condition": "during subsequent rounds of fund raising by the said undertaking, subject to specified conditions",
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "22-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "22"
+  }
+ },
+ {
+  "key": "d716a5f9673b0ae7a6ef680b77021b8e12279cb4be7117c91e95c16788d7e0e6",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "comply with all other conditions as applicable to a segregated portfolio",
+     "source": {
+      "date": null,
+      "page": 5,
+      "quote": "The FME shall comply with all other conditions as applicable to a segregated portfolio, such as consent from the angel investor, filings with the Authority, lockin period, FME contribution, etc.",
+      "clause": "22(v)",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "filings with the Authority",
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 0.8,
+     "approved_by": null,
+     "obligation_id": "22(v)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "refers to undefined 'all other conditions' and 'etc.'",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "22(v)"
+  }
+ },
+ {
+  "key": "d7f649e73f99f5b921a7582ee0dfced0aa8f987115ff2697e19117b5691a8835",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "make disclosures in the Offer Document / Placement Memorandum for every ESG scheme launched",
+     "source": {
+      "date": null,
+      "page": 2,
+      "quote": "For every ESG scheme launched by a FME, the following disclosures shall be suitably made in the Offer Document / Placement Memorandum, as the case may be:",
+      "clause": "2",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "Offer Document / Placement Memorandum",
+     "modality": "must",
+     "condition": "For every ESG scheme launched by a FME",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "2-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "The term 'suitably' is vague.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2"
+  }
+ },
+ {
+  "key": "dd87a16c883520a36edf2cf675101f89d81221b27e9172eda3303e36b8a92064",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "obtain an express consent from every angel investor who desires to contribute to that investment",
+     "source": {
+      "date": null,
+      "page": 3,
+      "quote": "The FME of an angel scheme shall, prior to making an investment in terms of Clauses 6 and 7, obtain an express consent from every angel investor who desires to contribute to that investment.",
+      "clause": "8",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "The FME of an angel scheme",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": "prior to making an investment in terms of Clauses 6 and 7",
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "8-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    },
+    {
+     "action": "structure each investment as a close-ended segregated portfolio by issuing separate classes of units to the consenting angel investors under each segregated portfolio, on a private placement basis",
+     "source": {
+      "date": null,
+      "page": 3,
+      "quote": "Accordingly, the FME of an angel scheme shall structure each investment as a close-ended segregated portfolio by issuing separate classes of units to the consenting angel investors under each segregated portfolio, on a private placement basis.",
+      "clause": "8",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "The FME of an angel scheme",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "8-02",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "8"
+  }
+ },
+ {
+  "key": "e1cb94d17b3e559a88f5979ea182797c569360d78c4b09e8faaf0e29bf1c1bce",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "disclose ESG-related performance in terms of pre-determined KPIs, expected outcomes and other relevant factors",
+     "source": {
+      "date": null,
+      "page": 7,
+      "quote": "For the disclosure of ESG-related performance, as per clause 3(B), FME may disclose the same in terms of the pre-determined KPIs, expected outcomes and other relevant factors;",
+      "clause": "4(b)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "may",
+     "condition": "For the disclosure of ESG-related performance, as per clause 3(B)",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "4(b)-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "4(b)"
+  }
+ },
+ {
+  "key": "e39944fbf0cfd85575ea2ffb55a5b6d235c9a8f4a43c471ff607457370a684c1",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "accept a commitment of an amount less than the minimum from each angel investor",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "An angel scheme shall not accept a commitment of an amount less than USD 40,000 from each angel investor, which shall be invested across segregated portfolio(s) within a period of 5 years.",
+      "clause": "15",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "angel scheme",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must_not",
+     "condition": "unless the angel investor is an accredited investor",
+     "threshold": {
+      "unit": "USD",
+      "value": 40000,
+      "metric": "commitment_amount",
+      "operator": ">="
+     },
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "15-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": true
+    }
+   ],
+   "clause_number": "15"
+  }
+ },
+ {
+  "key": "e4ca65f95d8575b4d79543bd9af3003f667e20c539fa60c467a0a8678fdbb1bc",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "pay a fee",
+     "source": {
+      "date": null,
+      "page": 6,
+      "quote": "The FME shall pay a fee of USD 3,000 at the time of filing of placement memorandum of angel scheme with the Authority.",
+      "clause": "23",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "fee payment receipt",
+     "modality": "must",
+     "condition": "at the time of filing of placement memorandum of angel scheme with the Authority",
+     "threshold": {
+      "unit": "USD",
+      "value": 3000,
+      "metric": "fee",
+      "operator": "=="
+     },
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "23-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": true
+    }
+   ],
+   "clause_number": "23"
+  }
+ },
+ {
+  "key": "e9dee1a213beabc26898e4885309d40481caf8c995eb750401fe3ae35ae477d3",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "carry out monitoring and performance evaluation of ESG schemes and disclose the result of the same",
+     "source": {
+      "date": null,
+      "page": 7,
+      "quote": "FME is required to carry out monitoring and performance evaluation of ESG schemes, as detailed in the subsequent section, and disclose the result of the same to achieve compliance with clause 3(H). Passive ETFs or Schemes",
+      "clause": "4(e)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": "to achieve compliance with clause 3(H)",
+     "threshold": null,
+     "confidence": 0.95,
+     "approved_by": null,
+     "obligation_id": "4(e)-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "4(e)"
+  }
+ },
+ {
+  "key": "ef17a7ea7493dae9127530714c4e42043d0ada795576744d40dd5c1e2ca680a7",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [],
+   "clause_number": "2(D)(III)"
+  }
+ },
+ {
+  "key": "efdc760169b79cf570765e350ff4feae32ad5becf07f5045dc7f4f5d963670be",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "designate a reference benchmark for the ESG scheme to measure the attainment of its ESG focus and/or financial performance vis-à-vis the benchmark",
+     "source": {
+      "date": null,
+      "page": 6,
+      "quote": "Wherever feasible, FME may designate a reference benchmark for the ESG scheme to measure the attainment of its ESG focus and/or financial performance vis-à-vis the benchmark.",
+      "clause": "2(F)(I)",
+      "document": "Disclosures by FMEs for ESG Schemes (IFSCA Circular, 18 Jan 2023)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "may",
+     "condition": "Wherever feasible",
+     "threshold": null,
+     "confidence": 0.9,
+     "approved_by": null,
+     "obligation_id": "2(F)(I)-01",
+     "ambiguity_flag": true,
+     "ambiguity_reason": "Condition depends on vague term 'wherever feasible'.",
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "2(F)(I)"
+  }
+ },
+ {
+  "key": "f4f75209a31b4896e0b5367493bcb40a2f773560cf1d111fb6fcb3dd5f0cd0a4",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "ensure overall exposure of the angel fund in an early-stage venture capital undertaking does not exceed the limit",
+     "source": {
+      "date": null,
+      "page": 5,
+      "quote": "The FME shall ensure that the overall exposure of the angel fund in an earlystage venture capital undertaking, including investments made in subsequent rounds, does not exceed 50% of the total investments made by the angel fund under all the segregated portfolios or USD 30,000,000, whichever is lower; and",
+      "clause": "22(iv)",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": null,
+     "modality": "must",
+     "condition": null,
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "22(iv)-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "22(iv)"
+  }
+ },
+ {
+  "key": "f67ef1474159af1fc07baa20be2165043314e27a0fefba032f6e503cc76a0b0c",
+  "promptVersion": "obligations-v1",
+  "model": "gemini-3.5-flash-lite",
+  "result": {
+   "notes": [],
+   "attempts": 1,
+   "rejected": [],
+   "obligations": [
+    {
+     "action": "intimate the same to the Authority in the format as specified in Annexure II of this circular",
+     "source": {
+      "date": null,
+      "page": 4,
+      "quote": "For investments made in other regulated angel schemes or angel funds set up in IFSC, India or foreign jurisdiction, the FME shall intimate the same to the Authority in the format as specified in Annexure II of this circular within 10 (ten) working days from the date of each investment.",
+      "clause": "12",
+      "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+      "document_version": 1
+     },
+     "status": "proposed",
+     "subject": "the FME",
+     "version": 1,
+     "deadline": null,
+     "evidence": "intimation in the format as specified in Annexure II",
+     "modality": "must",
+     "condition": "For investments made in other regulated angel schemes or angel funds set up in IFSC, India or foreign jurisdiction, within 10 (ten) working days from the date of each investment",
+     "threshold": null,
+     "confidence": 1,
+     "approved_by": null,
+     "obligation_id": "12-01",
+     "ambiguity_flag": false,
+     "ambiguity_reason": null,
+     "machine_checkable": false
+    }
+   ],
+   "clause_number": "12"
+  }
+ }
+]

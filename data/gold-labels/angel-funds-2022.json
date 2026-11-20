@@ -1,0 +1,51 @@
+{
+  "status": "DRAFT - drafted with AI assistance on 2026-11-20 and NOT yet verified. Before any figure from this file is reported as a result, two team members must label the clauses independently and agree a final version.",
+  "document": "Angel Funds under the IFSCA FM Regulations (IFSCA Circular, 1 Jul 2022)",
+  "document_version": 1,
+  "how_to_read": {
+    "required": "Obligations a careful human reader should extract from the clause. Matched by clause number and modality.",
+    "optional": "Borderline items (e.g. a second sentence some labellers would merge). Matching them counts neither for nor against.",
+    "threshold": "Present only where the clause states one explicit numeric limit. Describes a compliant value. Used for threshold accuracy.",
+    "clauses not listed": "Contain no obligation (definitions, applicability, exemptions, sub-conditions)."
+  },
+  "clauses": {
+    "5": { "required": [], "optional": [{ "modality": "must", "note": "other FM Regulations provisions apply (applicability, not a duty)" }] },
+    "6": { "required": [{ "modality": "must", "note": "invest only in early-stage VC undertakings or regulated angel schemes/funds" }] },
+    "7": { "required": [{ "modality": "must_not", "note": "no investment in associates of the FME or connected undertakings" }] },
+    "8": {
+      "required": [
+        { "modality": "must", "note": "obtain express consent from every contributing angel investor before investing" },
+        { "modality": "must", "note": "structure each investment as a close-ended segregated portfolio" }
+      ]
+    },
+    "9": { "required": [{ "modality": "must", "note": "ring-fence assets and liabilities of each segregated portfolio" }] },
+    "10": {
+      "required": [{ "modality": "must", "note": "launch by filing a placement memorandum with fees" }],
+      "optional": [{ "modality": "must", "note": "filing is under the green channel (procedure)" }]
+    },
+    "11": { "required": [{ "modality": "must", "note": "intimate investments in early-stage undertakings within 10 working days" }] },
+    "12": { "required": [{ "modality": "must", "note": "intimate investments in other angel schemes/funds within 10 working days" }] },
+    "13": { "required": [{ "modality": "must", "note": "inform material changes immediately" }] },
+    "14": { "required": [{ "modality": "must_not", "note": "max 200 angel investors per segregated portfolio", "threshold": { "operator": "<=", "value": 200 } }] },
+    "15": {
+      "required": [{ "modality": "must_not", "note": "no commitment below USD 40,000 per angel investor", "threshold": { "operator": ">=", "value": 40000 } }],
+      "optional": [{ "modality": "must", "note": "invest the commitment across portfolios within 5 years" }]
+    },
+    "16": { "required": [{ "modality": "must_not", "note": "each investment max USD 1,500,000", "threshold": { "operator": "<=", "value": 1500000 } }] },
+    "17": { "required": [{ "modality": "must", "note": "lock-in of at least 1 year", "threshold": { "operator": ">=", "value": 1 } }] },
+    "18": { "required": [{ "modality": "must", "note": "corpus of at least USD 1,000,000", "threshold": { "operator": ">=", "value": 1000000 } }] },
+    "19": { "required": [{ "modality": "must", "note": "FME contribution of the lower of 2.5% or USD 20,000 (combined limit: no single threshold)" }] },
+    "20": {
+      "required": [{ "modality": "must", "note": "contribution made by FME or associate and maintained on an ongoing basis" }],
+      "optional": [{ "modality": "must", "note": "contribution counts towards net-worth requirement" }]
+    },
+    "21": { "required": [{ "modality": "must_not", "note": "no leverage" }] },
+    "22": { "required": [{ "modality": "may", "note": "may invest above USD 1,500,000 in subsequent rounds, subject to conditions" }] },
+    "22(ii)": { "required": [{ "modality": "must", "note": "offer subsequent rounds only to earlier participants" }] },
+    "22(iii)": { "required": [{ "modality": "should", "note": "limit contribution so beneficial interest stays the same" }] },
+    "22(iv)": { "required": [{ "modality": "must", "note": "overall exposure max 50% or USD 30,000,000 whichever lower (combined limit)" }] },
+    "22(v)": { "required": [{ "modality": "must", "note": "comply with all other segregated-portfolio conditions" }] },
+    "23": { "required": [{ "modality": "must", "note": "pay USD 3,000 fee when filing the placement memorandum" }] },
+    "24": { "required": [{ "modality": "must", "note": "pay USD 500 fee when filing an intimation" }] }
+  }
+}

@@ -15,7 +15,8 @@
     "db:verify": "dotenv -e ../.env.local -- tsx prisma/verify-chain.ts",
     "db:audit": "dotenv -e ../.env.local -- tsx prisma/audit-tail.ts",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test \"src/**/*.test.ts\""
+    "test": "tsx --test \"src/**/*.test.ts\"",
+    "db:cache-export": "dotenv -e ../.env.dev.local -- tsx prisma/cache-export.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",

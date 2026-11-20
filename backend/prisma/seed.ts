@@ -8,6 +8,8 @@
  * All profile values are ILLUSTRATIVE, not real IFSCA figures.
  */
 import { PrismaClient, type Role } from "@prisma/client";
+import fs from "node:fs";
+import path from "node:path";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -120,6 +122,18 @@ async function main() {
         data: { orgId: org.id, name: p.name, categoryId: category.id, dataJson: p.data },
       });
     }
+  }
+
+  // Validated AI extraction results for the demo circulars (see prisma/cache-export.ts),
+  // so a fresh database can run extraction without calling the LLM.
+  const cacheFile = path.resolve(import.meta.dirname, "../../data/llm-cache/extraction-cache.json");
+  if (fs.existsSync(cacheFile)) {
+    const entries = JSON.parse(fs.readFileSync(cacheFile, "utf8")) as { key: string; promptVersion: string; model: string; result: object }[];
+    const { count } = await prisma.extractionCache.createMany({
+      data: entries.map((e) => ({ key: e.key, promptVersion: e.promptVersion, model: e.model, resultJson: e.result })),
+      skipDuplicates: true,
+    });
+    console.log(`LLM cache: ${count} new of ${entries.length} entries`);
   }
 
   const counts = {

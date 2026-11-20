@@ -3,25 +3,51 @@
 
 **AI reads. Humans verify. Deterministic rules evaluate. Every result remains traceable.**
 
-ClauseTrace is an AI-assisted, human-verified regulatory compliance platform. It turns financial regulations (starting with public IFSCA circulars) into traceable, structured, machine-checkable obligations.
+ClauseTrace turns financial regulations into traceable, machine-checkable compliance obligations, with a person in control of every decision. It starts with public IFSCA circulars for Fund Management Entities in GIFT IFSC.
 
-> **Live:** https://clausetrace-eight.vercel.app
+> **Live:** https://clausetrace-eight.vercel.app (sign-in required; the free servers can take up to a minute to wake up)
 >
-> **Current stage:** Blocks A–E of the implementation plan. Sign-in with roles (viewer, reviewer, admin), PDF upload, clause parsing, and AI obligation extraction (Gemini, with exact-quote and number checks) work. Extracted obligations are *proposed* only: human review (Block G), rules and dashboards are not built yet. Parsing and extraction were checked by hand ([parsing notes](docs/parsing-notes.md), [extraction notes](docs/extraction-notes.md)); no accuracy figures are claimed. All entity data and thresholds are fictional and illustrative.
+> **Current stage: working prototype.** All twelve blocks of the [implementation plan](ClauseTrace_Implementation_Plan.md) are built and deployed, and the full flow (upload → AI extraction → human review → rules → evaluation → dashboard → amendment impact → audit) works end to end. It has been tested only with public IFSCA circulars and **fictional** entity data. It has **not** been piloted with any institution. Extraction accuracy is **not yet independently measured**; see [docs/evaluation.md](docs/evaluation.md) for what was and was not measured.
 
-## Plans
+## What it does
 
-- [Implementation plan](ClauseTrace_Implementation_Plan.md): what gets built, blocks A–L
-- [Execution and deployment plan](ClauseTrace_Execution_and_Deployment_Plan.md): build order and free hosting
+1. **Parse.** A PDF circular is split into numbered clauses (1., 4.2, (a), (i), A., I., …) with page numbers and parent/child links.
+2. **Extract.** Gemini proposes obligations per clause (who, must/must not/should/may, action, condition, threshold, deadline). Code, not the AI, then:
+   - rejects any proposal whose quote is not word for word in the clause, or whose numbers or dates are not in the quote;
+   - flags vague terms.
+   Source references come from the database, never from the model.
+3. **Review.** A reviewer approves, edits (creating a new version) or rejects each proposal, in a queue ordered by a transparent review priority. Vague obligations can be approved as "reference only".
+4. **Rules.** Approved, machine-checkable obligations compile into versioned rules by fixed templates (threshold, deadline, required field).
+5. **Evaluate.** A deterministic engine (no AI) checks entity data and returns PASS, FAIL, UPCOMING_DEADLINE or INSUFFICIENT_DATA, with an explanation and the exact inputs used. Missing data or a unit mismatch never passes silently.
+6. **Trace.** Any result opens the chain: result → rule version → approved obligation → reviewer → quote → document version → clause → PDF page.
+7. **Amendments.** Two versions are compared clause by clause (renumbering is not a change), and the affected obligations, rules and results are listed for review. Approved rules never change by themselves.
+8. **More.**
+   - Append-only audit log.
+   - Risk-ordered dashboard, with the reasons and weights visible.
+   - Knowledge-graph view: "if this clause changes, what is affected?"
+   - Conflict flags: same metric, different limits; flagged, never concluded.
+   - What-if simulator, kept out of compliance records.
 
 ## Architecture
 
 | Part | Stack | Hosting (free tier) |
 |---|---|---|
 | `frontend/` | React, Vite, Tailwind | Vercel |
-| `backend/` | Node.js, Express, Prisma | Render |
-| `ai-service/` | Python, FastAPI, PyMuPDF | Render |
+| `backend/` | Node.js, Express, Prisma, deterministic rule engine | Render |
+| `ai-service/` | Python, FastAPI, PyMuPDF, Gemini | Render |
 | Database | PostgreSQL | Neon |
+
+Details: [docs/architecture.md](docs/architecture.md). Demo walkthrough: [docs/demo-script.md](docs/demo-script.md).
+
+## Roles
+
+| Role | Can |
+|---|---|
+| viewer | Read everything except the audit log and user list |
+| reviewer | Also upload, extract, review, compile rules, evaluate, compare versions, flag conflicts, read the audit log |
+| admin | Also manage users and risk weights |
+
+Every endpoint except health and sign-in needs `Authorization: Bearer <token>`.
 
 ## Local setup
 
@@ -29,78 +55,59 @@ Requirements: Node 22+, Python 3.11, [uv](https://docs.astral.sh/uv/), the Neon 
 
 ```bash
 # 1. Production connection (writes .env.local, git-ignored). Used for migrations and seed.
-neon login
-neon env pull
+neon login && neon env pull
 
-# 2. Local development uses a Neon branch, so test uploads never touch production.
-#    Create .env.dev.local (git-ignored) with:
-#      DATABASE_URL=<neon connection-string dev-local --pooled>
-#      DATABASE_URL_UNPOOLED=<neon connection-string dev-local>
-#      AI_SERVICE_URL=http://localhost:8000
-#      AI_SERVICE_TOKEN=dev-token
-#      JWT_SECRET=<any random string of 32+ characters>
+# 2. Local development uses a Neon branch, so tests never touch production.
 neon branches create --name dev-local --no-secrets
+#    Create .env.dev.local (git-ignored) with DATABASE_URL / DATABASE_URL_UNPOOLED of that branch
+#    (neon connection-string dev-local [--pooled]), AI_SERVICE_URL=http://localhost:8000,
+#    AI_SERVICE_TOKEN=dev-token and JWT_SECRET=<32+ random characters>.
 
-# 3. Seed passwords: create .env.seed.local (git-ignored) with
-#    SEED_ADMIN_PASSWORD, SEED_REVIEWER_PASSWORD, SEED_VIEWER_PASSWORD (12+ chars each)
+# 3. Seed passwords: .env.seed.local (git-ignored) with SEED_ADMIN_PASSWORD,
+#    SEED_REVIEWER_PASSWORD and SEED_VIEWER_PASSWORD (12+ characters each).
 
 # 4. Backend
 cd backend && npm install
-npm run db:migrate      # apply migrations to production (direct connection)
-npm run db:seed         # demo org, admin/reviewer/viewer users, fictional profiles
-npm run db:verify       # check document -> clause -> obligation chain
-npm run db:audit        # show the latest audit log entries
-npm run dev             # http://localhost:4000, uses .env.dev.local
+npm run db:migrate      # apply migrations
+npm run db:seed         # demo org, admin/reviewer/viewer, fictional entities, cached AI results
+npm run dev             # http://localhost:4000 (uses .env.dev.local)
 
 # 5. AI service (new terminal)
 cd ai-service && uv venv && uv pip install -r requirements-dev.txt
-GEMINI_API_KEY=<your key> AI_SERVICE_TOKEN=dev-token uv run uvicorn app.main:app --reload --port 8000
+GEMINI_API_KEY=<key> AI_SERVICE_TOKEN=dev-token uv run uvicorn app.main:app --reload --port 8000
 
 # 6. Frontend (new terminal)
 cd frontend && npm install && npm run dev   # http://localhost:5173
 ```
 
-Environment variables are listed in [.env.example](.env.example).
+Environment variables: [.env.example](.env.example).
 
-## API (so far)
-
-Every endpoint except health and login needs `Authorization: Bearer <token>`. Reading needs any role; uploading, re-parsing and extraction need **reviewer**; user management needs **admin** (admin includes reviewer rights).
-
-| Method | Endpoint | Purpose |
-|---|---|---|
-| GET | `/api/health`, `/api/health/ai` | Database and AI-service checks (public) |
-| POST | `/api/auth/login` | Sign in (`{ email, password }`), returns an 8-hour Bearer token (public) |
-| GET | `/api/auth/me` | The signed-in user |
-| GET/POST | `/api/users` | List or create users (admin) |
-| PATCH | `/api/users/:id` | Change role, deactivate or reset password (admin) |
-| POST | `/api/documents` | Upload a PDF (`file`, optional `title`), or a new version (`documentId`) |
-| GET | `/api/documents` | List documents with versions |
-| GET | `/api/documents/:id` | Document details |
-| GET | `/api/documents/:id/clauses?version=N` | Clauses of a version (latest by default) |
-| GET | `/api/documents/:id/versions/:n/file` | Original PDF |
-| POST | `/api/documents/:id/versions/:n/parse` | Retry parsing |
-| POST | `/api/documents/:id/extract` | Start AI extraction for a version (`{ versionNo? }`), runs in the background |
-| GET | `/api/documents/:id/extraction?version=N` | Latest extraction run: progress, counts, rejections |
-| GET | `/api/documents/:id/obligations?version=N` | Obligations of a version, in clause order |
-| GET | `/api/obligations?status=&documentId=&ambiguous=` | Obligations, ambiguous and low-confidence first |
-
-## Tests
+## Tests and checks
 
 ```bash
-cd backend && npm test                       # schema and clause-tree tests
-cd ai-service && uv run python ../scripts/parse_report.py ../data/raw-pdfs/*.pdf   # parser spot-check
-cd ai-service && uv run pytest && uv run ruff check .
-# API permissions for every role (creates and deactivates a temporary user; add --read-only for production)
-node --env-file=.env.seed.local scripts/check-permissions.mjs http://localhost:4000 <document-id>
+cd backend && npm test                  # 90 tests: rule engine (incl. 100-run repeatability), compiler, diff, scoring, conflicts, auth
+cd ai-service && uv run pytest          # 39 tests: parser, schema, extraction checks with a fake LLM
+cd frontend && npm run lint && npm run build
+
+# End-to-end (development database; they write test data):
+node --env-file=.env.seed.local scripts/check-permissions.mjs   <api> <document-id>   # add --read-only for production
+node --env-file=.env.seed.local scripts/check-review-rules.mjs  <api> <angel-funds-document-id>
+node --env-file=.env.seed.local scripts/check-version-compare.mjs <api> <angel-funds-document-id>
+node --env-file=.env.seed.local scripts/check-insights.mjs      <api>
+
+# Evaluation (read-only):
+python scripts/evaluate_extraction.py <api> <document-id> data/gold-labels/angel-funds-2022.json
+cd ai-service && uv run --no-project python ../scripts/evaluate_traceability.py <api>
 ```
 
-CI runs lint, build and tests for all three parts on every push and pull request.
+CI runs lint, build and tests for all three parts on every push.
 
 ## Known limitations
 
-- Free hosting sleeps when idle: the first request after a pause can take up to a minute.
-- Only fictional entity data is used. Thresholds are illustrative, not real IFSCA figures.
-- Sign-in tokens are kept in the browser's localStorage and sent as a Bearer header, because the frontend and API are on different sites and third-party cookies are increasingly blocked. Tokens expire after 8 hours; role changes and deactivation apply immediately.
-- Login is rate-limited to 10 attempts per 15 minutes per IP. There is no self-service sign-up or password reset: an admin creates accounts and resets passwords.
-- Parser limits (headings, tables, annexures, scanned PDFs) are listed in [docs/parsing-notes.md](docs/parsing-notes.md).
-- Extraction uses the Gemini free tier: a document can take several minutes, and limits are listed in [docs/extraction-notes.md](docs/extraction-notes.md).
+- **Accuracy:** extraction accuracy is not independently measured yet. The gold labels in `data/gold-labels/` are a draft written after seeing the model output; two people must label independently first.
+- **Parser:** headings between clauses join the previous clause, tables are flattened, annexures that restart at "1." are not split, and scanned PDFs (no OCR) are not supported. See [docs/parsing-notes.md](docs/parsing-notes.md).
+- **Extraction:** child clauses are sent without their parent's text, and clauses without obligation wording ("shall", "must", …) are skipped. See [docs/extraction-notes.md](docs/extraction-notes.md).
+- **Data:** only fictional entity data. Thresholds in the demo come from public circulars, and the amendment is a clearly stamped test copy.
+- **Hosting:** free hosting sleeps when idle (up to a minute to wake). Extraction runs inside the backend process; a restart interrupts a run, which can then be started again.
+- **Accounts:** an admin creates users; there is no self-service password reset.
+- **Sessions:** the sign-in token is kept in the browser and sent as a Bearer header (the frontend and API are on different sites), and expires after 8 hours.
