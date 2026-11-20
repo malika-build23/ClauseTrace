@@ -2,6 +2,7 @@ import cors from "cors";
 import express, { type NextFunction, type Request, type Response } from "express";
 import multer from "multer";
 import { prisma } from "./db.js";
+import { wakeInBackground } from "./lib/ai-client.js";
 import { requireAuth, requireRole } from "./lib/auth.js";
 import { authRouter } from "./routes/auth.js";
 import { documentsRouter } from "./routes/documents.js";
@@ -34,6 +35,7 @@ app.use(express.json({ limit: "1mb" }));
 
 // Health check: proves the API can reach Neon Postgres.
 app.get("/api/health", async (_req, res) => {
+  wakeInBackground(); // the site is being used: get the sleeping AI service booting now
   try {
     const [row] = await prisma.$queryRaw<{ now: Date }[]>`SELECT now() AS now`;
     res.json({ status: "ok", db: "connected", dbTime: row.now });
