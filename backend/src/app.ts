@@ -3,6 +3,7 @@ import express, { type NextFunction, type Request, type Response } from "express
 import multer from "multer";
 import { prisma } from "./db.js";
 import { documentsRouter } from "./routes/documents.js";
+import { obligationsRouter } from "./routes/obligations.js";
 
 export const app = express();
 
@@ -50,6 +51,7 @@ app.get("/api/health/ai", async (_req, res) => {
 });
 
 app.use("/api/documents", documentsRouter);
+app.use("/api/obligations", obligationsRouter);
 
 app.use("/api", (_req, res) => {
   res.status(404).json({ error: "Not found" });

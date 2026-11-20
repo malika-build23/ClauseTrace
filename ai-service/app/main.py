@@ -1,17 +1,45 @@
 """ClauseTrace AI service: PDF parsing and obligation extraction."""
 
+import logging
 import os
 import secrets
 from dataclasses import asdict
+from functools import lru_cache
 
 import pymupdf
 from fastapi import Depends, FastAPI, File, Header, HTTPException, UploadFile
+from fastapi.responses import JSONResponse
 
+from app.extraction import (
+    LLM,
+    ExtractRequest,
+    ExtractResponse,
+    GeminiLLM,
+    LLMError,
+    LLMRateLimited,
+    extract,
+)
+from app.extraction.prompt import PROMPT_VERSION
 from app.parser import parse_pdf
 
 MAX_PDF_BYTES = 10 * 1024 * 1024
+MAX_BATCH_CHARS = 40_000
 
-app = FastAPI(title="ClauseTrace AI Service", version="0.2.0")
+logging.basicConfig(level=logging.INFO)
+app = FastAPI(title="ClauseTrace AI Service", version="0.3.0")
+
+
+@lru_cache
+def _gemini() -> GeminiLLM:
+    return GeminiLLM()
+
+
+def get_llm() -> LLM:
+    """Overridden in tests with a fake model."""
+    try:
+        return _gemini()
+    except LLMError as err:
+        raise HTTPException(status_code=503, detail=str(err)) from err
 
 
 def require_service_token(x_service_token: str | None = Header(default=None)) -> None:
@@ -52,3 +80,26 @@ async def parse(file: UploadFile = File(...)) -> dict:
     except (pymupdf.FileDataError, RuntimeError) as err:
         raise HTTPException(status_code=422, detail=f"PDF could not be read: {err}") from err
     return asdict(result)
+
+
+@app.get("/extract/info", dependencies=[Depends(require_service_token)])
+def extract_info() -> dict[str, str]:
+    """Prompt version, used by the backend in its extraction cache key."""
+    return {"prompt_version": PROMPT_VERSION}
+
+
+@app.post("/extract", dependencies=[Depends(require_service_token)], response_model=ExtractResponse)
+async def extract_obligations(request: ExtractRequest, llm: LLM = Depends(get_llm)):
+    """Propose obligations for up to 20 clauses. Every result is unverified until a human reviews it."""
+    if sum(len(c.text) for c in request.clauses) > MAX_BATCH_CHARS:
+        raise HTTPException(status_code=413, detail=f"batch text exceeds {MAX_BATCH_CHARS} characters")
+    try:
+        return await extract(llm, request)
+    except LLMRateLimited as err:
+        return JSONResponse(
+            status_code=429,
+            content={"detail": str(err), "retry_after": err.retry_after},
+            headers={"Retry-After": str(int(err.retry_after))},
+        )
+    except LLMError as err:
+        raise HTTPException(status_code=502, detail=str(err)) from err

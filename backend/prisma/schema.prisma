@@ -65,6 +65,13 @@ enum EvaluationResult {
   INSUFFICIENT_DATA
 }
 
+enum ExtractionStatus {
+  queued
+  running
+  completed
+  failed
+}
+
 enum ChangeType {
   added
   modified
@@ -123,6 +130,7 @@ model User {
   conflictsReviewed   ConflictFlag[]
   riskConfigsUpdated  RiskConfig[]
   auditEntries        AuditLog[]
+  extractionRuns      ExtractionRun[]
 
   @@index([orgId])
   @@map("users")
@@ -155,10 +163,11 @@ model DocumentVersion {
   uploadedAt    DateTime      @default(now()) @map("uploaded_at")
   parsingStatus ParsingStatus @default(pending) @map("parsing_status")
 
-  document    Document      @relation(fields: [documentId], references: [id], onDelete: Cascade)
-  clauses     Clause[]
-  changesFrom ChangeEvent[] @relation("ChangeOldVersion")
-  changesTo   ChangeEvent[] @relation("ChangeNewVersion")
+  document       Document        @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  clauses        Clause[]
+  changesFrom    ChangeEvent[]   @relation("ChangeOldVersion")
+  changesTo      ChangeEvent[]   @relation("ChangeNewVersion")
+  extractionRuns ExtractionRun[]
 
   @@unique([documentId, versionNo])
   @@map("document_versions")
@@ -206,12 +215,14 @@ model Obligation {
   reviewPriority    ReviewPriority?  @map("review_priority")
   status            ObligationStatus @default(proposed)
   approvedById      String?          @map("approved_by")
+  extractionRunId   String?          @map("extraction_run_id") // which AI run proposed it (null for manual entries)
   createdAt         DateTime         @default(now()) @map("created_at")
 
   clause           Clause                     @relation(fields: [clauseId], references: [id])
   previousVersion  Obligation?                @relation("ObligationVersions", fields: [previousVersionId], references: [id])
   nextVersion      Obligation?                @relation("ObligationVersions")
   approvedBy       User?                      @relation("ObligationApprovedBy", fields: [approvedById], references: [id])
+  extractionRun    ExtractionRun?             @relation(fields: [extractionRunId], references: [id])
   reviews          ObligationReview[]
   entityCategories ObligationEntityCategory[]
   rules            Rule[]
@@ -261,6 +272,48 @@ model ObligationEntityCategory {
 
   @@id([obligationId, entityCategoryId])
   @@map("obligation_entity_categories")
+}
+
+// ─── AI extraction ────────────────────────────────────────────────────────────
+
+/// One AI extraction pass over a document version. Runs in the background;
+/// the UI polls it for progress.
+model ExtractionRun {
+  id                 String           @id @default(uuid())
+  documentVersionId  String           @map("document_version_id")
+  status             ExtractionStatus @default(queued)
+  totalClauses       Int              @default(0) @map("total_clauses") // clauses sent (or served from cache)
+  processedClauses   Int              @default(0) @map("processed_clauses")
+  skippedClauses     Int              @default(0) @map("skipped_clauses") // no obligation wording, or already extracted
+  cachedClauses      Int              @default(0) @map("cached_clauses")
+  obligationsCreated Int              @default(0) @map("obligations_created")
+  rejectedCount      Int              @default(0) @map("rejected_count") // model outputs that failed validation
+  rejectionsJson     Json             @default("[]") @map("rejections_json")
+  models             String? // model(s) that answered
+  promptVersion      String?          @map("prompt_version")
+  error              String?
+  createdById        String           @map("created_by")
+  startedAt          DateTime         @default(now()) @map("started_at")
+  finishedAt         DateTime?        @map("finished_at")
+
+  documentVersion DocumentVersion @relation(fields: [documentVersionId], references: [id], onDelete: Cascade)
+  createdBy       User            @relation(fields: [createdById], references: [id])
+  obligations     Obligation[]
+
+  @@index([documentVersionId, startedAt])
+  @@map("extraction_runs")
+}
+
+/// Validated AI output per clause text, so reruns and demos do not depend on
+/// live LLM calls. Key = sha256(prompt version + clause text).
+model ExtractionCache {
+  key           String   @id
+  promptVersion String   @map("prompt_version")
+  model         String
+  resultJson    Json     @map("result_json") // ClauseExtraction from the AI service
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("extraction_cache")
 }
 
 // ─── Rules and evaluations ────────────────────────────────────────────────────

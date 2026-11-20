@@ -1,8 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router'
+import { ExtractionPanel } from '../components/ExtractionPanel'
+import { ObligationCard } from '../components/ObligationCard'
 import { StatusBadge } from '../components/StatusBadge'
 import { UploadForm } from '../components/UploadForm'
-import { apiGet, apiPost, pdfUrl, type Clause, type ClauseList, type DocumentDetail } from '../lib/api'
+import {
+  apiGet,
+  apiPost,
+  pdfUrl,
+  type Clause,
+  type ClauseList,
+  type DocumentDetail,
+  type Obligation,
+  type ObligationList,
+} from '../lib/api'
+import { highlightQuotes } from '../lib/highlight'
 
 /** Depth of each clause in the parent/child tree (0 = top level). */
 function depths(clauses: Clause[]): Map<string, number> {
@@ -28,6 +40,8 @@ export function DocumentPage() {
   const [query, setQuery] = useState('')
   const [retrying, setRetrying] = useState(false)
   const [showNewVersion, setShowNewVersion] = useState(false)
+  const [obligations, setObligations] = useState<Obligation[]>([])
+  const [onlyWithObligations, setOnlyWithObligations] = useState(false)
 
   const versionParam = params.get('version')
 
@@ -44,15 +58,30 @@ export function DocumentPage() {
       .catch((err: Error) => setError(err.message))
   }, [id, versionParam])
 
+  const loadObligations = useCallback(() => {
+    apiGet<ObligationList>(`/api/documents/${id}/obligations${versionParam ? `?version=${versionParam}` : ''}`)
+      .then((o) => setObligations(o.obligations))
+      .catch(() => setObligations([]))
+  }, [id, versionParam])
+
   useEffect(load, [load])
+  useEffect(loadObligations, [loadObligations])
+
+  const byClause = useMemo(() => {
+    const map = new Map<string, Obligation[]>()
+    for (const ob of obligations) map.set(ob.clauseId, [...(map.get(ob.clauseId) ?? []), ob])
+    return map
+  }, [obligations])
 
   const depthMap = useMemo(() => depths(list?.clauses ?? []), [list])
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase()
     if (!list) return []
-    if (!q) return list.clauses
-    return list.clauses.filter((c) => c.text.toLowerCase().includes(q) || c.clauseNumber.toLowerCase().includes(q))
-  }, [list, query])
+    let clauses = list.clauses
+    if (onlyWithObligations) clauses = clauses.filter((c) => byClause.has(c.id))
+    if (!q) return clauses
+    return clauses.filter((c) => c.text.toLowerCase().includes(q) || c.clauseNumber.toLowerCase().includes(q))
+  }, [list, query, onlyWithObligations, byClause])
 
   async function retry() {
     if (!list) return
@@ -167,11 +196,34 @@ export function DocumentPage() {
       )}
       {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-fail">{error}</p>}
 
+      <ExtractionPanel
+        documentId={doc.id}
+        versionNo={list.versionNo}
+        canExtract={list.parsingStatus === 'parsed' || list.parsingStatus === 'needs_manual_split'}
+        onFinished={loadObligations}
+      />
+
+      {obligations.length > 0 && (
+        <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-upcoming">
+          {obligations.length} AI-proposed obligation{obligations.length === 1 ? '' : 's'}. Highlighted text is the
+          exact source quote. Confidence is a review aid, not proof of correctness. Nothing here is approved yet.
+        </p>
+      )}
+
       <section aria-labelledby="clauses-heading" className="rounded-xl border border-line bg-panel shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3">
           <h2 id="clauses-heading" className="font-medium">
             Clauses
           </h2>
+          <label className="flex items-center gap-2 text-sm text-muted">
+            <input
+              type="checkbox"
+              checked={onlyWithObligations}
+              onChange={(e) => setOnlyWithObligations(e.target.checked)}
+              disabled={obligations.length === 0}
+            />
+            Only clauses with obligations
+          </label>
           <input
             type="search"
             value={query}
@@ -206,9 +258,22 @@ export function DocumentPage() {
                         p. {c.page}
                       </a>
                     </div>
-                    <p className={`min-w-0 text-sm leading-relaxed ${c.text ? '' : 'text-muted italic'}`}>
-                      {c.text || 'Heading only (no text)'}
-                    </p>
+                    <div className="min-w-0 flex-1 space-y-3">
+                      <p className={`text-sm leading-relaxed ${c.text ? '' : 'text-muted italic'}`}>
+                        {c.text
+                          ? highlightQuotes(c.text, (byClause.get(c.id) ?? []).map((o) => o.quote)).map((seg, i) =>
+                              seg.marked ? (
+                                <mark key={i} className="rounded-sm bg-yellow-100 px-0.5 text-ink">
+                                  {seg.text}
+                                </mark>
+                              ) : (
+                                <span key={i}>{seg.text}</span>
+                              ),
+                            )
+                          : 'Heading only (no text)'}
+                      </p>
+                      {byClause.get(c.id)?.map((ob) => <ObligationCard key={ob.id} ob={ob} />)}
+                    </div>
                   </div>
                 </li>
               )

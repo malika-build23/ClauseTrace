@@ -96,3 +96,55 @@ export type UploadResult = {
 
 export const pdfUrl = (documentId: string, versionNo: number) =>
   `${API_URL}/api/documents/${documentId}/versions/${versionNo}/file`
+
+export type Modality = 'must' | 'must_not' | 'may' | 'should'
+export type ObligationStatus = 'proposed' | 'approved' | 'edited' | 'rejected'
+
+export type Threshold = { metric: string; operator: string; value: number; unit: string | null }
+
+export type Obligation = {
+  id: string
+  obligationKey: string
+  version: number
+  clauseId: string
+  quote: string
+  subject: string
+  modality: Modality
+  action: string
+  condition: string | null
+  thresholdJson: Threshold | null
+  deadline: string | null
+  evidence: string | null
+  machineCheckable: boolean
+  ambiguityFlag: boolean
+  ambiguityReason: string | null
+  referenceOnly: boolean
+  confidence: number | null
+  status: ObligationStatus
+  extractionRunId: string | null
+  createdAt: string
+  clause: { clauseNumber: string; page: number }
+}
+
+export type ObligationList = { versionNo: number; obligations: Obligation[] }
+
+export type ExtractionStatus = 'queued' | 'running' | 'completed' | 'failed'
+
+export type ExtractionRun = {
+  id: string
+  status: ExtractionStatus
+  totalClauses: number
+  processedClauses: number
+  skippedClauses: number
+  cachedClauses: number
+  obligationsCreated: number
+  rejectedCount: number
+  rejectionsJson: { clause: string; reason: string; quote?: string | null }[]
+  models: string | null
+  promptVersion: string | null
+  error: string | null
+  startedAt: string
+  finishedAt: string | null
+}
+
+export type ExtractionState = { versionNo: number; run: ExtractionRun | null }

@@ -7,6 +7,8 @@ import { prisma } from "../db.js";
 import { AiServiceError, parsePdf } from "../lib/ai-client.js";
 import { writeAudit } from "../lib/audit.js";
 import { buildClauseRows } from "../lib/clause-tree.js";
+import { currentUserId } from "../lib/current-user.js";
+import { ExtractionConflictError, startExtraction } from "../lib/extraction-runner.js";
 
 export const MAX_PDF_BYTES = 10 * 1024 * 1024;
 
@@ -26,15 +28,6 @@ const versionSelect = {
   _count: { select: { clauses: true } },
 } satisfies Prisma.DocumentVersionSelect;
 
-/**
- * TEMPORARY until Block E (auth): uploads are attributed to the seeded admin.
- * Block E replaces this with the logged-in user and requireRole('reviewer').
- */
-async function currentUserId(): Promise<string> {
-  const admin = await prisma.user.findFirst({ where: { role: "admin" }, orderBy: { createdAt: "asc" } });
-  if (!admin) throw new Error("No admin user found; run the seed script");
-  return admin.id;
-}
 
 /** Parse one stored version with the AI service and save its clauses. */
 async function parseVersion(versionId: string, actorId: string) {
@@ -237,4 +230,73 @@ documentsRouter.get("/:id/versions/:versionNo/file", async (req, res) => {
   res.setHeader("Content-Type", "application/pdf");
   res.setHeader("Content-Disposition", `inline; filename="${version.fileName.replace(/["\r\n]/g, "")}"`);
   res.send(Buffer.from(version.fileData));
+});
+
+// ─── Obligation extraction ──────────────────────────────────────────────────
+
+// Each run spends free-tier LLM quota, so starts are limited per IP.
+const extractLimiter = rateLimit({ windowMs: 60 * 60 * 1000, limit: 6, standardHeaders: "draft-7", legacyHeaders: false });
+
+async function findVersion(documentId: string, versionNo: number | null) {
+  return prisma.documentVersion.findFirst({
+    where: { documentId, ...(versionNo ? { versionNo } : {}) },
+    orderBy: { versionNo: "desc" },
+    select: { id: true, versionNo: true, parsingStatus: true },
+  });
+}
+
+const versionFrom = (value: unknown) => (value === undefined || value === null || value === "" ? null : Number(value));
+
+// Start AI extraction for a version (latest by default). Body: { versionNo? }
+documentsRouter.post("/:id/extract", extractLimiter, async (req, res) => {
+  const version = await findVersion(param(req, "id"), versionFrom(req.body?.versionNo));
+  if (!version) {
+    res.status(404).json({ error: "Document or version not found" });
+    return;
+  }
+  if (version.parsingStatus !== "parsed" && version.parsingStatus !== "needs_manual_split") {
+    res.status(409).json({ error: `Version is not parsed yet (status: ${version.parsingStatus})` });
+    return;
+  }
+  try {
+    const run = await startExtraction(version.id, await currentUserId());
+    res.status(202).json({ runId: run.id, versionNo: version.versionNo, status: run.status });
+  } catch (err) {
+    if (err instanceof ExtractionConflictError) {
+      res.status(409).json({ error: err.message });
+      return;
+    }
+    throw err;
+  }
+});
+
+// Latest extraction run for a version: ?version=N
+documentsRouter.get("/:id/extraction", async (req, res) => {
+  const version = await findVersion(param(req, "id"), versionFrom(req.query.version));
+  if (!version) {
+    res.status(404).json({ error: "Document or version not found" });
+    return;
+  }
+  const run = await prisma.extractionRun.findFirst({
+    where: { documentVersionId: version.id },
+    orderBy: { startedAt: "desc" },
+    omit: { documentVersionId: true, createdById: true },
+  });
+  res.json({ versionNo: version.versionNo, run });
+});
+
+// Obligations of a version, in clause order: ?version=N
+documentsRouter.get("/:id/obligations", async (req, res) => {
+  const version = await findVersion(param(req, "id"), versionFrom(req.query.version));
+  if (!version) {
+    res.status(404).json({ error: "Document or version not found" });
+    return;
+  }
+  const obligations = await prisma.obligation.findMany({
+    where: { clause: { documentVersionId: version.id } },
+    orderBy: [{ clause: { position: "asc" } }, { obligationKey: "asc" }, { version: "desc" }],
+    omit: { previousVersionId: true, approvedById: true },
+    include: { clause: { select: { clauseNumber: true, page: true } } },
+  });
+  res.json({ versionNo: version.versionNo, obligations });
 });

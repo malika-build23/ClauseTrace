@@ -7,7 +7,7 @@ ClauseTrace is an AI-assisted, human-verified regulatory compliance platform. It
 
 > **Live:** https://clausetrace-eight.vercel.app
 >
-> **Current stage:** Blocks A–C of the implementation plan. PDF upload, clause parsing (numbering, nesting, page numbers) and the clause viewer work. Extraction, review, rules and dashboards are not built yet, and there is no login yet (Block E), so uploads are attributed to the demo admin. Parsing was spot-checked by hand on three IFSCA circulars ([notes](docs/parsing-notes.md)); no accuracy figures are claimed. All entity data and thresholds are fictional and illustrative.
+> **Current stage:** Blocks A–D of the implementation plan. PDF upload, clause parsing, and AI obligation extraction (Gemini, with exact-quote and number checks) work. All extracted obligations are *proposed* only: human review (Block G), rules, dashboards and login (Block E) are not built yet, so actions are attributed to the demo admin. Parsing and extraction were checked by hand ([parsing notes](docs/parsing-notes.md), [extraction notes](docs/extraction-notes.md)); no accuracy figures are claimed. All entity data and thresholds are fictional and illustrative.
 
 ## Plans
 
@@ -53,7 +53,7 @@ npm run dev             # http://localhost:4000, uses .env.dev.local
 
 # 5. AI service (new terminal)
 cd ai-service && uv venv && uv pip install -r requirements-dev.txt
-AI_SERVICE_TOKEN=dev-token uv run uvicorn app.main:app --reload --port 8000
+GEMINI_API_KEY=<your key> AI_SERVICE_TOKEN=dev-token uv run uvicorn app.main:app --reload --port 8000
 
 # 6. Frontend (new terminal)
 cd frontend && npm install && npm run dev   # http://localhost:5173
@@ -72,6 +72,10 @@ Environment variables are listed in [.env.example](.env.example).
 | GET | `/api/documents/:id/clauses?version=N` | Clauses of a version (latest by default) |
 | GET | `/api/documents/:id/versions/:n/file` | Original PDF |
 | POST | `/api/documents/:id/versions/:n/parse` | Retry parsing |
+| POST | `/api/documents/:id/extract` | Start AI extraction for a version (`{ versionNo? }`), runs in the background |
+| GET | `/api/documents/:id/extraction?version=N` | Latest extraction run: progress, counts, rejections |
+| GET | `/api/documents/:id/obligations?version=N` | Obligations of a version, in clause order |
+| GET | `/api/obligations?status=&documentId=&ambiguous=` | Obligations, ambiguous and low-confidence first |
 
 ## Tests
 
@@ -89,3 +93,4 @@ CI runs lint, build and tests for all three parts on every push and pull request
 - Only fictional entity data is used. Thresholds are illustrative, not real IFSCA figures.
 - No login yet: anyone with the link can upload PDFs (rate-limited to 20 per hour per IP, 10 MB each). Block E adds roles.
 - Parser limits (headings, tables, annexures, scanned PDFs) are listed in [docs/parsing-notes.md](docs/parsing-notes.md).
+- Extraction uses the Gemini free tier: a document can take several minutes, and limits are listed in [docs/extraction-notes.md](docs/extraction-notes.md).
