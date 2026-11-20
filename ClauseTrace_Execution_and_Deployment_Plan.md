@@ -110,7 +110,7 @@ Both services are defined in [render.yaml](render.yaml) (free plan, Singapore re
 - Health check: `/health`
 - Env: `GEMINI_API_KEY`, `AI_SERVICE_TOKEN` (shared secret the backend sends in the `X-Service-Token` header, so the public URL cannot be used by anyone else)
 
-Both auto-deploy on push to `main`.
+Both services are linked by public repo URL because the repository belongs to another GitHub account, so pushes do **not** trigger deploys. Deploy with **Manual Deploy** in the Render dashboard (or the Render API) after each push, until the repo owner connects Render's GitHub app. The Vercel frontend is in the same position and is deployed with `vercel deploy --prod` from `frontend/`.
 
 ### 4.6 Vercel (frontend)
 1. Import the GitHub repo, root directory `frontend`, framework preset **Vite**.
