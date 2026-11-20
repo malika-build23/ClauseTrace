@@ -5,6 +5,8 @@
 
 ClauseTrace is an AI-assisted, human-verified regulatory compliance platform. It turns financial regulations (starting with public IFSCA circulars) into traceable, structured, machine-checkable obligations.
 
+> **Live:** https://clausetrace-eight.vercel.app
+>
 > **Current stage:** foundation only. The monorepo, database schema, seed data and service skeletons are in place (implementation plan Blocks A–B). Parsing, extraction, review, rules and dashboards are not built yet. No accuracy or validation claims are made. All entity data and thresholds are fictional and illustrative.
 
 ## Plans
@@ -18,7 +20,7 @@ ClauseTrace is an AI-assisted, human-verified regulatory compliance platform. It
 |---|---|---|
 | `frontend/` | React, Vite, Tailwind | Vercel |
 | `backend/` | Node.js, Express, Prisma | Render |
-| `ai-service/` | Python, FastAPI, PyMuPDF | Hugging Face Spaces (Docker) |
+| `ai-service/` | Python, FastAPI, PyMuPDF | Render |
 | Database | PostgreSQL | Neon |
 
 ## Local setup
