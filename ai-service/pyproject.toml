@@ -5,6 +5,10 @@ target-version = "py311"
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
 
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI declares parameters with calls in defaults by design.
+extend-immutable-calls = ["fastapi.File", "fastapi.Header", "fastapi.Depends"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]

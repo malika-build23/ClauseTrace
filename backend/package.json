@@ -8,11 +8,12 @@
     "build": "prisma generate && tsc",
     "start": "node dist/server.js",
     "start:local": "dotenv -e ../.env.local -- node dist/server.js",
-    "dev": "dotenv -e ../.env.local -- tsx watch src/server.ts",
+    "dev": "dotenv -e ../.env.dev.local -- tsx watch src/server.ts",
     "db:migrate": "dotenv -e ../.env.local -- prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "dotenv -e ../.env.local -e ../.env.seed.local -- tsx prisma/seed.ts",
     "db:verify": "dotenv -e ../.env.local -- tsx prisma/verify-chain.ts",
+    "db:audit": "dotenv -e ../.env.local -- tsx prisma/audit-tail.ts",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test \"src/**/*.test.ts\""
   },
@@ -21,11 +22,14 @@
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "express": "^5.3.0",
+    "express-rate-limit": "^7.5.1",
+    "multer": "^2.5.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/multer": "^2.3.0",
     "@types/node": "^22.20.5",
     "dotenv-cli": "^11.1.0",
     "prisma": "^6.19.3",
