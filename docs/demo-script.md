@@ -95,7 +95,7 @@
   2. **Renumbered / Moved Detection:** Point out that clauses renumbered without text changes are tagged with a distinct blue `MOVED` badge, not falsely marked as modified.
   3. **Governance Callout Banner:**
      > **"Approved rules do not change automatically. Review required."**
-     Explain that live rules remain locked to their certified baseline until an authorized reviewer signs off.
+     Explain that live rules remain locked to their approved baseline until an authorized reviewer signs off.
   4. **Cascading Blast Radius Animation:** Select a changed clause to reveal the 4-stage impact cascade:
      $$\text{Changed Clause} \longrightarrow N \text{ Obligations} \longrightarrow M \text{ Compiled Rules} \longrightarrow K \text{ Historical Determinations}$$
   5. **Review Queue Links:** Direct links allow compliance teams to jump straight into `/review` to triage affected obligations.
@@ -115,4 +115,4 @@
 ---
 
 ## 🎯 Wrap-Up Summary Statement
-*"ClauseTrace replaces LLM hallucination risks and spreadsheet fragility with mathematical certainty, certified human sign-offs, and unbreakable provenance back to the official regulatory gazette."*
+*"ClauseTrace keeps AI to proposing: code checks every quote against the source, a person approves, a deterministic engine evaluates, and every result traces back to the clause and page it came from."*

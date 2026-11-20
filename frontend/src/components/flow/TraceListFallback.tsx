@@ -107,7 +107,7 @@ export function TraceListFallback({ evaluation, ruleHistory, onOpenPdf }: TraceL
           <p className="mt-2 text-sm text-ink">
             Approved by <strong className="font-medium">{reviewer}</strong>
             <span className="text-xs text-muted block mt-0.5">
-              Certified compliant with regulatory standards via Human-in-the-Loop review.
+              Approved by a human reviewer before it could become a rule.
             </span>
           </p>
         ) : (

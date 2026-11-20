@@ -63,10 +63,10 @@ ClauseTrace replaces manual guesswork and risky "black box" AI with a transparen
   * `UPCOMING_DEADLINE`: Compliant, but approaching filing cutoff within the alert window.
   * `INSUFFICIENT_DATA`: Missing entity data or currency/unit mismatch. Missing data is never assumed compliant.
 
-### 4. Every Result Remains Traceable (Cryptographic Lineage)
+### 4. Every Result Remains Traceable (Full Lineage)
 * Every compliance evaluation links backward through the complete provenance chain:
   $$\text{Evaluation Result} \longrightarrow \text{Rule Version} \longrightarrow \text{Approved Obligation} \longrightarrow \text{Reviewer Identity} \longrightarrow \text{Verbatim Quote} \longrightarrow \text{Clause} \longrightarrow \text{PDF Page}$$
-* Database-level PostgreSQL triggers reject any `UPDATE` or `DELETE` operations on audit logs, providing a tamper-proof trail for regulatory inspections.
+* Database-level PostgreSQL triggers reject any `UPDATE` or `DELETE` operations on audit logs, so the audit trail is append-only.
 
 ---
 
@@ -103,7 +103,7 @@ ClauseTrace replaces manual guesswork and risky "black box" AI with a transparen
 | Manual spreadsheet audits taking weeks | Instant answers, but 10–25% hallucination risk | Automated extraction in seconds with 0% hallucinated rules |
 | Fragile formulas with no lineage | "Black-box" reasoning impossible to audit | Mathematical determinism with exact PDF page-and-quote lineage |
 | Amendments require reading entire circulars from scratch | Cannot reliably isolate subtle text edits from clause renumbering | Automated semantic diffing that maps exact downstream rule impact |
-| High cost of regulatory penalties and missed deadlines | Cannot produce legal-grade audit logs | Tamper-proof, trigger-locked PostgreSQL audit trails |
+| High cost of regulatory penalties and missed deadlines | Cannot produce legal-grade audit logs | Append-only, trigger-locked PostgreSQL audit trails |
 
 ---
 

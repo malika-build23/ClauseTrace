@@ -146,7 +146,7 @@ export function TraceFlow({ evaluation, ruleHistory, onOpenPdf }: TraceFlowProps
         stage: 4,
         stageLabel: 'Human Reviewer Verification',
         title: hasReviewer ? `Approved by ${reviewerName}` : 'Unverified / No Human Reviewer',
-        subtitle: hasReviewer ? 'Certified via Human-in-the-Loop Workflow' : 'Audit Notice',
+        subtitle: hasReviewer ? 'Approved by a human reviewer' : 'Audit Notice',
         isMissing: !hasReviewer,
         missingReason: !hasReviewer
           ? 'Principle 1 Warning: This obligation does not have an approved human reviewer record. System rule requires human approval before regulatory finality.'

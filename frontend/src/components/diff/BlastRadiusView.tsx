@@ -53,7 +53,7 @@ export function BlastRadiusView({
             </h4>
             <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
               When regulatory amendments modify or repeal source clauses, existing approved
-              rules and active evaluations remain locked to their certified historical baseline.
+              rules and active evaluations remain locked to their approved historical baseline.
               A qualified compliance reviewer must inspect the blast radius and manually approve
               any updates.
             </p>

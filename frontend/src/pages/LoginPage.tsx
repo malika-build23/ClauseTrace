@@ -138,7 +138,7 @@ export function LoginPage() {
               <RegTechBadge label="Deterministic Evaluation" icon="check" />
               <RegTechBadge label="Immutable Audit Chain" icon="nodes" />
               <div className="inline-flex items-center gap-1.5 rounded-full border border-rose/30 bg-rose/10 px-3 py-1 text-xs font-semibold text-[#6B3254] dark:text-rose">
-                <span>✦ Zero Hallucination Rules</span>
+                <span>✦ Quote-verified AI proposals</span>
               </div>
             </div>
           </div>
