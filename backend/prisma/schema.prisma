@@ -10,10 +10,399 @@ datasource db {
   directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  admin
+  reviewer
+  viewer
+}
+
+enum ParsingStatus {
+  pending
+  parsing
+  parsed
+  needs_manual_split
+  failed
+}
+
+enum Modality {
+  must
+  must_not
+  may
+  should
+}
+
+enum ObligationStatus {
+  proposed
+  approved
+  edited
+  rejected
+}
+
+enum ReviewAction {
+  approve
+  edit
+  reject
+}
+
+enum ReviewPriority {
+  low
+  medium
+  high
+}
+
+enum RuleType {
+  threshold
+  deadline
+  required_field
+}
+
+enum EvaluationResult {
+  PASS
+  FAIL
+  UPCOMING_DEADLINE
+  INSUFFICIENT_DATA
+}
+
+enum ChangeType {
+  added
+  modified
+  removed
+}
+
+enum ChangeStatus {
+  pending
+  confirmed
+  dismissed
+}
+
+enum ImpactReviewStatus {
+  pending
+  confirmed
+  draft_created
+  dismissed
+}
+
+enum ConflictStatus {
+  flagged
+  confirmed
+  resolved
+  not_a_conflict
+}
+
+// ─── Organisations and users ──────────────────────────────────────────────────
+
 model Organisation {
   id        String   @id @default(uuid())
   name      String
   createdAt DateTime @default(now()) @map("created_at")
 
+  users          User[]
+  entityProfiles EntityProfile[]
+  riskConfigs    RiskConfig[]
+
   @@map("organisations")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  orgId        String   @map("org_id")
+  name         String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         Role     @default(viewer)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  organisation Organisation @relation(fields: [orgId], references: [id])
+
+  documentsCreated    Document[]         @relation("DocumentCreatedBy")
+  obligationsApproved Obligation[]       @relation("ObligationApprovedBy")
+  reviews             ObligationReview[]
+  rulesCreated        Rule[]
+  conflictsReviewed   ConflictFlag[]
+  riskConfigsUpdated  RiskConfig[]
+  auditEntries        AuditLog[]
+
+  @@index([orgId])
+  @@map("users")
+}
+
+// ─── Documents and clauses ────────────────────────────────────────────────────
+
+model Document {
+  id          String    @id @default(uuid())
+  title       String
+  regulator   String    @default("IFSCA")
+  publishDate DateTime? @map("publish_date") @db.Date
+  status      String    @default("active")
+  createdById String    @map("created_by")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  createdBy User              @relation("DocumentCreatedBy", fields: [createdById], references: [id])
+  versions  DocumentVersion[]
+
+  @@map("documents")
+}
+
+model DocumentVersion {
+  id            String        @id @default(uuid())
+  documentId    String        @map("document_id")
+  versionNo     Int           @map("version_no")
+  fileName      String        @map("file_name")
+  fileHash      String        @map("file_hash") // SHA-256 of the PDF bytes
+  fileData      Bytes         @map("file_data") // PDF stored in Postgres (free tier, few small files)
+  uploadedAt    DateTime      @default(now()) @map("uploaded_at")
+  parsingStatus ParsingStatus @default(pending) @map("parsing_status")
+
+  document    Document      @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  clauses     Clause[]
+  changesFrom ChangeEvent[] @relation("ChangeOldVersion")
+  changesTo   ChangeEvent[] @relation("ChangeNewVersion")
+
+  @@unique([documentId, versionNo])
+  @@map("document_versions")
+}
+
+model Clause {
+  id                String  @id @default(uuid())
+  documentVersionId String  @map("document_version_id")
+  clauseNumber      String  @map("clause_number")
+  page              Int
+  text              String
+  parentClauseId    String? @map("parent_clause_id")
+  position          Int // order within the document
+
+  documentVersion DocumentVersion @relation(fields: [documentVersionId], references: [id], onDelete: Cascade)
+  parent          Clause?         @relation("ClauseHierarchy", fields: [parentClauseId], references: [id])
+  children        Clause[]        @relation("ClauseHierarchy")
+  obligations     Obligation[]
+
+  @@index([documentVersionId, position])
+  @@map("clauses")
+}
+
+// ─── Obligations and review ───────────────────────────────────────────────────
+
+model Obligation {
+  id                String           @id @default(uuid())
+  obligationKey     String           @map("obligation_key") // e.g. FME-EXAMPLE-c4.2-01, stable across versions
+  version           Int              @default(1)
+  previousVersionId String?          @unique @map("previous_version_id")
+  clauseId          String           @map("clause_id")
+  quote             String // exact supporting text from the clause
+  subject           String
+  modality          Modality
+  action            String
+  condition         String?
+  thresholdJson     Json?            @map("threshold_json") // { metric, operator, value, unit }
+  deadline          DateTime?        @db.Date
+  evidence          String?
+  machineCheckable  Boolean          @default(false) @map("machine_checkable")
+  ambiguityFlag     Boolean          @default(false) @map("ambiguity_flag")
+  ambiguityReason   String?          @map("ambiguity_reason")
+  referenceOnly     Boolean          @default(false) @map("reference_only") // approved but non-executable
+  confidence        Float?
+  reviewPriority    ReviewPriority?  @map("review_priority")
+  status            ObligationStatus @default(proposed)
+  approvedById      String?          @map("approved_by")
+  createdAt         DateTime         @default(now()) @map("created_at")
+
+  clause           Clause                     @relation(fields: [clauseId], references: [id])
+  previousVersion  Obligation?                @relation("ObligationVersions", fields: [previousVersionId], references: [id])
+  nextVersion      Obligation?                @relation("ObligationVersions")
+  approvedBy       User?                      @relation("ObligationApprovedBy", fields: [approvedById], references: [id])
+  reviews          ObligationReview[]
+  entityCategories ObligationEntityCategory[]
+  rules            Rule[]
+  impactItems      ImpactItem[]
+  conflictsAsA     ConflictFlag[]             @relation("ConflictA")
+  conflictsAsB     ConflictFlag[]             @relation("ConflictB")
+
+  @@unique([obligationKey, version])
+  @@index([status])
+  @@index([clauseId])
+  @@map("obligations")
+}
+
+model ObligationReview {
+  id           String       @id @default(uuid())
+  obligationId String       @map("obligation_id")
+  reviewerId   String       @map("reviewer_id")
+  action       ReviewAction
+  beforeJson   Json         @map("before_json")
+  afterJson    Json?        @map("after_json")
+  comment      String?
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  obligation Obligation @relation(fields: [obligationId], references: [id])
+  reviewer   User       @relation(fields: [reviewerId], references: [id])
+
+  @@index([obligationId])
+  @@map("obligation_reviews")
+}
+
+model EntityCategory {
+  id   String @id @default(uuid())
+  name String @unique
+
+  obligations ObligationEntityCategory[]
+  profiles    EntityProfile[]
+
+  @@map("entity_categories")
+}
+
+model ObligationEntityCategory {
+  obligationId     String @map("obligation_id")
+  entityCategoryId String @map("entity_category_id")
+
+  obligation     Obligation     @relation(fields: [obligationId], references: [id], onDelete: Cascade)
+  entityCategory EntityCategory @relation(fields: [entityCategoryId], references: [id], onDelete: Cascade)
+
+  @@id([obligationId, entityCategoryId])
+  @@map("obligation_entity_categories")
+}
+
+// ─── Rules and evaluations ────────────────────────────────────────────────────
+
+model Rule {
+  id             String   @id @default(uuid())
+  ruleKey        String   @map("rule_key") // e.g. RULE-101, stable across versions
+  ruleVersion    Int      @map("rule_version")
+  obligationId   String   @map("obligation_id")
+  type           RuleType
+  definitionJson Json     @map("definition_json")
+  isActive       Boolean  @default(true) @map("is_active")
+  createdById    String   @map("created_by")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  obligation  Obligation   @relation(fields: [obligationId], references: [id])
+  createdBy   User         @relation(fields: [createdById], references: [id])
+  evaluations Evaluation[]
+  impactItems ImpactItem[]
+
+  @@unique([ruleKey, ruleVersion])
+  @@map("rules")
+}
+
+model EntityProfile {
+  id            String   @id @default(uuid())
+  orgId         String   @map("org_id")
+  name          String
+  categoryId    String   @map("category_id")
+  dataJson      Json     @map("data_json")
+  isSimulation  Boolean  @default(false) @map("is_simulation")
+  baseProfileId String?  @map("base_profile_id") // set for what-if clones
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  organisation Organisation   @relation(fields: [orgId], references: [id])
+  category     EntityCategory @relation(fields: [categoryId], references: [id])
+  evaluations  Evaluation[]
+
+  @@map("entity_profiles")
+}
+
+model Evaluation {
+  id             String           @id @default(uuid())
+  ruleId         String           @map("rule_id")
+  ruleVersion    Int              @map("rule_version")
+  profileId      String           @map("profile_id")
+  inputRef       Json             @map("input_ref") // the exact inputs used
+  evaluationDate DateTime         @map("evaluation_date") @db.Date
+  result         EvaluationResult
+  detailsJson    Json             @map("details_json") // explanation, clause ref
+  evaluatedAt    DateTime         @default(now()) @map("evaluated_at")
+  isSimulation   Boolean          @default(false) @map("is_simulation")
+
+  rule    Rule          @relation(fields: [ruleId], references: [id])
+  profile EntityProfile @relation(fields: [profileId], references: [id])
+
+  @@index([profileId, isSimulation])
+  @@map("evaluations")
+}
+
+// ─── Change detection and impact ──────────────────────────────────────────────
+
+model ChangeEvent {
+  id           String       @id @default(uuid())
+  oldVersionId String       @map("old_version_id")
+  newVersionId String       @map("new_version_id")
+  changeType   ChangeType   @map("change_type")
+  clauseRef    String       @map("clause_ref")
+  oldText      String?      @map("old_text")
+  newText      String?      @map("new_text")
+  summary      String?
+  status       ChangeStatus @default(pending)
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  oldVersion  DocumentVersion @relation("ChangeOldVersion", fields: [oldVersionId], references: [id])
+  newVersion  DocumentVersion @relation("ChangeNewVersion", fields: [newVersionId], references: [id])
+  impactItems ImpactItem[]
+
+  @@map("change_events")
+}
+
+model ImpactItem {
+  id            String             @id @default(uuid())
+  changeEventId String             @map("change_event_id")
+  obligationId  String?            @map("obligation_id")
+  ruleId        String?            @map("rule_id")
+  reviewStatus  ImpactReviewStatus @default(pending) @map("review_status")
+  createdAt     DateTime           @default(now()) @map("created_at")
+
+  changeEvent ChangeEvent @relation(fields: [changeEventId], references: [id], onDelete: Cascade)
+  obligation  Obligation? @relation(fields: [obligationId], references: [id])
+  rule        Rule?       @relation(fields: [ruleId], references: [id])
+
+  @@map("impact_items")
+}
+
+// ─── Conflicts and risk ───────────────────────────────────────────────────────
+
+model ConflictFlag {
+  id            String         @id @default(uuid())
+  obligationAId String         @map("obligation_a_id")
+  obligationBId String         @map("obligation_b_id")
+  reason        String
+  status        ConflictStatus @default(flagged)
+  reviewedById  String?        @map("reviewed_by")
+  createdAt     DateTime       @default(now()) @map("created_at")
+
+  obligationA Obligation @relation("ConflictA", fields: [obligationAId], references: [id])
+  obligationB Obligation @relation("ConflictB", fields: [obligationBId], references: [id])
+  reviewedBy  User?      @relation(fields: [reviewedById], references: [id])
+
+  @@unique([obligationAId, obligationBId])
+  @@map("conflict_flags")
+}
+
+model RiskConfig {
+  id          String   @id @default(uuid())
+  orgId       String   @map("org_id")
+  weightsJson Json     @map("weights_json")
+  updatedById String   @map("updated_by")
+  updatedAt   DateTime @default(now()) @map("updated_at")
+
+  organisation Organisation @relation(fields: [orgId], references: [id])
+  updatedBy    User         @relation(fields: [updatedById], references: [id])
+
+  @@map("risk_config")
+}
+
+// ─── Audit (append-only, enforced by a DB trigger in the migration) ───────────
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  actorId     String?  @map("actor_id") // null for system actions
+  eventType   String   @map("event_type")
+  objectType  String   @map("object_type")
+  objectId    String   @map("object_id")
+  payloadJson Json     @map("payload_json")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  actor User? @relation(fields: [actorId], references: [id])
+
+  @@index([objectType, objectId])
+  @@index([createdAt])
+  @@map("audit_log")
 }

@@ -2,9 +2,14 @@
   "name": "clausetrace",
   "private": true,
   "scripts": {
-    "build": "npm --prefix backend run build",
+    "build": "npm --prefix backend run build && npm --prefix frontend run build",
     "start": "npm --prefix backend run start:local",
-    "db:migrate": "npm --prefix backend run db:migrate"
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "test": "npm --prefix backend test",
+    "db:migrate": "npm --prefix backend run db:migrate",
+    "db:seed": "npm --prefix backend run db:seed",
+    "db:verify": "npm --prefix backend run db:verify"
   },
   "dependencies": {
     "@neon/config": "^1.14.5",
