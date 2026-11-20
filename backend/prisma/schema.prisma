@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// DATABASE_URL          = pooled Neon connection (-pooler host), used by the app at runtime.
+// DATABASE_URL_UNPOOLED = direct Neon connection, used by Prisma Migrate.
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model Organisation {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("organisations")
+}

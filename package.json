@@ -1,0 +1,13 @@
+{
+  "name": "clausetrace",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix backend run build",
+    "start": "npm --prefix backend run start:local",
+    "db:migrate": "npm --prefix backend run db:migrate"
+  },
+  "dependencies": {
+    "@neon/config": "^1.14.5",
+    "@neon/env": "^2.1.8"
+  }
+}
