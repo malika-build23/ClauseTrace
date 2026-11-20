@@ -1,175 +1,193 @@
 # ClauseTrace
-#by Malika and Harsh
+### by Malika and Harsh
 
-**AI reads. Humans verify. Deterministic rules evaluate. Every result remains traceable.**
+[![Status](https://img.shields.io/badge/Status-Working%20Prototype-116466?style=for-the-badge)](https://clausetrace-eight.vercel.app)
+[![Challenge](https://img.shields.io/badge/GIFT%20FutureLab-Grand%20Challenge-D9B08C?style=for-the-badge)](https://clausetrace-eight.vercel.app)
+[![License](https://img.shields.io/badge/License-MIT-2C3531?style=for-the-badge)](LICENSE)
 
-ClauseTrace turns dense financial regulatory circulars into machine-checkable, traceable compliance obligations, keeping a human compliance professional in control of every critical decision. 
+> **"AI reads. Humans verify. Deterministic rules evaluate. Every result remains traceable."**
 
-The platform is purpose-built for the regulatory framework of the **International Financial Services Centres Authority (IFSCA)**, specifically governing **Fund Management Entities (FMEs)** within **GIFT City IFSC**.
+ClauseTrace is an enterprise-grade Regulatory Technology (**RegTech**) platform that turns complex financial circulars into machine-executable compliance rules with strict human verification and mathematical auditability.
 
-> **Live Deployment:** [https://clausetrace-eight.vercel.app](https://clausetrace-eight.vercel.app)  
-> *(Hosted on free-tier infrastructure; the backend servers sleep when idle and may take 30–60 seconds to wake up on the first request.)*  
->  
-> **Accounts:** You can create an instant account via the [Sign Up page](https://clausetrace-eight.vercel.app/signup), or use the pre-seeded demo accounts.
->
-> **Current Stage:** Working Prototype. All core pipeline stages (ingestion → AI extraction → human review queue → rule compilation → deterministic evaluation → dashboard → amendment diffing → append-only audit trail) operate end-to-end with public IFSCA circulars and fictional entity data.
+Purpose-built for the regulatory framework of the **International Financial Services Centres Authority (IFSCA)**, ClauseTrace focuses on Fund Management Entities (**FMEs**) operating within **GIFT City IFSC**.
 
 ---
 
-## 1. The Problem We Solve
+## Quick Links
 
-In modern international financial hubs like GIFT IFSC, financial institutions face rapid regulatory evolutions:
+* 🌐 **Live Web Application:** [https://clausetrace-eight.vercel.app](https://clausetrace-eight.vercel.app)
+* 🚀 **Local Web Console:** [http://localhost:5173](http://localhost:5173)
+* 🔐 **Sign Up (Reviewer Access):** [http://localhost:5173/signup](http://localhost:5173/signup)
+* 👤 **User Profile & Credentials:** [http://localhost:5173/profile](http://localhost:5173/profile)
+* 🔌 **Backend REST API:** [http://localhost:4000/api/health](http://localhost:4000/api/health)
 
-1. **Dense, Cross-Referenced Circulars:** Regulatory circulars contain numerical limits, investment ceilings, lock-in periods, disclosure duties, and strict reporting windows scattered across complex nested clauses.
-2. **The Danger of Chatbot Hallucinations:** Generic generative AI chatbots cannot be trusted with legal compliance. They hallucinate thresholds, misinterpret conditions, invent non-existent exemptions, and produce non-reproducible answers.
-3. **Manual Spreadsheet Fragility:** Tracking compliance via manual spreadsheets is slow, breaks when circulars are amended, and fails to provide verifiable lineage back to exact legal text for regulatory audits.
+*(Note: Free-tier servers sleep after 15 minutes of inactivity; allow 30–60 seconds for cold boot on first load.)*
 
 ---
 
-## 2. What ClauseTrace Does
+## 1. Problem Statement
+
+Financial institutions in international jurisdictions like GIFT IFSC navigate high-velocity, dense regulatory updates:
+
+1. **Information Density & Ambiguity:** Legal circulars feature numerical caps, lock-in intervals, reporting timelines, and carve-outs scattered across parent-child clauses.
+2. **The LLM Hallucination Trap:** Generic AI chatbots frequently invent non-existent exemptions, mistake advisory text for mandatory duties, and fail to provide deterministic consistency required for financial audits.
+3. **Spreadsheet Fragility:** Manual compliance spreadsheets break when regulations are amended and fail to provide verifiable lineage back to exact legal citations during regulatory inspections.
+
+---
+
+## 2. Core Architecture & Workflow Pipeline
 
 ```
-┌─────────────────┐      ┌─────────────────────────┐      ┌──────────────────────────┐
-│  Regulatory PDF │ ──►  │    PyMuPDF Parser       │ ──►  │    AI Extraction (LLM)   │
-│  (IFSCA Circular)│      │  (Numbered Hierarchies) │      │  (Gemini + Guardrails)   │
-└─────────────────┘      └─────────────────────────┘      └────────────┬─────────────┘
-                                                                       │
-┌──────────────────────────┐      ┌──────────────────────────┐         ▼
-│ Deterministic Evaluation │ ◄──  │ Versioned Rule Compiler  │ ◄── [Human Review Queue]
-│ (Pure TS: PASS/FAIL/...) │      │ (Threshold/Deadline/Req) │     (Approve / Edit / Reject)
-└────────────┬─────────────┘      └──────────────────────────┘
-             │
-             ▼
-┌──────────────────────────┐      ┌──────────────────────────┐
-│ Bidirectional Audit Trail│ ──►  │ Amendment Diff & Impact  │
-│ (Trigger-locked Postgres)│      │ (Resilient to Renumbering│
-└──────────────────────────┘      └──────────────────────────┘
+┌────────────────────────┐      ┌──────────────────────────┐      ┌──────────────────────────┐
+│   Regulatory PDF       │ ──►  │    PyMuPDF Parser        │ ──►  │   AI Extraction (LLM)    │
+│   (IFSCA Circular)     │      │   (Nested Hierarchies)   │      │ (Gemini 3.5/3.8 Cascade) │
+└────────────────────────┘      └──────────────────────────┘      └────────────┬─────────────┘
+                                                                               │
+┌────────────────────────┐      ┌──────────────────────────┐                   ▼
+│ Deterministic Engine   │ ◄──  │ Versioned Rule Compiler  │ ◄── [Human-in-the-Loop Review]
+│ (Pure TS: PASS/FAIL/…) │      │ (Threshold/Deadline/Req) │     (Approve / Edit / Reject)
+└───────────┬────────────┘      └──────────────────────────┘
+            │
+            ▼
+┌────────────────────────┐      ┌──────────────────────────┐
+│ Full Lineage & Audit   │ ──►  │ Amendment Diff & Impact  │
+│ (Trigger-Locked DB)    │      │ (Renumbering-Resilient)  │
+└────────────────────────┘      └──────────────────────────┘
 ```
 
-1. **Hierarchical PDF Parsing:** Splits incoming regulatory PDFs into numbered clauses (`1.`, `4.2`, `(a)`, `(i)`) while preserving parent-child hierarchies and physical page citations without OCR dependencies.
-2. **AI Extraction with Deterministic Guardrails:** Gemini structures raw legal text into formal obligation proposals (subject, modality, action, threshold, deadline). Code, not AI, enforces strict anti-hallucination rules:
-   - Rejects any obligation whose supporting quote is not found word-for-word in the clause text.
-   - Rejects any threshold whose numbers (including *crore, lakh, million, thousand*) are not present in the quote.
-   - Automatically flags vague legal terminology (*"adequate"*, *"appropriate"*, *"promptly"*, *"wherever feasible"*).
-   - Source metadata (document, version, clause, page) is injected directly from the database and can never be hallucinated by the model.
-3. **Human-in-the-Loop Review Queue:** Compliance officers review proposed obligations ranked by an explainable priority formula. Reviewers can approve, edit (which creates an immutable version $v_{n+1}$ while archiving $v_n$), reject with mandatory feedback, or mark subjective obligations as "reference-only".
-4. **Deterministic Rule Compiler:** Converts approved, machine-checkable obligations into immutable, versioned rules using standardized templates (`threshold`, `deadline`, `required_field`).
-5. **Pure Mathematical Rule Engine:** A deterministic TypeScript engine checks entity profiles against active rules. Zero AI is used in evaluations. The engine returns:
-   - `PASS`: Compliant with the rule.
-   - `FAIL`: Non-compliant with the rule.
-   - `UPCOMING_DEADLINE`: Compliant but deadline is approaching within the alert window.
-   - `INSUFFICIENT_DATA`: Missing input data or currency/unit mismatch (e.g., rule in `USD`, profile in `INR`). The engine never guesses conversions or passes silently.
-6. **Full-Chain Bidirectional Traceability:** Any evaluation result links directly back through the chain:  
-   $$\text{Evaluation Result} \longrightarrow \text{Rule Version} \longrightarrow \text{Approved Obligation} \longrightarrow \text{Reviewer Identity} \longrightarrow \text{Exact Quote} \longrightarrow \text{Clause} \longrightarrow \text{PDF Page}$$
-7. **Regulatory Amendment Diffing & Impact Analysis:** Compares two circular versions clause-by-clause. It recognizes structural renumbering without flagging false changes, identifies `added`, `modified`, or `removed` obligations, and surfaces all downstream rules and entities affected by the amendment.
-8. **Isolated What-If Simulation Sandbox:** Allows compliance managers to clone an entity profile and run hypothetical balance sheet or capital scenarios. Simulations are explicitly isolated (`is_simulation: true`) and never pollute production audit logs or compliance dashboards.
-9. **Contradiction & Conflict Detection:** Flags overlapping obligations with conflicting thresholds or requirements across circulars for human adjudication.
-10. **Append-Only Audit Log:** Every login, review, rule compilation, and evaluation is recorded in an audit table protected by PostgreSQL triggers that reject `UPDATE` and `DELETE` operations.
+1. **Hierarchical PDF Parsing:** Segments raw circulars into numbered clauses (`1.`, `4.2`, `(a)`, `(i)`) while preserving exact page numbers and parent/child associations.
+2. **AI Extraction with Code Guardrails:** Gemini proposes structured obligations (subject, modality, action, threshold, deadline). Code—not the LLM—verifies proposals:
+   * **Exact Quote Verification:** Rejects proposals whose supporting quote is not found verbatim in the source text.
+   * **Numeric Cross-Check:** Discards thresholds unless the number (accounting for *crore, lakh, million, thousand*) appears in the verified quote.
+   * **Vagueness Flagging:** Heuristically detects ambiguous terms (*"adequate"*, *"appropriate"*, *"promptly"*, *"wherever feasible"*).
+   * **Zero Hallucination of Metadata:** Document, version, clause, and page fields are injected directly from the database and cannot be fabricated by the model.
+3. **Human-in-the-Loop Review Queue:** Compliance officers triage obligations ordered by a transparent priority metric. Reviewers can approve, edit (generating an immutable version $v_{n+1}$ while archiving $v_n$), reject with feedback, or classify subjective requirements as non-executable "reference-only".
+4. **Deterministic Rule Compiler:** Converts approved, machine-checkable obligations into immutable, versioned rules across fixed templates (`threshold`, `deadline`, `required_field`).
+5. **Pure Mathematical Rule Engine:** Zero AI during evaluation. Pure TypeScript evaluates entity balance sheet and filing data:
+   * `PASS`: Compliant with rule condition.
+   * `FAIL`: Non-compliant with rule condition.
+   * `UPCOMING_DEADLINE`: Compliant, but approaching filing cutoff within the alert window.
+   * `INSUFFICIENT_DATA`: Missing entity data or currency/unit mismatch (e.g. rule in `USD`, profile in `INR`). Missing data never passes silently.
+6. **Bidirectional Audit Traceability:** Every compliance outcome reconstructs its complete lineage:
+   $$\text{Evaluation Result} \longrightarrow \text{Rule Version} \longrightarrow \text{Approved Obligation} \longrightarrow \text{Reviewer Identity} \longrightarrow \text{Verbatim Quote} \longrightarrow \text{Clause} \longrightarrow \text{PDF Page}$$
+7. **Amendment Diffing & Impact Analysis:** Evaluates two circular versions clause-by-clause, distinguishing actual textual changes from cosmetic renumbering. Automatically highlights all active rules and historical baselines impacted by the amendment.
+8. **Isolated What-If Simulation Sandbox:** Allows compliance managers to clone entity profiles and test hypothetical balance sheet allocations. Simulations are strictly flagged (`is_simulation: true`) and never contaminate production dashboards or audit logs.
+9. **Contradiction & Conflict Detection:** Flags overlapping regulatory requirements across multiple circulars that specify differing thresholds.
+10. **Append-Only Audit Log:** Database-level PostgreSQL triggers reject `UPDATE` and `DELETE` operations on the audit ledger.
 
 ---
 
-## 3. Architecture & Tech Stack
+## 3. Technology Stack & Design System
 
-| Layer | Technology | Hosting | Purpose |
-|---|---|---|---|
-| **Frontend** | React 19, Vite 6, Tailwind CSS 4, React Router 7 | Vercel | Responsive UI: PDF viewer, review queues, rule compiler, dashboards, and simulators |
-| **Backend API** | Node.js 22, Express 5, Prisma ORM 6, TypeScript 5.9 | Render | REST API, RBAC, deterministic rule compiler & evaluator, diff engine, audit logger |
-| **AI Microservice** | Python 3.11, FastAPI, PyMuPDF, Google Gemini API | Render | Document layout parsing, structured obligation extraction, and deterministic quote verification |
-| **Database** | Serverless PostgreSQL (Neon) | Neon | Relational schema (16 models) with branch isolation (`dev-local` vs production) |
+| Layer | Technologies | Hosting |
+|---|---|---|
+| **Frontend** | React 19, Vite 6, Tailwind CSS 4, React Router 7 | Vercel |
+| **Backend API** | Node.js 22, Express 5, Prisma ORM 6, TypeScript 5.9 | Render |
+| **AI Microservice** | Python 3.11, FastAPI, PyMuPDF, Google Gemini API | Render |
+| **Database** | PostgreSQL on Neon (Serverless with branch isolation) | Neon |
+
+### Visual Design System
+ClauseTrace features a dedicated FinTech/RegTech design system with modern typography and alpha-transparent illustrations:
+
+* **Brand Color Palette:**
+  * `#2C3531` — Deep Pine Charcoal (Headings, primary text, high-contrast badges)
+  * `#116466` — Deep Sea Teal (Primary brand, main CTAs, active navigation, pass status)
+  * `#D9B08C` — Warm Golden Sand (Accent cards, warning badges, upcoming deadlines)
+  * `#FFCB9A` — Soft Apricot Peach (Tags, secondary highlights, warm indicators)
+  * `#D1E8E2` — Pale Sage Mint (Borders, card backgrounds, hover states, surface tint)
+* **Typography:**
+  * **UI & Body:** *Plus Jakarta Sans* (Weights 300 to 800)
+  * **Brand & Display:** *Space Grotesk*
+* **Thematic Assets:** Custom 3D RegTech transparent isometric artwork (`/images/hero-regtech.png`) and vector emblem (`/logo.svg`).
 
 ---
 
-## 4. User Roles & Access Control
+## 4. User Roles & Governance (RBAC)
 
 | Role | Permissions |
 |---|---|
-| **Viewer** | Read-only access to documents, clauses, approved obligations, rules, entity profiles, and dashboards. |
-| **Reviewer** | All Viewer capabilities, plus: upload circulars, trigger AI extractions, approve/edit/reject obligations, compile rules, execute evaluations, compare circular versions, flag conflicts, and inspect audit logs. |
-| **Admin** | All Reviewer capabilities, plus: manage organisation users, deactivate accounts, and configure risk prioritization weights. |
+| **Viewer** | Read-only access to circulars, clauses, approved obligations, versioned rules, entity profiles, and dashboards. |
+| **Reviewer** | All Viewer rights, plus: upload circulars, trigger AI extraction, approve/edit/reject obligations, compile rules, execute evaluations, compare circular versions, flag conflicts, and inspect audit logs. |
+| **Admin** | All Reviewer rights, plus: manage user accounts, deactivate users, and adjust risk scoring weights. |
 
-*Self-service user registration via `/signup` automatically grants the **Reviewer** role to allow complete exploration of all core features.*
+*Self-service registration via `/signup` grants instant **Reviewer** access to explore the complete platform.*
 
 ---
 
-## 5. Local Development Setup
+## 5. Screen Suite
+
+* **Overview Dashboard (`/`):** Real-time compliance health, evaluation distributions, risk-ordered issues, and AI review progress.
+* **Document Explorer (`/documents`, `/documents/:id`):** PDF viewer synchronized with parsed clause hierarchy.
+* **Review Queue (`/review`, `/obligations/:id`):** Triage proposed obligations, view highlighted quotes, and approve or edit.
+* **Rule Manager (`/rules`):** View immutable compiled rule definitions and compilation summaries.
+* **Entity Profiler & Evaluator (`/profiles`):** Inspect FME balance sheets, execute deterministic evaluations, and launch What-If scenarios.
+* **Regulatory Compare (`/documents/:id/compare`):** Side-by-side circular version comparison with downstream impact analysis.
+* **Audit Trail (`/audit`):** Cryptographic log of all logins, extractions, reviews, and rule compilations.
+* **User Profile & Credentials (`/profile`):** Account settings, full name editing, password changes, and governance role inspector.
+* **Authentication (`/login`, `/signup`):** Branded split-screen access console with credentials verification.
+
+---
+
+## 6. Local Setup & Installation
 
 ### Prerequisites
-- Node.js 22+
-- Python 3.11+
-- [uv](https://docs.astral.sh/uv/) package manager
-- Neon CLI (`npm install -g neon`) or local PostgreSQL instance
+* Node.js 22+
+* Python 3.11+
+* [uv](https://docs.astral.sh/uv/) package manager
+* Neon database account or local PostgreSQL instance
 
-### 1. Clone & Environment Setup
+### 1. Repository Setup
 ```bash
 git clone https://github.com/malika-build23/ClauseTrace.git
 cd ClauseTrace
-cp .env.example .env.dev.local
 ```
 
 ### 2. Backend Setup
 ```bash
 cd backend
 npm install
-npm run db:migrate    # Run Prisma migrations
-npm run db:seed       # Seed demo org, default circulars, and fictional entity profiles
-npm run dev           # Runs API on http://localhost:4000
+npm run build         # Generates Prisma client & compiles TypeScript
+npm run dev           # Starts API server on http://localhost:4000
 ```
 
-### 3. AI Service Setup
+### 3. Frontend Setup
+```bash
+cd ../frontend
+npm install
+npm run build         # Validates typecheck and bundles Vite assets
+npm run dev           # Starts development UI on http://localhost:5173
+```
+
+### 4. AI Service Setup
 ```bash
 cd ../ai-service
 uv venv
 uv pip install -r requirements-dev.txt
 
-# Run the FastAPI service on http://localhost:8000
+# Start FastAPI microservice on http://localhost:8000
 GEMINI_API_KEY=<your-key> AI_SERVICE_TOKEN=dev-token uv run uvicorn app.main:app --reload --port 8000
 ```
 
-### 4. Frontend Setup
+---
+
+## 7. Testing & Quality Assurance
+
 ```bash
-cd ../frontend
-npm install
-npm run dev           # Runs UI on http://localhost:5173
+# Backend test suite (90 unit tests: 100-run determinism test, compiler, diffing, auth)
+npm --prefix backend test
+
+# AI Service test suite (39 tests: PDF parsing, quote checks, multiplier parsing)
+cd ai-service && uv run pytest
+
+# Frontend build & linting verification
+npm --prefix frontend run build
 ```
 
 ---
 
-## 6. Testing & Automated Verification
+## 8. Authors & Grand Challenge Context
 
-ClauseTrace features automated test coverage across its deterministic and security-critical systems:
+* **Malika** — Co-Architect, Product & AI Extraction Lead
+* **Harsh** — Co-Architect, Backend, Rule Engine & DevOps Lead
 
-```bash
-# 1. Backend test suite (90 tests: evaluator determinism, 100-run repeatability, rule compiler, diff engine)
-cd backend
-npm test
-
-# 2. AI Service test suite (39 tests: PDF parsing, quote matching, multiplier checks with fake LLM)
-cd ../ai-service
-uv run pytest
-
-# 3. Frontend validation
-cd ../frontend
-npm run lint && npm run build
-
-# 4. Automated end-to-end traceability verification
-cd ../ai-service
-uv run --no-project python ../scripts/evaluate_traceability.py <api-url>
-```
-
----
-
-## 7. Known Limitations & Roadmap
-
-- **Scanned Documents:** The PDF parser currently relies on digital text streams via PyMuPDF; scanned or image-only circulars require an upstream OCR engine (e.g., Tesseract or AWS Textract).
-- **Tabular Regulatory Data:** Tables in circulars are flattened into line streams; multi-column capital adequacy tables currently require manual reviewer structuring.
-- **Sub-Clause Parent Context:** Child clauses (e.g., `22(ii)`) are extracted independently; passing parent clause headers into child extraction contexts is planned for Phase 2.
-- **Gold-Label Independence:** Initial precision/recall benchmarks were drafted alongside model exploration; independent double-blind labeling by regulatory counsel is underway.
-- **Fictional Data:** All entity balance sheets, investor figures, and fund profiles in demo seeds are fictional and used solely for testing and demonstration.
-
----
-
-## 8. Authors & Project Origin
-
-Created by **Malika** and **Harsh** for the **GIFT FutureLab Grand Challenge**.
-
-ClauseTrace demonstrates how regulated financial entities and supervisory bodies can leverage modern generative AI safely: using AI where it excels (rapid text parsing and extraction proposal) while anchoring compliance decisions where they belong (human expertise, pure mathematical determinism, and unalterable audit trails).
+Built for the **GIFT FutureLab Grand Challenge**, ClauseTrace demonstrates how regulated financial entities and supervisory bodies can deploy generative AI safely: leveraging LLMs where they excel (rapid parsing and structured extraction proposals) while anchoring compliance decisions where they belong (human expertise, pure mathematical determinism, and tamper-proof audit trails).
