@@ -14,6 +14,7 @@ import { prisma } from "../db.js";
 import { AiServiceError, ClauseExtraction, extractObligations, getPromptVersion } from "./ai-client.js";
 import { writeAudit } from "./audit.js";
 import { cacheKey, hasObligationWording, makeBatches, toObligationRow, type ClauseForExtraction } from "./extraction-plan.js";
+import { normalise } from "./version-diff.js";
 
 const PAUSE_BETWEEN_BATCHES_MS = 4_000; // stay under free-tier requests-per-minute limits
 const MAX_RATE_LIMIT_WAITS = 4;
@@ -99,8 +100,17 @@ async function execute(runId: string, actorId: string) {
     orderBy: { position: "asc" },
     select: { id: true, clauseNumber: true, page: true, text: true, _count: { select: { obligations: true } } },
   });
+  // A new version only needs extraction where its text changed: obligations of
+  // identical clauses in the previous version stay valid and stay reviewed.
+  const previous = await prisma.documentVersion.findFirst({
+    where: { documentId: doc.id, versionNo: { lt: version.versionNo } },
+    orderBy: { versionNo: "desc" },
+    select: { clauses: { select: { text: true } } },
+  });
+  const unchangedTexts = new Set((previous?.clauses ?? []).map((c) => normalise(c.text)));
+
   const candidates: ClauseForExtraction[] = clauses
-    .filter((c) => c._count.obligations === 0 && hasObligationWording(c.text))
+    .filter((c) => c._count.obligations === 0 && hasObligationWording(c.text) && !unchangedTexts.has(normalise(c.text)))
     .map(({ id, clauseNumber, page, text }) => ({ id, clauseNumber, page, text }));
 
   const promptVersion = await getPromptVersion();
@@ -134,7 +144,7 @@ async function execute(runId: string, actorId: string) {
     }
   }
   if (fromCache.length > 0) {
-    await store(runId, actorId, doc.id, fromCache, rejections, { cached: true });
+    await store(runId, actorId, { id: doc.id, versionNo: version.versionNo }, fromCache, rejections, { cached: true });
   }
 
   // 2. Send the rest in batches.
@@ -188,7 +198,7 @@ async function execute(runId: string, actorId: string) {
           skipDuplicates: true,
         });
       }
-      await store(runId, actorId, doc.id, results, rejections, { cached: false });
+      await store(runId, actorId, { id: doc.id, versionNo: version.versionNo }, results, rejections, { cached: false });
     } else {
       await prisma.extractionRun.update({
         where: { id: runId },
@@ -211,7 +221,7 @@ async function execute(runId: string, actorId: string) {
 async function store(
   runId: string,
   actorId: string,
-  documentId: string,
+  document: { id: string; versionNo: number },
   results: { clause: ClauseForExtraction; result: ClauseExtraction }[],
   rejections: RejectionLog[],
   opts: { cached: boolean },
@@ -221,7 +231,7 @@ async function store(
   }
   const rows = results.flatMap(({ clause, result }) =>
     result.obligations.map((ob, i) =>
-      toObligationRow(ob, { documentId, clauseId: clause.id, clauseNumber: clause.clauseNumber, index: i + 1, runId }),
+      toObligationRow(ob, { documentId: document.id, documentVersion: document.versionNo, clauseId: clause.id, clauseNumber: clause.clauseNumber, index: i + 1, runId }),
     ),
   );
 
@@ -229,6 +239,13 @@ async function store(
     const created = rows.length
       ? await tx.obligation.createManyAndReturn({ data: rows, skipDuplicates: true, select: { id: true, obligationKey: true } })
       : [];
+    // A key collision means the obligation already exists; record it instead of losing it silently.
+    const createdKeys = new Set(created.map((c) => c.obligationKey));
+    for (const row of rows) {
+      if (!createdKeys.has(row.obligationKey)) {
+        rejections.push({ clause: row.obligationKey, reason: `not saved: obligation key ${row.obligationKey} already exists` });
+      }
+    }
     for (const ob of created) {
       await writeAudit(tx, {
         actorId,

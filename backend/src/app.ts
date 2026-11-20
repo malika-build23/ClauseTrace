@@ -6,6 +6,7 @@ import { requireAuth, requireRole } from "./lib/auth.js";
 import { authRouter } from "./routes/auth.js";
 import { documentsRouter } from "./routes/documents.js";
 import { obligationsRouter } from "./routes/obligations.js";
+import { changesRouter } from "./routes/changes.js";
 import { dashboardRouter } from "./routes/dashboard.js";
 import { evaluationsRouter } from "./routes/evaluations.js";
 import { profilesRouter } from "./routes/profiles.js";
@@ -66,6 +67,7 @@ app.use("/api/rules", requireAuth, rulesRouter);
 app.use("/api/evaluations", requireAuth, evaluationsRouter);
 app.use("/api/entity-profiles", requireAuth, profilesRouter);
 app.use("/api/dashboard", requireAuth, dashboardRouter);
+app.use("/api", requireAuth, changesRouter); // GET /api/changes, PATCH /api/changes/:id, PATCH /api/impact-items/:id
 
 app.use("/api", (_req, res) => {
   res.status(404).json({ error: "Not found" });

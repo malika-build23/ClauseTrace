@@ -52,18 +52,23 @@ export function documentCode(documentId: string): string {
   return `D${documentId.replace(/-/g, "").slice(0, 6).toUpperCase()}`;
 }
 
-/** e.g. "D73834E-c2(B)(I)-01" */
-export function obligationKey(documentId: string, clauseNumber: string, index: number): string {
-  return `${documentCode(documentId)}-c${clauseNumber}-${String(index).padStart(2, "0")}`;
+/**
+ * e.g. "D73834E-c2(B)(I)-01" for document version 1 and "D73834E-v2-c18-01"
+ * for later versions, so an amended clause never collides with the key of
+ * the obligation it replaces.
+ */
+export function obligationKey(documentId: string, documentVersion: number, clauseNumber: string, index: number): string {
+  const version = documentVersion > 1 ? `-v${documentVersion}` : "";
+  return `${documentCode(documentId)}${version}-c${clauseNumber}-${String(index).padStart(2, "0")}`;
 }
 
 /** Map a validated AI obligation to an `obligations` row (status: proposed). */
 export function toObligationRow(
   ob: ExtractedObligation,
-  ctx: { documentId: string; clauseId: string; clauseNumber: string; index: number; runId: string },
+  ctx: { documentId: string; documentVersion: number; clauseId: string; clauseNumber: string; index: number; runId: string },
 ): Prisma.ObligationCreateManyInput {
   return {
-    obligationKey: obligationKey(ctx.documentId, ctx.clauseNumber, ctx.index),
+    obligationKey: obligationKey(ctx.documentId, ctx.documentVersion, ctx.clauseNumber, ctx.index),
     version: 1,
     clauseId: ctx.clauseId,
     quote: ob.source.quote,

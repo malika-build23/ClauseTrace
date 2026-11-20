@@ -3,10 +3,12 @@ import type { Prisma } from "@prisma/client";
 import { Router, type Request, type Response } from "express";
 import rateLimit from "express-rate-limit";
 import multer from "multer";
+import { z } from "zod";
 import { prisma } from "../db.js";
 import { AiServiceError, parsePdf } from "../lib/ai-client.js";
 import { writeAudit } from "../lib/audit.js";
 import { buildClauseRows } from "../lib/clause-tree.js";
+import { compareVersions, listChanges } from "../lib/compare-service.js";
 import { currentUser, requireRole } from "../lib/auth.js";
 import { ExtractionConflictError, startExtraction } from "../lib/extraction-runner.js";
 
@@ -155,6 +157,12 @@ documentsRouter.post("/:id/versions/:versionNo/parse", requireRole("reviewer"), 
     return;
   }
   const ids = { documentId: param(req, "id"), versionNo: Number(param(req, "versionNo")) };
+  // Re-parsing replaces the clauses; obligations point at clauses, so their source would be lost.
+  const withObligations = await prisma.obligation.count({ where: { clause: { documentVersionId: version.id } } });
+  if (withObligations > 0) {
+    res.status(409).json({ error: `This version already has ${withObligations} obligation(s); upload a new version instead of re-parsing`, ...ids });
+    return;
+  }
   try {
     res.json({ ...ids, ...(await parseVersion(version.id, currentUser(req).id)) });
   } catch (err) {
@@ -299,4 +307,52 @@ documentsRouter.get("/:id/obligations", async (req, res) => {
     include: { clause: { select: { clauseNumber: true, page: true } } },
   });
   res.json({ versionNo: version.versionNo, obligations });
+});
+
+// ─── Version comparison (Block H) ──────────────────────────────────────────
+
+const CompareBody = z.object({ fromVersion: z.number().int().positive().optional(), toVersion: z.number().int().positive().optional() });
+
+async function versionPair(documentId: string, from?: number, to?: number) {
+  const versions = await prisma.documentVersion.findMany({ where: { documentId }, orderBy: { versionNo: "desc" }, select: { versionNo: true } });
+  const toNo = to ?? versions[0]?.versionNo;
+  const fromNo = from ?? versions.find((v) => v.versionNo < (toNo ?? 0))?.versionNo;
+  return fromNo && toNo && fromNo !== toNo ? { fromNo, toNo } : null;
+}
+
+// Compare two versions (default: latest vs the one before). Idempotent per pair.
+documentsRouter.post("/:id/compare", requireRole("reviewer"), async (req, res) => {
+  const body = CompareBody.safeParse(req.body ?? {});
+  if (!body.success) {
+    res.status(400).json({ error: "fromVersion and toVersion must be version numbers" });
+    return;
+  }
+  const pair = await versionPair(param(req, "id"), body.data.fromVersion, body.data.toVersion);
+  if (!pair) {
+    res.status(400).json({ error: "Need two different versions of this document to compare" });
+    return;
+  }
+  const result = await compareVersions(param(req, "id"), pair.fromNo, pair.toNo, currentUser(req).id);
+  if (!result) {
+    res.status(404).json({ error: "Version not found" });
+    return;
+  }
+  res.status(result.created ? 201 : 200).json({ ...pair, changes: await listChanges(result.fromVersionId, result.toVersionId) });
+});
+
+// Stored changes between two versions: ?from=1&to=2 (default latest vs previous)
+documentsRouter.get("/:id/changes", async (req, res) => {
+  const pair = await versionPair(param(req, "id"), versionFrom(req.query.from) ?? undefined, versionFrom(req.query.to) ?? undefined);
+  if (!pair) {
+    res.json({ fromNo: null, toNo: null, compared: false, changes: [] });
+    return;
+  }
+  const [from, to] = await Promise.all(
+    [pair.fromNo, pair.toNo].map((n) =>
+      prisma.documentVersion.findUnique({ where: { documentId_versionNo: { documentId: param(req, "id"), versionNo: n } }, select: { id: true } }),
+    ),
+  );
+  const changes = from && to ? await listChanges(from.id, to.id) : [];
+  const compared = from && to ? (await prisma.auditLog.count({ where: { eventType: "document.compared", objectId: param(req, "id"), payloadJson: { path: ["toVersion"], equals: pair.toNo } } })) > 0 : false;
+  res.json({ ...pair, compared, changes });
 });

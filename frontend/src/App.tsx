@@ -2,6 +2,7 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router'
 import { AuthProvider } from './components/AuthProvider'
 import { Layout } from './components/Layout'
 import { RequireAuth } from './components/RequireAuth'
+import { ComparePage } from './pages/ComparePage'
 import { DashboardPage } from './pages/DashboardPage'
 import { DocumentPage } from './pages/DocumentPage'
 import { DocumentsPage } from './pages/DocumentsPage'
@@ -45,6 +46,7 @@ export default function App() {
             <Route path="profiles" element={<ProfilesPage />} />
             <Route path="evaluations/:id" element={<EvaluationPage />} />
             <Route path="documents/:id" element={<DocumentPage />} />
+            <Route path="documents/:id/compare" element={<ComparePage />} />
             <Route
               path="users"
               element={

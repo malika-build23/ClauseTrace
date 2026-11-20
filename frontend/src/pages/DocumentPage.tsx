@@ -153,6 +153,14 @@ export function DocumentPage() {
             >
               View PDF
             </button>
+            {doc.versions.length > 1 && (
+              <Link
+                to={`/documents/${doc.id}/compare?from=${doc.versions.find((v) => v.versionNo < list.versionNo)?.versionNo ?? doc.versions[1].versionNo}&to=${list.versionNo > 1 ? list.versionNo : doc.versions[0].versionNo}`}
+                className="rounded-md border border-line bg-panel px-3 py-1.5 text-sm hover:bg-surface"
+              >
+                What changed
+              </Link>
+            )}
             {canEdit && (
               <button
                 type="button"

@@ -30,7 +30,8 @@ test("cache key depends on prompt version and text", () => {
 });
 
 test("obligation key format", () => {
-  assert.equal(obligationKey("73834e7f-b730-47f4", "2(B)(I)", 1), "D73834E-c2(B)(I)-01");
+  assert.equal(obligationKey("73834e7f-b730-47f4", 1, "2(B)(I)", 1), "D73834E-c2(B)(I)-01");
+  assert.equal(obligationKey("73834e7f-b730-47f4", 2, "18", 1), "D73834E-v2-c18-01");
 });
 
 test("AI obligation maps to a proposed row with source quote and run link", () => {
@@ -49,7 +50,7 @@ test("AI obligation maps to a proposed row with source quote and run link", () =
     machine_checkable: true,
     confidence: 0.9,
   });
-  const row = toObligationRow(ob, { documentId: "57a1b42e-xx", clauseId: "c1", clauseNumber: "18", index: 1, runId: "r1" });
+  const row = toObligationRow(ob, { documentId: "57a1b42e-xx", documentVersion: 1, clauseId: "c1", clauseNumber: "18", index: 1, runId: "r1" });
   assert.equal(row.obligationKey, "D57A1B4-c18-01");
   assert.equal(row.status, "proposed");
   assert.equal(row.quote, "shall have a corpus of at least USD 1,000,000");

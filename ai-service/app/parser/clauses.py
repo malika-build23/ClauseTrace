@@ -53,7 +53,10 @@ def _join(parts: list[str]) -> str:
     text = ""
     for part in parts:
         if text.endswith("-") and part[:1].islower():
-            text = text[:-1] + part  # re-join a hyphenated word split across lines
+            # A word split at a hyphen across lines. Regulations use real compound
+            # hyphens ("close-ended", "ESG-related") far more than soft hyphenation,
+            # so keep the hyphen and only drop the line break.
+            text = text + part
         else:
             text = f"{text} {part}" if text else part
     return re.sub(r"\s+", " ", text).strip()

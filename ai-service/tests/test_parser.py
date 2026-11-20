@@ -74,9 +74,9 @@ def test_number_alone_on_its_line() -> None:
     assert [(c.clause_number, c.text) for c in clauses] == [("1", "Heading text"), ("2", "More text")]
 
 
-def test_hyphenated_words_rejoined() -> None:
-    _, clauses = split_clauses(lines("1. The regu-", "lated entity shall comply."))
-    assert clauses[0].text == "The regulated entity shall comply."
+def test_compound_word_split_at_hyphen_keeps_hyphen() -> None:
+    _, clauses = split_clauses(lines("1. Each investment is a close-", "ended segregated portfolio."))
+    assert clauses[0].text == "Each investment is a close-ended segregated portfolio."
 
 
 def test_no_numbering_falls_back_to_paragraphs() -> None:

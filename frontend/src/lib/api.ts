@@ -376,3 +376,24 @@ export type DashboardSummary = {
   }[]
   unresolvedChanges: number
 }
+
+export type ImpactItem = {
+  id: string
+  reviewStatus: 'pending' | 'confirmed' | 'draft_created' | 'dismissed'
+  obligation: { id: string; obligationKey: string; version: number; status: ObligationStatus; subject: string; action: string } | null
+  rule: { id: string; ruleKey: string; ruleVersion: number; isActive: boolean } | null
+  evaluations: Partial<Record<EvaluationResult, number>>
+}
+
+export type ChangeEvent = {
+  id: string
+  changeType: 'added' | 'removed' | 'modified'
+  clauseRef: string
+  oldText: string | null
+  newText: string | null
+  summary: string | null
+  status: 'pending' | 'confirmed' | 'dismissed'
+  impactItems: ImpactItem[]
+}
+
+export type ChangesResponse = { fromNo: number | null; toNo: number | null; compared?: boolean; changes: ChangeEvent[] }
