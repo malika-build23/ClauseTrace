@@ -39,6 +39,18 @@ Document: Angel Funds circular (IFSCA, 1 Jul 2022), 44 parsed clauses.
 
 The developer read through the 24 proposals. Every numeric limit in the circular was captured with the compliant direction (200 investors, USD 40,000, USD 1,500,000 per investment, 1-year lock-in, USD 1,000,000 corpus, USD 3,000 and USD 500 fees). Vague obligations ("material changes … immediately", "comply with all other conditions") were flagged as ambiguous. This is an informal read-through, **not** a measured precision/recall. That measurement needs the gold-label set from Block L.
 
+## Production run (2026-11-20)
+
+All three uploaded circulars were extracted on the live deployment. Every batch was answered by `gemini-3.5-flash-lite`.
+
+| Document | Clauses sent / skipped | Proposed | Rejected | Machine-checkable | Flagged ambiguous | Time |
+|---|---|---|---|---|---|---|
+| Angel Funds (2022) | 27 / 17 | 24 | 0 | 7 | 4 | 45 s |
+| ESG scheme disclosures (2023) | 33 / 29 | 30 | 0 | 0 | 20 | 45 s |
+| Filing of schemes or funds (2024) | 17 / 54 | 20 | 0 | 0 | 4 | 33 s |
+
+The mix matches the documents. The Angel Funds circular has hard numeric limits. The ESG circular calls itself "principle-based": no thresholds were invented, and most of its obligations were flagged as ambiguous. In the scheme-filing circular, most skipped clauses are items of a disclosure list ("Fund Offering;", "Tenure of the Scheme or Fund;"). The obligation itself sits in the parent clause ("the PPM … contains the following minimum disclosures"), so one proposal covers the whole list. A reviewer may want to split it into one obligation per item.
+
 ## Known limitations
 
 - **Sub-items lose parent context.** A clause such as `22(ii)` is sent without the text of clause 22, so conditions stated only in the parent are not attached to the child's obligation.
